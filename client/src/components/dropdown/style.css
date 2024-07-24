@@ -1,0 +1,10 @@
+.dropdown-container:hover,
+.dropdown-container:focus-within {
+  box-shadow: none !important;
+}
+.dropdown-container {
+  border: none !important;
+}
+.dropdown-heading-value {
+  font-size: 12px;
+}

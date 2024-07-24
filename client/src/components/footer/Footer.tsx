@@ -1,0 +1,108 @@
+import "./style.css";
+
+const Footer = () => {
+  return (
+    <>
+      <div className="backBg text-white">
+        <div className="container mx-auto py-6 relative">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col gap-4 justify-center text-center lg:text-start ">
+              <div className="w-44 self-center lg:self-start">
+                <img src="logo.svg" alt="" />
+              </div>
+              <div className="address">
+                SM - OFFICE - B1 - CENTER F002 OPPOSITE TO AJMAN PORT AND
+                CUSTOMS AJMAN UNITED ARAB EMIRATES.
+              </div>
+              <ul className="p-2 flex flex-col gap-2 self-center lg:self-start">
+                <li className="flex gap-3 ">
+                  <div>
+                    <img src="phone.svg" alt="" />
+                  </div>
+                  <a
+                    href="tel:+971564507734"
+                    className="text-white hover:underline"
+                  >
+                    +971564507734
+                  </a>
+                </li>
+                <li className="flex gap-3">
+                  <div>
+                    <img src="email.svg" alt="" />
+                  </div>
+
+                  <a
+                    href="mailto:sales@turcon.in"
+                    className="text-white hover:underline"
+                  >
+                    sales@turcon.in
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col items-center gap-4 justify-center py-4 px-8">
+              <h2 className="text-2xl">Quick Links</h2>
+              <ul className="flex flex-col gap-4 items-center  text-xl">
+                <li>Home</li>
+                <li>About</li>
+                <li>Our Services</li>
+                <li>Contact Us</li>
+              </ul>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-6 md:col-span-2 lg:col-span-1 md:mt-3 ">
+              <div className="btns flex flex-col gap-3 text-center">
+                <h2 className="text-2xl">
+                  Register Now for Personalized Container Solutions!
+                </h2>
+                <div className="text-center">
+                  <div className="btn btn-secondbtn me-2">Login</div>
+                  <div className="btn btn-prime  border-black">Register</div>
+                </div>
+              </div>
+              <div className="social flex flex-col gap-4">
+                <h3 className="text-xl">Follow on Social Media</h3>
+                <ul className="flex items-center justify-center gap-3">
+                  <li className="">
+                    <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
+                      <img src="linkedin.svg" alt="" className="self-center" />
+                    </div>
+                  </li>
+                  <li className="">
+                    <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
+                      <img src="twitter.svg" alt="" className="self-center" />
+                    </div>
+                  </li>
+                  <li className="">
+                    <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
+                      <img src="insta.svg" alt="" className="self-center" />
+                    </div>
+                  </li>
+                  <li className="">
+                    <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
+                      <img src="fb.svg" alt="" className="self-center" />
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="border border-t-1 border-[#e4e4e4] my-6"></div>
+          <div className="p-2">
+            <p>Copyright © 2024 TURCON MARITIME FZE  All rights reserved.</p>
+          </div>
+          <div className="fixed bottom-8 right-8">
+            <a
+              className="whats-app"
+              href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
+              target="_blank"
+            >
+              <img src="wa.svg" alt="" className="drop-shadow-lg" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Footer;

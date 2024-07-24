@@ -1,0 +1,7 @@
+summary:active,
+.menu > li:active .navlist,
+.menu > li:active a,
+.menu li > *:not(ul, .menu-title, details, .btn):active {
+  background-color: white !important;
+  color: #670000 !important;
+}
