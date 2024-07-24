@@ -1,0 +1,326 @@
+import "./style.css";
+import Carousel from "../../components/carousel/BannerCarousel";
+import Footer from "../../components/footer/Footer";
+import Testimonal from "../../components/testimonal/Testimonal";
+import ContactForm from "../../components/contact/ContactForm";
+import ContainerList from "../../components/containerTypes/ContainerList";
+import React from "react";
+
+import "aos/dist/aos.css";
+import { Link } from "react-router-dom";
+
+interface Slide {
+  id: number;
+  imageUrl: string;
+  title: string;
+}
+
+const slides: Slide[] = [
+  { id: 1, imageUrl: "containerGray.png", title: "Slide 1" },
+  { id: 2, imageUrl: "containerBlue.png", title: "Slide 2" },
+  { id: 3, imageUrl: "containerRed.png", title: "Slide 3" },
+];
+
+const Home: React.FC = () => {
+  // useEffect(() => {
+  //   AOS.init({
+  //     duration: 2000,
+  //     easing: "ease-in-out",
+  //     once: true,
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   AOS.refresh();
+  // }, []);
+
+  return (
+    <>
+      {/* hero */}
+      <div className="container mx-auto ">
+        <div className="flex flex-col  ">
+          <div className="banner  lg:flex  justify-between text-primaryTxt">
+            <div className="w-full lg:w-1/2 article flex flex-col gap-4 pt-12 lg:pt-24 ">
+              <h2 className="text-xl ">TURCON MARITIME FZE</h2>
+              <h1 className="text-2xl font-semibold">
+                Elevated Your Operations with Our
+                <span className="block">New and Used Container</span>
+              </h1>
+              <p className="text-md">
+                Specialization in new and used containers for sale and lease,
+                our solutions cater to global logistics needs with a focus on
+                reliability and quality assurance.
+              </p>
+              <div className="button self-center flex gap-5 ">
+                <Link className="btn btn-prime" to={"/buy/inventory"}>
+                  Buy Containers
+                </Link>
+                <div className="btn btn-secondbtn">Lease Containers</div>
+              </div>
+            </div>
+            <div className="w-full lg:w-1/2 col-6">
+              <Carousel slides={slides} />
+            </div>
+          </div>
+          <div className="specialization grid md:flex md:flex-wrap items-center justify-center gap-14 font-semibold text-lg pb-6">
+            <div className="box  flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)]">
+              <div className="w-12 h-12 p-3 flex self-center rounded-md bg-[#D7F0FF]">
+                <img src="box1.svg" alt="" className="self-center" />
+              </div>
+
+              <h4 className="basis-3/4">
+                New and Used <span className="block"> Container for Sale</span>
+              </h4>
+            </div>
+            <div className="box flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)]">
+              <div className="w-12 h-12  p-3 flex self-center rounded-md bg-[#D7F0FF]">
+                <img src="box2.svg" alt="" className="self-center" />
+              </div>
+
+              <h4 className="basis-3/4">
+                New and Used{" "}
+                <span className="block"> Container for Leasing</span>
+              </h4>
+            </div>
+            <div className="box flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)] ">
+              <div className="w-12 h-12 p-3 flex basis-1/5 self-center rounded-md bg-[#D7F0FF]">
+                <img src="box3.svg" alt="" className="self-center" />
+              </div>
+
+              <h4 className="self-center basis-3/4">
+                Sales All over the World
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* about su */}
+      <div className="bg-[#fafafa] mb-6  ">
+        <div className="flex flex-col p-4">
+          <h2 className="text-center text-4xl  font-semibold mb-8">About Us</h2>
+          <div className="about flex items-center flex-wrap md:flex-nowrap md:gap-4  text-center md:text-start container mx-auto justify-center md:justify-between ">
+            <div className="w-full lg:w-1/2 flex flex-col gap-6 mb-4 lg:mb-0 ">
+              <h3 className="text-2xl  font-semibold ">
+                TURCON Was Established In The Ajman , UAE.
+              </h3>
+              <p className="text-sm">
+                We represent the merger of two highly respected,
+                service-oriented container sales organizations in the industry
+                today. Our combined and complementary product lines ensure that
+                our valued customers get the containers they need, in the right
+                locations around the world. Our team brings together an
+                unparalleled level of specialist knowledge, experience, and
+                exemplary customer service, which has been the hallmark of our
+                respective companies.
+              </p>
+              <div className="text-center">
+                <div className="btn btn-secondbtn">Learn More</div>
+              </div>
+            </div>
+            <div className=" img flex items-center text-center ">
+              <img src="about.png" alt="" className="rounded" />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Our Service */}
+      <div className="service container mx-auto mb-6">
+        <h2 className="text-center text-4xl  font-semibold mb-8">
+          Our Services
+        </h2>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-14">
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="container1.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">Container Inspections</h3>
+              <p className="text-sm">
+                We offer this container inspection service for both our own
+                fleet as well as 3rd party containers.
+              </p>
+            </div>
+            <div className="mt-auto text-readmore">read more</div>
+          </div>
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="containerAndStorage.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">Container Storage and Repairs</h3>
+              <p className="text-sm">
+                At this facility we can contract container storage and container
+                repairs for external customers such as shipping lines and
+                container leasing companies.
+              </p>
+            </div>
+            <div className="mt-auto text-readmore">read more</div>
+          </div>
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="container3.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">
+                Oneway Movement – Shipping Lines
+              </h3>
+              <p className="text-sm">
+                which basically allows you to pick-up a container in location
+                “A” and return it in location “B” against a fixed cost amount.
+              </p>
+            </div>
+            <div className="mt-auto text-readmore">read more</div>
+          </div>
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="container4.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">Maritime containers selling</h3>
+              <p className="text-sm">
+                TURCON sells all sizes of standard containers, but we also stock
+                or buy reefers, open top containers, flat racks, hard top
+                containers, offshore containers, tank containers etc. 
+              </p>
+            </div>
+            <div className="mt-auto text-readmore">read more</div>
+          </div>
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="container5.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">Maritime rental of containers</h3>
+              <p className="text-sm">
+                TURCON operates a fleet of brand new/Used containers exclusively
+                reserved for rental.{" "}
+              </p>
+            </div>
+            <div className="mt-auto text-readmore">read more</div>
+          </div>
+          <div
+            // data-aos="fade-up"
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+          >
+            <div className="img">
+              <img src="container6.png" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl pb-3">
+                Any container type, for any period, anywhere in the world
+              </h3>
+              <p className="text-sm">
+                TURCON operates from its head office in AJMAN but through our
+                reliable international partner network we can deliver the
+                containers to any desired geographical location
+              </p>
+            </div>
+            <div className="mt-auto text-readmore ">read more</div>
+          </div>
+        </div>
+      </div>
+      {/* agreement */}
+      <div className="bg-[#003759] text-white">
+        <div className="container mx-auto ">
+          <div className=" flex flex-col py-6 text-center gap-6">
+            <h2 className="text-3xl lg:text-4xl text-center">
+              Download Sales Agreement
+            </h2>
+            <p className="text-sm lg:text-lg">
+              Our sales agreement ensures a transparent and straightforward
+              transaction process, guaranteeing the quality and timely delivery
+              of containers. For detailed terms and conditions, download our
+              agreement below.
+            </p>
+            <div className=" text-center">
+              <div className="btn btn-secondbtn ">
+                Download <img src="download.svg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* container types */}
+      <div className="container mx-auto my-6">
+        <div className="text-center">
+          <h2 className="text-center text-4xl  font-semibold mb-8">
+            Containers
+          </h2>
+          <p className="text-xl">
+            We offer a comprehensive selection of containers, including standard
+            20-foot and 40-foot units, refrigerated (reefer) containers, and
+            specialized containers like flat racks and tank containers.
+            Available for both sale and lease, our containers meet diverse
+            logistical needs. Enjoy global delivery with exceptional quality and
+            reliability.
+          </p>
+        </div>
+        <div className="flex flex-col gap-6 mt-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <ContainerList
+              imgSrc="containerTypes1.png"
+              altText="Container Types"
+              sizes={["40'ft", "40'ft Hc", "20'ft", "45'ft HC", "53'ft HC"]}
+              types={["Dry Container", "High Cube Container"]}
+              containerName="Standard Container"
+            />
+            <ContainerList
+              imgSrc="containerTypes2.png"
+              altText="Container Types"
+              sizes={["20'ft", "40'ft ", "45'ft HC", "53'ft HC"]}
+              types={[
+                "Open Side Container",
+                "Double Door Container",
+                "Open Top Container",
+              ]}
+              containerName="Specialized Container"
+            />
+            <ContainerList
+              imgSrc="containerTypes3.png"
+              altText="Container Types"
+              sizes={["T-11", "T 50"]}
+              types={["Refridgerator Container"]}
+              containerName="Reefers"
+            />
+            <ContainerList
+              imgSrc="containerTypes4.png"
+              altText="Container Types"
+              sizes={["40'ft", "20'ft", "T 11", "T 50"]}
+              types={["Gas Tanks", "Heated Tanks", "Swap body Tanks"]}
+              containerName="Tanks"
+            />
+          </div>
+          <div className="flex justify-center ">
+            <Link className="btn ms-6 btn-prime me-6" to={"/buy"}>
+              Buy Containers
+            </Link>
+            <a className="btn btn-secondbtn">Lease Containers</a>
+          </div>
+        </div>
+      </div>
+      {/* testimonals */}
+      <Testimonal />
+      <ContactForm />
+      <Footer />
+    </>
+  );
+};
+
+export default Home;

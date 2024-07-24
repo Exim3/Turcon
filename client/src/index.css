@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  min-height: 40px;
+  height: 40px;
+}
+
+@layer components {
+  .navlist {
+    @apply hover:text-btnhoverP hover:bg-white active:bg-white;
+  }
+  .btn-second {
+    @apply text-primary bg-white shadow-none rounded hover:text-btnhoverP hover:bg-btnhoverBg border border-primary;
+  }
+  .btn-prime {
+    @apply bg-primary  hover:bg-btnhoverP rounded text-white;
+  }
+  .btn-secondbtn {
+    @apply text-primary bg-white shadow-none rounded hover:text-btnhoverP hover:bg-white border border-primary hover:border-btnhoverP;
+  }
+  .chip {
+    @apply bg-[#D7F0FF] p-1 text-xs font-semibold rounded px-2 py-1;
+  }
+}

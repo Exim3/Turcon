@@ -1,0 +1,55 @@
+{
+    country:"",
+    location:"",
+    ContainerType:""
+    size:{
+        20ft:{},
+        40ft:{},
+
+    }
+    condition:{
+        new:(2)quantity,
+        IICl:4,
+        Cargoworthy:2,
+        WWt:4,
+        ASIS:2,
+        damage:2,
+    }
+    
+}
+
+// models/Container.js
+
+const mongoose = require('mongoose');
+
+const containerSchema = new mongoose.Schema({
+  containerNumber: { type: String, required: true, unique: true },
+  size: { type: String, enum: ['20ft', '40ft', 'Other'], required: true },
+  type: { type: String, enum: ['Dry', 'Refrigerated', 'Tank'], required: true },
+  purchaseDate: { type: Date, default: Date.now },
+  purchasePrice: { type: Number, required: true },
+  buyerName: { type: String, required: true },
+  buyerContact: { type: String, required: true },
+  inStock: { type: Number, default: 0 },
+  originCountry: { type: String, required: true },
+  portLocation: { type: String, required: true },
+  condition: { type: String, enum: ['New', 'Used', 'Damaged'], default: 'New' },
+});
+
+module.exports = mongoose.model('Container', containerSchema);
+
+
+
+// models/ContainerListing.ts
+
+export type ContainerListing = {
+  containerNumber: string;
+  size: '20ft' | '40ft' | 'Other';
+  type: 'Dry' | 'Refrigerated' | 'Tank';
+  condition: 'New' | 'Used' | 'Damaged';
+  originCountry: string;
+  portLocation: string;
+  purchasePrice: number;
+  stockCount: number; // New field for stock count
+};
+
