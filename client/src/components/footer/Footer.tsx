@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import "./style.css";
+import { smoothScrollToTop } from "../../utils/SmoothScrollToTop";
 
 const Footer = () => {
   return (
@@ -8,7 +10,7 @@ const Footer = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col gap-4 justify-center text-center lg:text-start ">
               <div className="w-44 self-center lg:self-start">
-                <img src="logo.svg" alt="" />
+                <img src="/logo.svg" alt="" />
               </div>
               <div className="address">
                 SM - OFFICE - B1 - CENTER F002 OPPOSITE TO AJMAN PORT AND
@@ -17,7 +19,7 @@ const Footer = () => {
               <ul className="p-2 flex flex-col gap-2 self-center lg:self-start">
                 <li className="flex gap-3 ">
                   <div>
-                    <img src="phone.svg" alt="" />
+                    <img src="/phone.svg" alt="" />
                   </div>
                   <a
                     href="tel:+971564507734"
@@ -28,7 +30,7 @@ const Footer = () => {
                 </li>
                 <li className="flex gap-3">
                   <div>
-                    <img src="email.svg" alt="" />
+                    <img src="/email.svg" alt="" />
                   </div>
 
                   <a
@@ -43,10 +45,18 @@ const Footer = () => {
             <div className="flex flex-col items-center gap-4 justify-center py-4 px-8">
               <h2 className="text-2xl">Quick Links</h2>
               <ul className="flex flex-col gap-4 items-center  text-xl">
-                <li>Home</li>
-                <li>About</li>
-                <li>Our Services</li>
-                <li>Contact Us</li>
+                <li>
+                  <Link to={"/"}>Home</Link>
+                </li>
+                <li>
+                  <Link to={"/about"}>About</Link>
+                </li>
+                <li>
+                  <Link to={"/services"}>Our Services</Link>
+                </li>
+                <li>
+                  <Link to={"/contact"}>Contact Us</Link>{" "}
+                </li>
               </ul>
             </div>
             <div className="flex flex-col items-center justify-center gap-6 md:col-span-2 lg:col-span-1 md:mt-3 ">
@@ -55,8 +65,12 @@ const Footer = () => {
                   Register Now for Personalized Container Solutions!
                 </h2>
                 <div className="text-center">
-                  <div className="btn btn-secondbtn me-2">Login</div>
-                  <div className="btn btn-prime  border-black">Register</div>
+                  <div className="btn btn-secondbtn me-2">
+                    <Link to={"/login"}>Login</Link>
+                  </div>
+                  <div className="btn btn-prime  border-black">
+                    <Link to={"/register"}>Register</Link>
+                  </div>
                 </div>
               </div>
               <div className="social flex flex-col gap-4">
@@ -64,22 +78,22 @@ const Footer = () => {
                 <ul className="flex items-center justify-center gap-3">
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="linkedin.svg" alt="" className="self-center" />
+                      <img src="/linkedin.svg" alt="" className="self-center" />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="twitter.svg" alt="" className="self-center" />
+                      <img src="/twitter.svg" alt="" className="self-center" />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="insta.svg" alt="" className="self-center" />
+                      <img src="/insta.svg" alt="" className="self-center" />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="fb.svg" alt="" className="self-center" />
+                      <img src="/fb.svg" alt="" className="self-center" />
                     </div>
                   </li>
                 </ul>
@@ -88,7 +102,7 @@ const Footer = () => {
           </div>
           <div className="border border-t-1 border-[#e4e4e4] my-6"></div>
           <div className="p-2">
-            <p>Copyright © 2024 TURCON MARITIME FZE  All rights reserved.</p>
+            <p>Copyright © 2024 TURCON MARITIME  All rights reserved.</p>
           </div>
           <div className="fixed bottom-8 right-8">
             <a
@@ -96,8 +110,14 @@ const Footer = () => {
               href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
               target="_blank"
             >
-              <img src="wa.svg" alt="" className="drop-shadow-lg" />
+              <img src="/wa.svg" alt="" className="drop-shadow-lg" />
             </a>
+          </div>
+          <div
+            className="fixed bottom-8 left-8 bg-white rounded-full p-3 shadow-[0_0_5px_rgb(0,0,0,0.2)] cursor-pointer"
+            onClick={() => smoothScrollToTop(2000)}
+          >
+            <img src="/top.svg" alt="" className="drop-shadow-lg w-8" />
           </div>
         </div>
       </div>

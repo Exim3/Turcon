@@ -1,15 +1,30 @@
 const ContactForm = () => {
   return (
     <>
-      <div className="bg-[#D7F0FF] mt-4">
+      <div className="bg-[#D7F0FF] ">
         <div className="container mx-auto flex flex-col lg:flex-row py-8 gap-20 justify-between">
           <div className="flex flex-col gap-8">
             <h2 className="text-4xl text-[#221F1F]">
               We're here to help! Contact us
             </h2>
-            <p className="text-sm">
+            <p className="text-md">
               Once you've filled out the form, expect to hear from us shortly.
             </p>
+            <div className="flex flex-col  gap-4 md:w-1/2">
+              <p className="max-w-md">
+                SM - OFFICE - B1 - CENTER F002 OPPOSITE TO AJMAN PORT AND
+                CUSTOMS AJMAN UNITED ARAB EMIRATES.
+              </p>
+              <div className="bg-white py-2 px-3 flex gap-2 max-w-xs">
+                <img src="/cemail.svg" alt="" />
+                <a href="mailto:sales@turcon.in">sales@turcon.in</a>
+              </div>
+              <div className="bg-white py-2 px-3 flex gap-2 max-w-xs">
+                <img src="/cphone.svg" alt="" />
+
+                <a href="tel:+971564507734">+971564507734</a>
+              </div>
+            </div>
           </div>
           <form className="flex flex-col">
             <div className="grid md:grid-cols-2 items-center gap-4">

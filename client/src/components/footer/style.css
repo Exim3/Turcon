@@ -1,7 +1,7 @@
 .backBg {
   position: relative;
   width: 100%;
-  background-image: url("footerBg.png");
+  background-image: url("/footerBg.png");
   background-size: cover;
   background-position: center;
 }

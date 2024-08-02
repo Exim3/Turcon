@@ -1,13 +1,12 @@
 import "./style.css";
 import Carousel from "../../components/carousel/BannerCarousel";
-import Footer from "../../components/footer/Footer";
 import Testimonal from "../../components/testimonal/Testimonal";
 import ContactForm from "../../components/contact/ContactForm";
 import ContainerList from "../../components/containerTypes/ContainerList";
 import React from "react";
 
 import "aos/dist/aos.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Slide {
   id: number;
@@ -22,17 +21,7 @@ const slides: Slide[] = [
 ];
 
 const Home: React.FC = () => {
-  // useEffect(() => {
-  //   AOS.init({
-  //     duration: 2000,
-  //     easing: "ease-in-out",
-  //     once: true,
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   AOS.refresh();
-  // }, []);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -95,7 +84,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* about su */}
+      {/* about */}
       <div className="bg-[#fafafa] mb-6  ">
         <div className="flex flex-col p-4">
           <h2 className="text-center text-4xl  font-semibold mb-8">About Us</h2>
@@ -115,7 +104,9 @@ const Home: React.FC = () => {
                 respective companies.
               </p>
               <div className="text-center">
-                <div className="btn btn-secondbtn">Learn More</div>
+                <div className="btn btn-secondbtn">
+                  <Link to={"/about"}>Learn More</Link>
+                </div>
               </div>
             </div>
             <div className=" img flex items-center text-center ">
@@ -132,8 +123,8 @@ const Home: React.FC = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-14">
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service1")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="container1.png" alt="" />
@@ -148,8 +139,8 @@ const Home: React.FC = () => {
             <div className="mt-auto text-readmore">read more</div>
           </div>
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service2")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="containerAndStorage.png" alt="" />
@@ -165,8 +156,8 @@ const Home: React.FC = () => {
             <div className="mt-auto text-readmore">read more</div>
           </div>
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service3")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="container3.png" alt="" />
@@ -183,8 +174,8 @@ const Home: React.FC = () => {
             <div className="mt-auto text-readmore">read more</div>
           </div>
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service4")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="container4.png" alt="" />
@@ -200,8 +191,8 @@ const Home: React.FC = () => {
             <div className="mt-auto text-readmore">read more</div>
           </div>
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service5")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="container5.png" alt="" />
@@ -216,8 +207,8 @@ const Home: React.FC = () => {
             <div className="mt-auto text-readmore">read more</div>
           </div>
           <div
-            // data-aos="fade-up"
-            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
+            onClick={() => navigate("/service6")}
+            className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
               <img src="container6.png" alt="" />
@@ -273,7 +264,10 @@ const Home: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-col gap-6 mt-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 cursor-pointer"
+            onClick={() => navigate("/buy/inventory")}
+          >
             <ContainerList
               imgSrc="containerTypes1.png"
               altText="Container Types"
@@ -308,7 +302,7 @@ const Home: React.FC = () => {
             />
           </div>
           <div className="flex justify-center ">
-            <Link className="btn ms-6 btn-prime me-6" to={"/buy"}>
+            <Link className="btn ms-6 btn-prime me-6" to={"/buy/inventory"}>
               Buy Containers
             </Link>
             <a className="btn btn-secondbtn">Lease Containers</a>
@@ -318,7 +312,6 @@ const Home: React.FC = () => {
       {/* testimonals */}
       <Testimonal />
       <ContactForm />
-      <Footer />
     </>
   );
 };

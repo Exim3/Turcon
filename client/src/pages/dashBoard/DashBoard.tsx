@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
 
 const DashBoard = () => {
   return (
@@ -8,9 +9,10 @@ const DashBoard = () => {
         <Header />
       </div>
 
-      <div className=" min-h-20 bg-white "></div>
+      <div className=" min-h-20 bg-white relative "></div>
 
       <Outlet />
+      <Footer />
     </>
   );
 };

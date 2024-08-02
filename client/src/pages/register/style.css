@@ -1,0 +1,17 @@
+/* Style the OTP input fields */
+.otp-input {
+  width: 3rem; /* Adjust width as needed */
+  height: 3rem; /* Adjust height as needed */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.25rem;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+}
+
+.otp-input:focus {
+  border-color: #008fe8;
+  outline: none;
+}

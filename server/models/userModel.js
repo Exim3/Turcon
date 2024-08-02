@@ -4,7 +4,6 @@ const userSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
-      required: true,
     },
     username: {
       type: String,
@@ -14,16 +13,40 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
+      minlength: 8,
     },
     verifyEmail: {
       type: Boolean,
       default: false,
     },
-
     email: {
       type: String,
       require: true,
+    },
+    phone: {
+      type: String,
+    },
+    otp: {
+      type: Number,
+      maxlength: 4,
+    },
+    companyName: {
+      type: String,
+    },
+    companyAddress: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    website: {
+      type: String,
+    },
+    document: {
+      type: String,
+    },
+    profileImage: {
+      type: String,
     },
   },
   //createdAt ,updatedAt
