@@ -36,9 +36,7 @@ const Register: React.FC = () => {
     <div className="bg-white w-full">
       <div className="h-8 flex flex-row-reverse mt-2 justify-between container">
         <div onClick={goback} className="cursor-pointer">
-          {/* <Link to="/"> */}
           <img src="/x.svg" alt="Logo" />
-          {/* </Link> */}
         </div>
       </div>
 

@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import InventorySideBar from "../sideBar/InventorySideBar";
+import { useAppSelector } from "../../store/store";
 
 const ContainerHeader = () => {
   const login = true;
+  const cartvalue = useAppSelector(
+    (state) => state.ContainerCounts.TotalCartCount
+  );
+  console.log(cartvalue, "cart");
   return (
     <>
       <div className="flex bg-base-100 justify-between mx-auto  container min-h-20   ">
@@ -30,9 +35,12 @@ const ContainerHeader = () => {
               <div className="hidden xs:flex lg:hidden items-center gap-6">
                 <Link
                   to={"/buy/cart"}
-                  className=" bg-[#FAFAFA] focus:bg-[#ffd3d3]  hover:bg[#dddddd] p-3 rounded-md text-[#670000]"
+                  className=" bg-[#FAFAFA] focus:bg-[#ffd3d3]  hover:bg[#dddddd] p-3 rounded-md text-[#670000] relative"
                 >
-                  <div>
+                  <div className=" text-[#670000] ">
+                    <div className="w-6 h-6 rounded-full border  absolute left-full bottom-full -translate-x-4 translate-y-4 font-semibold bg-[#005e99] text-center text-white flex items-center justify-center">
+                      <span> {cartvalue}</span>
+                    </div>
                     <img src="/cart.svg" alt="" className="h-5 w-5" />
                   </div>
                 </Link>
@@ -57,7 +65,7 @@ const ContainerHeader = () => {
             <li>
               <Link
                 to={"/buy/inventory"}
-                className="navlist font-semibold focus:bg-white focus:text-primary"
+                className="navlist font-semibold focus:bg-primary rounded-md hover:bg-[#ffd3d3] focus:text-white bg-primary text-white"
               >
                 Inventory
               </Link>
@@ -83,9 +91,12 @@ const ContainerHeader = () => {
             <div className="flex items-center gap-6">
               <Link
                 to={"/buy/cart"}
-                className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3] rounded-md "
+                className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3] rounded-md relative "
               >
-                <div className=" text-[#670000]">
+                <div className=" text-[#670000] ">
+                  <div className="w-6 h-6 rounded-full border  absolute left-full bottom-full -translate-x-4 translate-y-4 font-semibold bg-[#005e99] text-center text-white flex items-center justify-center">
+                    <span> {cartvalue}</span>
+                  </div>
                   <img src="/cart.svg" alt="" className="h-5 w-5" />
                 </div>
               </Link>

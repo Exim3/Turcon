@@ -1,27 +1,6 @@
 import containerModel from "../models/containerModel.js";
 import sellerModel from "../models/sellerModel.js";
 
-const transformContainers = (containers) => {
-  if (containers && Array.isArray(containers)) {
-    const transformedContainers = [];
-
-    containers.forEach((container) => {
-      Object.keys(container).forEach((key) => {
-        if (typeof container[key] === "string") {
-          const transformedValue =
-            container[key].trim().charAt(0).toUpperCase() +
-            container[key].trim().slice(1).toLowerCase();
-          transformedContainers.push({ [key.toLowerCase()]: transformedValue });
-        }
-      });
-    });
-
-    return transformedContainers;
-  }
-
-  return containers;
-};
-
 //get seller
 export const getTotalSellers = async (req, res) => {
   try {
@@ -88,7 +67,6 @@ export const addSeller = async (req, res) => {
 export const updateSeller = async (req, res) => {
   try {
     const sellerId = req.params.sellerId;
-    console.log(sellerId, "sellerid");
     if (!sellerId) {
       return res.status(400).json({ error: "sellerId not found" });
     }
@@ -162,22 +140,43 @@ export const addSellerContainer = async (req, res) => {
       return res.status(400).json({ error: "Seller Id not found" });
     }
 
-    const bulkcontainers = req.body.containers;
+    const bulkContainers = req.body.containers;
 
     // Check if bulkcontainers exist
     if (
-      !bulkcontainers ||
-      !Array.isArray(bulkcontainers) ||
-      bulkcontainers.length === 0
+      !bulkContainers ||
+      !Array.isArray(bulkContainers) ||
+      bulkContainers.length === 0
     ) {
       return res.status(400).json({ error: "Please upload valid containers" });
     }
+    const transformedBulkContainers = bulkContainers.map((container) => ({
+      ...container,
+      country: container.country
+        ? container.country.toUpperCase()
+        : container.country,
+      portLocation: container.portLocation
+        ? container.portLocation.toUpperCase()
+        : container.portLocation,
+      condition: container.condition
+        ? container.condition.toUpperCase()
+        : container.condition,
+      size: container.size ? container.size.toUpperCase() : container.size,
+      type: container.type ? container.type.toUpperCase() : container.type,
+    }));
 
-    const filteredBulkContainers = bulkcontainers.filter(
-      (container) => container.size && container.type
+    const filteredBulkContainers = transformedBulkContainers.filter(
+      (container) =>
+        container.size &&
+        container.type &&
+        container.portLocation &&
+        container.country &&
+        container.condition &&
+        container.price &&
+        container.stockCount
     );
 
-    if (filteredBulkContainers.length !== bulkcontainers.length) {
+    if (filteredBulkContainers.length !== transformedBulkContainers.length) {
       return res.status(400).json({
         error:
           "one of the container property is missing...please check your data",
@@ -199,7 +198,7 @@ export const addSellerContainer = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updatedSeller); // Respond with updated seller document
+    res.status(200).json(updatedSeller);
   } catch (error) {
     console.error("Error in addSellerContainer:", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -213,69 +212,83 @@ export const updateContainerOfSeller = async (req, res) => {
 
     // Check if sellerId exists
     if (!sellerId) {
-      return res.status(400).json({ error: "Seller Id not found" });
+      return res.status(400).json({ error: "Seller ID not found." });
     }
 
-    const bulkcontainers = req.body.containers;
-    const updatedContainer = [];
+    const bulkContainers = req.body.containers;
+    const updatedContainers = [];
 
-    // Check if bulkcontainers exist
+    // Check if bulkContainers is valid
     if (
-      !bulkcontainers ||
-      !Array.isArray(bulkcontainers) ||
-      bulkcontainers.length === 0
+      !bulkContainers ||
+      !Array.isArray(bulkContainers) ||
+      bulkContainers.length === 0
     ) {
-      return res.status(400).json({ error: "Please upload valid containers" });
+      return res.status(400).json({ error: "Please upload valid containers." });
     }
 
-    for (const con of bulkcontainers) {
-      // Find existing containers for the seller with the same type
-      const sellercontainer = await containerModel.find({
+    // Transform fields to uppercase
+    const transformedBulkContainers = bulkContainers.map((container) => ({
+      ...container,
+      country: container.country
+        ? container.country.toUpperCase()
+        : container.country,
+      portLocation: container.portLocation
+        ? container.portLocation.toUpperCase()
+        : container.portLocation,
+      condition: container.condition
+        ? container.condition.toUpperCase()
+        : container.condition,
+      size: container.size ? container.size.toUpperCase() : container.size,
+      type: container.type ? container.type.toUpperCase() : container.type,
+    }));
+
+    // Process each container
+    for (const con of transformedBulkContainers) {
+      // Find existing container for the seller with the same type, country, and other relevant fields
+      const existingContainer = await containerModel.findOne({
         sellerId: sellerId,
         type: con.type,
-        country: con.type,
-        size: con.type,
-        condition: con.type,
-        portLocation: con.type,
+        country: con.country,
+        size: con.size,
+        condition: con.condition,
+        portLocation: con.portLocation,
       });
 
-      if (sellercontainer.length > 0) {
-        const updatecontainerId = sellercontainer[0]._id;
-
-        console.log(updatecontainerId, "containerId");
-
-        const updatingContainer = await containerModel.findByIdAndUpdate(
-          updatecontainerId,
+      if (existingContainer) {
+        // Update the existing container
+        const updatedContainer = await containerModel.findByIdAndUpdate(
+          existingContainer._id,
           {
             price: con.price,
             stockCount: con.stockCount,
           },
           { new: true }
         );
-        updatedContainer.push(updatingContainer);
-        console.log(updatingContainer, "updated");
+        updatedContainers.push(updatedContainer);
       } else {
+        // Create a new container
         const containerWithSeller = { ...con, sellerId: sellerId };
         const newContainer = new containerModel(containerWithSeller);
         await newContainer.save();
 
+        // Update seller document with the new container ID
         const newContainerId = newContainer._id.toString();
-
-        const updateseller = await sellerModel.findByIdAndUpdate(
+        await sellerModel.findByIdAndUpdate(
           sellerId,
           { $push: { containers: newContainerId } },
           { new: true }
         );
-        updatedContainer.push(newContainer);
-        console.log(updateseller, "sellerupdateId");
+
+        updatedContainers.push(newContainer);
       }
     }
 
     res.status(200).json({
-      updatedContainers: updatedContainer,
+      updatedContainers,
     });
   } catch (error) {
-    console.error("Error in addSellerContainer:", error.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error in updateContainerOfSeller:", error.message);
+    res.status(500).json({ error: "Internal server error." });
   }
 };

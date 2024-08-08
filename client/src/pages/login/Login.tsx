@@ -49,7 +49,7 @@ const Login: React.FC = () => {
                       className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                     />
                     <div
-                      className="absolute right-3 top-3 "
+                      className="absolute right-3 top-3 cursor-pointer "
                       onClick={ToggleEye}
                     >
                       {isEyeOpen ? (

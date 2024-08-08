@@ -7,10 +7,10 @@ const Contact = () => {
       <div className="container mx-auto">
         <div className="flex justify-between items-center my-6">
           <div className=" flex flex-col gap-2">
-            <div className="text-3xl ">Contact</div>
-            <div className="text-xs">
+            <div className="text-xl md:text-3xl text-[#0B0A0A]">Contact</div>
+            <div className="text-[10px] md:text-sm text-[#7A7474]">
               <Link to={"/"}> Home / </Link>
-              <span className="font-semibold">Contact us</span>
+              <span className="font-semibold text-[#0B0A0A]">Contact us</span>
             </div>
           </div>
         </div>

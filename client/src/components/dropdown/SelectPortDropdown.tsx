@@ -2,20 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setselectedPort } from "../../store/slice/inventory";
 import Select from "react-select";
+import axios from "axios";
 
 type Option = {
   label: string;
   value: string;
-};
-
-type ContainerData = {
-  country: string;
-  Port: string;
-  size: string;
-  type: string;
-  condition: string;
-  Stocks: string;
-  price: string;
 };
 
 type SelectPortDropdown = {
@@ -30,75 +21,30 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
   const selectedCountry = useAppSelector(
     (state) => state.CountryFilter.selectedCountry || null
   );
-  const containerData: ContainerData[] = [
-    {
-      country: "Australia",
-      Port: "melbourne",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "India",
-      Port: "Nava Sheva",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "Srilanka",
-      Port: "melbourne",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "Srilanka",
-      Port: "agra",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-  ];
-  const [data, setData] = useState<ContainerData[]>(containerData);
+
+  const [data, setData] = useState<Option[]>([]);
 
   useEffect(() => {
-    console.log(selectedCountry, "selectcountry");
-    if (selectedCountry.label) {
-      const filteredData = containerData.filter(
-        (item) => selectedCountry.label === item.country
-      );
-      setData(filteredData);
-    } else {
-      setData(containerData);
-    }
+    fetchPort();
   }, [selectedCountry]);
-  const uniquePort: { [key: string]: boolean } = {};
-
-  const port: Option[] = data.reduce((acc: Option[], item) => {
-    const { Port } = item;
-    if (!uniquePort[Port]) {
-      uniquePort[Port] = true;
-      acc.push({
-        label: Port,
-        value: Port.toLowerCase().replace(/\s+/g, ""),
-      });
-    }
-    return acc;
-  }, []);
-
+  const fetchPort = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:5000/api/containers/getcountry",
+        {
+          params: {
+            country: selectedCountry.label,
+          },
+        }
+      );
+      console.log("containers", result);
+      setData(result.data.ports);
+    } catch (error) {}
+  };
+  const ports = data;
   const handleChange = (selected: ValueType<Option, true>) => {
     dispatch(setselectedPort(selected as Option));
   };
-  console.log(selectedPort, ":port", selectedCountry, ":countries");
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -130,7 +76,7 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
   return (
     <div className="w-full">
       <Select
-        options={port}
+        options={ports}
         value={selectedPort}
         onChange={handleChange}
         isMulti={multi}

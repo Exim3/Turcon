@@ -9,23 +9,26 @@ interface FilterState {
 
 const initialState: FilterState = {
   size: {
-    "40FT": false,
     "20FT": false,
-    "40FT HC": false,
     "20FT HC": false,
+    "40FT": false,
+    "40FT HC": false,
   },
   condition: {
-    Reefers: false,
-    Tanks: false,
-    Dry: false,
-    OpenTop: false,
-    FlatTrack: false,
+    SCRAP: false,
+    DAMAGE: false,
+    NEW: false,
+    IICL: false,
+    WWT: false,
+    CARGOWORTHY: false,
+    ASIS: false,
   },
   type: {
-    Scrab: false,
-    Damage: false,
-    IICL: false,
-    New: false,
+    DRY: false,
+    REEFERS: false,
+    OPENTOP: false,
+    FLATRACK: false,
+    TANKS: false,
   },
 };
 
@@ -47,23 +50,26 @@ const filterSlice = createSlice({
     },
     clearFilters: (state) => {
       state.size = {
-        "40FT": false,
         "20FT": false,
-        "40FT HC": false,
+        "40FT": false,
         "20FT HC": false,
+        "40FT HC": false,
       };
       state.condition = {
-        Reefers: false,
-        Tanks: false,
-        Dry: false,
-        OpenTop: false,
-        FlatTrack: false,
+        SCRAP: false,
+        DAMAGE: false,
+        NEW: false,
+        IICL: false,
+        WWT: false,
+        CARGOWORTHY: false,
+        ASIS: false,
       };
       state.type = {
-        Scrab: false,
-        Damage: false,
-        IICL: false,
-        New: false,
+        DRY: false,
+        REEFERS: false,
+        OPENTOP: false,
+        FLATRACK: false,
+        TANKS: false,
       };
     },
   },

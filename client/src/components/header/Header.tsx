@@ -40,7 +40,7 @@ const Header = () => {
             </li>
             <li className="service relative  ">
               <Link
-                to={""}
+                to={"/services"}
                 className="navlist font-semibold focus:bg-white focus:text-primary"
               >
                 {" "}
@@ -73,7 +73,6 @@ const Header = () => {
                   </Link>
                 </li>
               </ul>
-              {/* </div> */}
             </li>
             <li>
               <Link
@@ -93,12 +92,12 @@ const Header = () => {
             </li>
           </ul>
           <div className="ms-10 self-center">
-            <a className="btn btn-second border-none">
-              <Link to={"/login"}>Login</Link>
-            </a>
-            <a className="btn ms-6 btn-prime">
-              <Link to={"/register"}>Register</Link>
-            </a>
+            <Link to={"/login"} className="btn btn-second border-none">
+              Login
+            </Link>
+            <Link to={"/register"} className="btn ms-6 btn-prime">
+              Register
+            </Link>
           </div>
         </div>
       </div>

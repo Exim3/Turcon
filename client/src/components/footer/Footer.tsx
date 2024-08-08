@@ -1,8 +1,25 @@
 import { Link } from "react-router-dom";
 import "./style.css";
 import { smoothScrollToTop } from "../../utils/SmoothScrollToTop";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <div className="backBg text-white">
@@ -114,8 +131,10 @@ const Footer = () => {
             </a>
           </div>
           <div
-            className="fixed bottom-8 left-8 bg-white rounded-full p-3 shadow-[0_0_5px_rgb(0,0,0,0.2)] cursor-pointer"
-            onClick={() => smoothScrollToTop(2000)}
+            className={`fixed ${
+              isVisible ? "visible" : "hidden"
+            } bottom-8 left-8 bg-white rounded-full p-3 shadow-[0_0_5px_rgb(0,0,0,0.2)] cursor-pointer`}
+            onClick={() => smoothScrollToTop(500)}
           >
             <img src="/top.svg" alt="" className="drop-shadow-lg w-8" />
           </div>

@@ -1,22 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedCountries } from "../../store/slice/inventory";
 import "./style.css";
+import axios from "axios";
 
 interface CountryOption {
   value: string;
   label: string;
 }
-type ContainerData = {
-  country: string;
-  Port: string;
-  size: string;
-  type: string;
-  condition: string;
-  Stocks: string;
-  price: string;
-};
 
 type selectCountry = {
   multi: boolean;
@@ -26,6 +18,7 @@ const SelectCountry: React.FC<selectCountry> = ({ multi }) => {
   const selectedCountries = useAppSelector(
     (state) => state.CountryFilter.selectedCountries
   );
+  const [data, setData] = useState<CountryOption[]>([]);
   const dispatch = useAppDispatch();
 
   const customStyles = {
@@ -55,60 +48,19 @@ const SelectCountry: React.FC<selectCountry> = ({ multi }) => {
       },
     }),
   };
-  const data: ContainerData[] = [
-    {
-      country: "Australia",
-      Port: "melbourne",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "India",
-      Port: "Nava Sheva",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "Srilanka",
-      Port: "melbourne",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-    {
-      country: "India",
-      Port: "Nava Sheva",
-      size: "40ft",
-      type: "Dry",
-      condition: "Scrab",
-      Stocks: "24",
-      price: "2500",
-    },
-  ];
-  const uniqueCountries: { [key: string]: boolean } = {};
-
-  const countries: CountryOption[] = data.reduce(
-    (acc: CountryOption[], item) => {
-      const { country } = item;
-      if (!uniqueCountries[country]) {
-        uniqueCountries[country] = true;
-        acc.push({
-          label: country,
-          value: country.toLowerCase().replace(/\s+/g, ""),
-        });
-      }
-      return acc;
-    },
-    []
-  );
+  useEffect(() => {
+    fetchCountry();
+  }, []);
+  const fetchCountry = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:5000/api/containers/getcountry"
+      );
+      console.log("containers", result);
+      setData(result.data.countries);
+    } catch (error) {}
+  };
+  const countries = data;
 
   const handleChange = (selectedOptions: ValueType<CountryOption, true>) => {
     dispatch(setSelectedCountries(selectedOptions as CountryOption[]));

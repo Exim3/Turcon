@@ -4,12 +4,18 @@ import {
   Delete as DeleteIcon,
   CloudUpload as CloudUploadIcon,
 } from "@mui/icons-material";
+import { WarningIcon } from "../svg/Tick";
 
 const allowedTypes = [
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/png",
 ];
+
+const MAX_FILE_SIZE_MB = 2; // Maximum file size in megabytes
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024; // Convert megabytes to bytes
 
 const DragFile: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -30,12 +36,18 @@ const DragFile: React.FC = () => {
 
     if (selectedFile) {
       if (allowedTypes.includes(selectedFile.type)) {
-        setFile(selectedFile);
-        setError(null);
+        if (selectedFile.size <= MAX_FILE_SIZE_BYTES) {
+          setFile(selectedFile);
+          setError(null);
 
-        // Generate a URL for the file and store it
-        const previewUrl = URL.createObjectURL(selectedFile);
-        setFilePreview(previewUrl);
+          // Generate a URL for the file and store it
+          const previewUrl = URL.createObjectURL(selectedFile);
+          setFilePreview(previewUrl);
+        } else {
+          setError(
+            `File size exceeds ${MAX_FILE_SIZE_MB}MB. Please select a smaller file.`
+          );
+        }
       } else {
         setError(
           "Unsupported file type. Please upload a PDF, Word document, or image."
@@ -79,7 +91,7 @@ const DragFile: React.FC = () => {
         >
           <input
             type="file"
-            accept=".pdf, .doc, .docx"
+            accept=".pdf, .doc, .docx, .jpg, .png"
             onChange={handleFileChange}
             disabled={!!file} // Disable input if a file is uploaded
             style={{ display: "none" }}
@@ -88,6 +100,8 @@ const DragFile: React.FC = () => {
           />
           <label
             htmlFor="file-input"
+            role="button"
+            aria-label="Select a file"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -135,7 +149,7 @@ const DragFile: React.FC = () => {
                 justifyContent: "center",
               }}
             >
-              preview
+              Preview
             </Button>
             <IconButton
               onClick={handleRemoveFile}
@@ -150,11 +164,18 @@ const DragFile: React.FC = () => {
       {error && (
         <Typography
           variant="body2"
-          color="error"
-          sx={{ mt: 2 }}
+          color="#c03744"
+          sx={{
+            mt: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+          }}
           aria-live="assertive"
         >
-          {error}
+          <WarningIcon color="#c03744" className="self-start" />
+          <p className="text-[10px]"> {error}</p>
         </Typography>
       )}
     </Box>

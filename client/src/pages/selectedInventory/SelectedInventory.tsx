@@ -25,9 +25,12 @@ const SelectedInventory: React.FC = () => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <div className=" flex flex-col gap-2">
-              <div className="text-3xl ">Inventory</div>
-              <div className="text-xs">
-                <Link to={"/"}>home</Link> / Inventory
+              <div className="text-xl md:text-3xl text-[#0B0A0A]">
+                Inventory
+              </div>
+              <div className="text-[10px] md:text-sm text-[#7A7474]">
+                <Link to={"/"}>home</Link> /{" "}
+                <span className="text-[#0B0A0A] font-semibold">Inventory </span>
               </div>
             </div>
             <div className="btn btn-secondbtn">

@@ -86,15 +86,23 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         {options.map((item, index) => (
           <li
             key={index}
-            className="p-2 border rounded-md flex items-center gap-2"
+            className={`p-2 border rounded-md flex items-center gap-2 cursor-pointer ${
+              checkedState[item] ? " bg-[#005e99] " : ""
+            }`}
           >
             <input
               type="checkbox"
               id={`${title}-${index}`}
-              checked={checkedState[item]}
+              checked={checkedState[item] || false}
               onChange={() => onChange(item)}
+              className="h-6 w-6 border-gray-300 rounded focus:ring-0 hidden cursor-pointer"
             />
-            <label htmlFor={`${title}-${index}`}>{item}</label>
+            <label
+              htmlFor={`${title}-${index}`}
+              className={`${checkedState[item] && "text-white"} cursor-pointer`}
+            >
+              {item}
+            </label>
           </li>
         ))}
       </ul>

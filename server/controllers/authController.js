@@ -4,15 +4,15 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 import crypto from "crypto";
 import { TokenModel } from "../models/token.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import Joi from "joi";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, password, confirmPassword, email } = req.body;
-    if (password !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ error: "Password and Confirm Password do not match" });
+    const { error } = validateSignUp(req.body);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
     }
+    const { username, password, email } = req.body;
     let user = await UserModel.findOne({ username });
     if (user) {
       return res.status(400).json({
@@ -25,7 +25,6 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new UserModel({
-      fullName,
       username,
       password: hashedPassword,
       email,
@@ -46,7 +45,6 @@ export const signup = async (req, res) => {
 
       res.status(201).json({
         _id: newUser._id,
-        fullName: newUser.fullName,
         username: newUser.username,
         email: newUser.email,
         message: "An Email sent to your Account please verify",

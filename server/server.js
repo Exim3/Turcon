@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
+import signupRoutes from "./routes/signupRoutes.js";
 import containerRoutes from "./routes/containerRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 import connecttoMongoDb from "./db/connectToMongoDb.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -24,6 +26,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/containers", containerRoutes);
+app.use("/api/signup", signupRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.listen(PORT, () => {
   connecttoMongoDb();

@@ -17,6 +17,7 @@ import Services from "./pages/services/Services";
 import { Route, Routes } from "react-router";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import ReviewOrder from "./pages/cart/ReviewOrder";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -43,6 +44,7 @@ const AppRoutes: React.FC = () => {
             element={<SelectedInventory />}
           ></Route>
           <Route path="cart" element={<Cart />}></Route>
+          <Route path="review" element={<ReviewOrder />}></Route>
         </Route>
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes>
