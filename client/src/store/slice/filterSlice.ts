@@ -9,10 +9,10 @@ interface FilterState {
 
 const initialState: FilterState = {
   size: {
-    "20FT": false,
-    "20FT HC": false,
-    "40FT": false,
-    "40FT HC": false,
+    "20'FT": false,
+    "20'FT HC": false,
+    "40'FT": false,
+    "40'FT HC": false,
   },
   condition: {
     SCRAP: false,
@@ -50,10 +50,10 @@ const filterSlice = createSlice({
     },
     clearFilters: (state) => {
       state.size = {
-        "20FT": false,
-        "40FT": false,
-        "20FT HC": false,
-        "40FT HC": false,
+        "20'FT": false,
+        "40'FT": false,
+        "20'FT HC": false,
+        "40'FT HC": false,
       };
       state.condition = {
         SCRAP: false,

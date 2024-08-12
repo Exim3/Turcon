@@ -4,6 +4,19 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { SetCartCount } from "../../store/slice/containerCount";
+import cartEmpty from "/cartEmpty.png";
+import locationIcon from "/location.svg";
+import containerImg from "/cartContainer.png";
+import deleteIcon from "/delete.svg";
+import infoIcon from "/info.svg";
+
+export const UsFormat = (amount: number) => {
+  const formattedAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+  return formattedAmount;
+};
 
 const CartItem: React.FC<{
   _id: string;
@@ -50,7 +63,7 @@ const CartItem: React.FC<{
           <div className="flex flex-col gap-2">
             <div className="flex items-center ">
               <div>
-                <img src="/location.svg" alt="Location" />
+                <img src={locationIcon} alt="Location" />
               </div>
               <p>
                 {portLocation}
@@ -59,7 +72,7 @@ const CartItem: React.FC<{
             </div>
             <div className="flex items-start gap-4 ">
               <div>
-                <img src="/cartContainer.png" alt={name} />
+                <img src={containerImg} alt={name} />
               </div>
 
               <div className="flex-col flex gap-2 w-1/2 md:w-auto text-center">
@@ -77,8 +90,6 @@ const CartItem: React.FC<{
         </div>
 
         <div className="hidden md:flex flex-col gap-3">
-          {/* <h3 className="text-center">Quantity</h3> */}
-
           <div className="flex justify-center text-center font-semibold items-center">
             <button
               className="w-6 h-6 rounded flex justify-center items-center border-[#005E99] border-2 cursor-pointer"
@@ -110,7 +121,7 @@ const CartItem: React.FC<{
 
         <div className="p-2 md:flex hidden">
           <img
-            src="/delete.svg"
+            src={deleteIcon}
             alt="Delete"
             className="cursor-pointer"
             onClick={() => onDelete(_id, userId)}
@@ -146,7 +157,7 @@ const CartItem: React.FC<{
 
         <div className="p-2 flex ">
           <img
-            src="/delete.svg"
+            src={deleteIcon}
             alt="Delete"
             className="cursor-pointer"
             onClick={() => onDelete(_id, userId)}
@@ -306,7 +317,7 @@ const Cart: React.FC = () => {
                     <div className="flex justify-between">
                       <p className="text-xl">Total Amount</p>
                       <p className="text-[#15B097] text-xl font-semibold ">
-                        ${totalAmount}
+                        {UsFormat(totalAmount)}
                       </p>
                     </div>
                   </div>
@@ -316,7 +327,7 @@ const Cart: React.FC = () => {
                   </Link>
 
                   <div className="flex items-start gap-2">
-                    <img src="/info.svg" alt="Info" className="w-3 pt-1" />
+                    <img src={infoIcon} alt="Info" className="w-3 pt-1" />
                     <p className="text-[#008FE8] text-sm">
                       The prices in your cart may have changed or might change
                       due to market updates. Please review the new prices before
@@ -327,8 +338,16 @@ const Cart: React.FC = () => {
               </div>
             </>
           ) : (
-            <div className="w-full flex flex-col gap-2 text-center">
-              please select cart
+            <div className="w-full flex flex-col gap-6 text-center py-4">
+              <div className="w-1/2 sm:w-1/3 md:w-1/5 mx-auto text-[#d7f0ff]">
+                <img src={cartEmpty} alt="cartEmpty" />
+              </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-xl md:text-2xl">Your Cart Is Empty</p>
+                <Link className="text-primary underline" to={"/buy/inventory"}>
+                  Go to Shopping
+                </Link>
+              </div>
             </div>
           )}
         </div>

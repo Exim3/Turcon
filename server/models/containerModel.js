@@ -5,7 +5,7 @@ export const containerSchema = new mongoose.Schema({
   containerNumber: { type: String, required: true },
   size: {
     type: String,
-    enum: ["20FT", "40FT", "20FT HC", "40FT HC"],
+    enum: ["20'FT", "40'FT", "20'FT HC", "40'FT HC"],
     required: true,
   },
   type: {

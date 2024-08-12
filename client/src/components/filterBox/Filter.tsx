@@ -7,6 +7,8 @@ import {
   toggleType,
 } from "../../store/slice/filterSlice";
 
+import filterIcon from "/filter.svg";
+
 const Filter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { size, condition, type } = useAppSelector((state) => state.Filter);
@@ -31,8 +33,13 @@ const Filter: React.FC = () => {
     <div className="p-6 flex flex-col shadow-[0px_0px_3px_rgba(0,0,0,0.25)] rounded-lg">
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
-          <img src="/filter.svg" className="w-6 h-6" alt="Filter Icon" />
-          <h2 className="text-2xl">Filter</h2>
+          <div className="hidden lg:block">
+            <img src={filterIcon} className="w-6 h-6" alt="Filter Icon" />
+          </div>
+          <div className="block lg:hidden">
+            <div className="w-6 h-6"></div>
+          </div>
+          <h2 className="textlg lg:text-2xl">Filter</h2>
         </div>
         <button
           className="btn px-3 py-1 bg-gray-200 rounded"

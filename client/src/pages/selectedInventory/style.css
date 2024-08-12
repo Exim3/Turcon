@@ -1,0 +1,11 @@
+.MuiPagination-ul {
+  justify-content: center;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+  background-color: #ffd3d3 !important;
+  border-radius: 5px !important;
+  color: #670000 !important;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
+  border-radius: 5px !important;
+}

@@ -19,7 +19,7 @@ const AboutBox: React.FC<About> = ({ title, topTitle, content, imageUrl }) => {
           </div>
         </div>
         <div className="mx-auto">
-          <img src={imageUrl} alt="" />
+          <img src={imageUrl} alt="flight" />
         </div>
       </div>
     </>
@@ -38,7 +38,7 @@ export const AboutBoxInvert: React.FC<About> = ({
     <>
       <div className="grid lg:grid-cols-2 justify-center p-4 gap-8 lg:mx-9">
         <div className="mx-auto">
-          <img src={imageUrl} alt="" />
+          <img src={imageUrl} alt="aboutBanner" />
         </div>
         <div className="flex flex-col gap-3 bg-gray-50 max-w-md  p-3 rounded-md">
           <h4 className="text-2xl text-[#9A0000]">{topTitle}</h4>

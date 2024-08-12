@@ -9,9 +9,10 @@ const InventoryDashboard = () => {
         <ContainerHeader />
       </div>
       <div className="min-h-20"></div>
-      <Outlet />
-      <div className="mt-2">
-        {" "}
+      <div>
+        <Outlet />
+      </div>
+      <div>
         <ContainerFooter />
       </div>
     </>

@@ -26,7 +26,7 @@ export default {
         DEFAULT: "1rem",
         sm: "1rem",
         lg: "2rem",
-        xl: "5rem",
+        xl: "3rem",
       },
     },
 
@@ -42,6 +42,10 @@ export default {
       },
       boxShadow: {
         "dark-sm": "0 1px 2px 0 rgba(255, 255, 255, 0.05)",
+      },
+      backgroundImage: {
+        "my-gradient":
+          "linear-gradient(270deg, rgba(255, 211, 211, 0.3) 0%, rgba(215, 240, 255, 0.3) 100%)",
       },
     },
   },

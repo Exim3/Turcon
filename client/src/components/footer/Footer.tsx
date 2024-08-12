@@ -2,6 +2,15 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import { smoothScrollToTop } from "../../utils/SmoothScrollToTop";
 import { useEffect, useState } from "react";
+import linkedInIcon from "/linkedin.svg";
+import faceBookIcon from "/fb.svg";
+import InstagramIcon from "/insta.svg";
+import twitterIcon from "/twitter.svg";
+import whatsappIcon from "/wa.svg";
+import scrollUp from "/top.svg";
+import Logo from "/logo.svg";
+import phoneIcon from "/phone.svg";
+import emailIcon from "/email.svg";
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,7 +25,6 @@ const Footer = () => {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -27,7 +35,7 @@ const Footer = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col gap-4 justify-center text-center lg:text-start ">
               <div className="w-44 self-center lg:self-start">
-                <img src="/logo.svg" alt="" />
+                <img src={Logo} alt="turconLogo" />
               </div>
               <div className="address">
                 SM - OFFICE - B1 - CENTER F002 OPPOSITE TO AJMAN PORT AND
@@ -36,7 +44,7 @@ const Footer = () => {
               <ul className="p-2 flex flex-col gap-2 self-center lg:self-start">
                 <li className="flex gap-3 ">
                   <div>
-                    <img src="/phone.svg" alt="" />
+                    <img src={phoneIcon} alt="phone" />
                   </div>
                   <a
                     href="tel:+971564507734"
@@ -47,7 +55,7 @@ const Footer = () => {
                 </li>
                 <li className="flex gap-3">
                   <div>
-                    <img src="/email.svg" alt="" />
+                    <img src={emailIcon} alt="email" />
                   </div>
 
                   <a
@@ -95,22 +103,38 @@ const Footer = () => {
                 <ul className="flex items-center justify-center gap-3">
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="/linkedin.svg" alt="" className="self-center" />
+                      <img
+                        src={linkedInIcon}
+                        alt="linkedIn"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="/twitter.svg" alt="" className="self-center" />
+                      <img
+                        src={twitterIcon}
+                        alt="twitter"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="/insta.svg" alt="" className="self-center" />
+                      <img
+                        src={InstagramIcon}
+                        alt="instagram"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="/fb.svg" alt="" className="self-center" />
+                      <img
+                        src={faceBookIcon}
+                        alt="facebook"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                 </ul>
@@ -121,13 +145,17 @@ const Footer = () => {
           <div className="p-2">
             <p>Copyright © 2024 TURCON MARITIME  All rights reserved.</p>
           </div>
-          <div className="fixed bottom-8 right-8">
+          <div className="fixed bottom-8 right-8 ">
             <a
               className="whats-app"
               href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
               target="_blank"
             >
-              <img src="/wa.svg" alt="" className="drop-shadow-lg" />
+              <img
+                src={whatsappIcon}
+                alt="whatsapp"
+                className="drop-shadow-lg"
+              />
             </a>
           </div>
           <div
@@ -136,7 +164,7 @@ const Footer = () => {
             } bottom-8 left-8 bg-white rounded-full p-3 shadow-[0_0_5px_rgb(0,0,0,0.2)] cursor-pointer`}
             onClick={() => smoothScrollToTop(500)}
           >
-            <img src="/top.svg" alt="" className="drop-shadow-lg w-8" />
+            <img src={scrollUp} alt="scrollUp" className="drop-shadow-lg w-8" />
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import ContactForm from "../../components/contact/ContactForm";
+import phoneIcon from "/cphone.svg";
+import emailIcon from "/cemail.svg";
 
 const Contact = () => {
   return (
@@ -25,19 +27,19 @@ const Contact = () => {
           <div className="flex justify-center gap-4 flex-wrap">
             <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
-                <img src="/cphone.svg" alt="" />
+                <img src={phoneIcon} alt="phone" />
               </div>
               <a href="tel:+971564507734">+971564507734</a>
             </p>
             <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
-                <img src="/cphone.svg" alt="" />
+                <img src={phoneIcon} alt="phone" />
               </div>
               <a href="tel:+971564507734">+971564507734</a>
             </p>
             <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
-                <img src="/cemail.svg" alt="" />
+                <img src={emailIcon} alt="email" />
               </div>
               <a href="mailto:sales@turcon.in">sales@turcon.in</a>
             </p>

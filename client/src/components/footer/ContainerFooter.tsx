@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
+import linkedInIcon from "/linkedin.svg";
+import faceBookIcon from "/fb.svg";
+import InstagramIcon from "/insta.svg";
+import twitterIcon from "/twitter.svg";
+import whatsappIcon from "/wa.svg";
+import scrollUp from "/top.svg";
+import { smoothScrollToTop } from "../../utils/SmoothScrollToTop";
 
 const ContainerFooter: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <>
       <div className="backBg text-white">
@@ -18,13 +39,13 @@ const ContainerFooter: React.FC = () => {
                   <Link to={"/contact"}>Contact Us</Link>
                 </li>
                 <li className=" basis-full md:basis-auto md:border-r px-2">
-                  Terms & Conditions
+                  <Link to={"/buy/termsandcondition"}>Terms & Conditions</Link>
                 </li>
                 <li className=" basis-full md:basis-auto md:border-r px-2">
-                  Cookie Policy
+                  <Link to={"/buy/cookie"}>Cookie Policy</Link>
                 </li>
                 <li className=" basis-full md:basis-auto px-2">
-                  Return Policy
+                  <Link to={"/buy/returnpolicy"}> Return Policy</Link>
                 </li>
               </ul>
             </div>
@@ -34,22 +55,38 @@ const ContainerFooter: React.FC = () => {
                 <ul className="flex items-center justify-center gap-3">
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="/linkedin.svg" alt="" className="self-center" />
+                      <img
+                        src={linkedInIcon}
+                        alt="linkedin"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center  bg-[#605d5d] rounded-md text-center">
-                      <img src="/twitter.svg" alt="" className="self-center" />
+                      <img
+                        src={twitterIcon}
+                        alt="twitter"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="/insta.svg" alt="" className="self-center" />
+                      <img
+                        src={InstagramIcon}
+                        alt="instagram"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                   <li className="">
                     <div className="w-10 h-10 flex justify-center bg-[#605d5d] rounded-md text-center">
-                      <img src="/fb.svg" alt="" className="self-center" />
+                      <img
+                        src={faceBookIcon}
+                        alt="facebook"
+                        className="self-center"
+                      />
                     </div>
                   </li>
                 </ul>
@@ -66,8 +103,20 @@ const ContainerFooter: React.FC = () => {
               href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
               target="_blank"
             >
-              <img src="/wa.svg" alt="" className="drop-shadow-lg" />
+              <img
+                src={whatsappIcon}
+                alt="whatsapp"
+                className="drop-shadow-lg"
+              />
             </a>
+          </div>
+          <div
+            className={`fixed ${
+              isVisible ? "visible" : "hidden"
+            } bottom-8 left-8 bg-white rounded-full p-3 shadow-[0_0_5px_rgb(0,0,0,0.2)] cursor-pointer`}
+            onClick={() => smoothScrollToTop(500)}
+          >
+            <img src={scrollUp} alt="scrollUp" className="drop-shadow-lg w-8" />
           </div>
         </div>
       </div>

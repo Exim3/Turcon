@@ -1,6 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import serviceBanner from "/services.jpg";
+import serviceOne from "/container1.png";
+import serviceTwo from "/containerAndStorage.png";
+import serviceThree from "/container3.png";
+import serviceFour from "/container4.png";
+import serviceFive from "/container5.png";
+import serviceSix from "/container6.png";
 
 const Services: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +23,7 @@ const Services: React.FC = () => {
         </div>
 
         <div>
-          <img src="/services.jpg" alt="" />
+          <img src={serviceBanner} alt="services" />
         </div>
         <h2 className=" text-2xl  font-semibold my-8">
           Services and Solutions Built Around You
@@ -28,7 +35,7 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="container1.png" alt="" />
+              <img src={serviceOne} alt="Container Inspections" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Container Inspections</h3>
@@ -44,7 +51,7 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="containerAndStorage.png" alt="" />
+              <img src={serviceTwo} alt="Container Storage and Repairs" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Container Storage and Repairs</h3>
@@ -61,7 +68,7 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="container3.png" alt="" />
+              <img src={serviceThree} alt="Oneway Movement – Shipping Lines" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">
@@ -79,7 +86,7 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="container4.png" alt="" />
+              <img src={serviceFour} alt="Maritime containers selling" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Maritime containers selling</h3>
@@ -96,7 +103,7 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="container5.png" alt="" />
+              <img src={serviceFive} alt="Maritime rental of containers" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Maritime rental of containers</h3>
@@ -112,7 +119,10 @@ const Services: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4"
           >
             <div className="img">
-              <img src="container6.png" alt="" />
+              <img
+                src={serviceSix}
+                alt="Any container type, for any period, anywhere in the world"
+              />
             </div>
             <div>
               <h3 className="text-2xl pb-3">

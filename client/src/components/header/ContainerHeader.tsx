@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import InventorySideBar from "../sideBar/InventorySideBar";
 import { useAppSelector } from "../../store/store";
+import Logo from "/logo.svg";
+import cartIcon from "/cart.svg";
+import notificationIcon from "/notification.svg";
+import profileIcon from "/profile.svg";
 
 const ContainerHeader = () => {
   const login = true;
@@ -14,7 +18,7 @@ const ContainerHeader = () => {
         <div className="flex self-center w-full items-center justify-between lg:justify-start lg:w-1/2">
           <div className="logo w-28 md:w-40">
             <Link to={"/"}>
-              <img src="/public/logo.svg" alt="" />
+              <img src={Logo} alt="turconLogo" />
             </Link>
           </div>
           <div className="flex gap-4 items-center">
@@ -39,18 +43,25 @@ const ContainerHeader = () => {
                 >
                   <div className=" text-[#670000] ">
                     <div className="w-6 h-6 rounded-full border  absolute left-full bottom-full -translate-x-4 translate-y-4 font-semibold bg-[#005e99] text-center text-white flex items-center justify-center">
-                      <span> {cartvalue}</span>
+                      <span className="text-xs">
+                        {" "}
+                        {cartvalue >= 4 ? "3+" : cartvalue}
+                      </span>
                     </div>
-                    <img src="/cart.svg" alt="" className="h-5 w-5" />
+                    <img src={cartIcon} alt="cart.png" className="h-5 w-5" />
                   </div>
                 </Link>
 
                 <Link
-                  to={""}
+                  to={"/buy/notification"}
                   className=" bg-[#FAFAFA] hover:bg-[#dddddd] focus:bg-[#ffd3d3]  p-3 rounded-md"
                 >
                   <div>
-                    <img src="/notification.svg" alt="" className="h-5 w-5" />
+                    <img
+                      src={notificationIcon}
+                      alt="notification"
+                      className="h-5 w-5"
+                    />
                   </div>
                 </Link>
               </div>
@@ -65,23 +76,23 @@ const ContainerHeader = () => {
             <li>
               <Link
                 to={"/buy/inventory"}
-                className="navlist font-semibold focus:bg-primary rounded-md hover:bg-[#ffd3d3] focus:text-white bg-primary text-white"
+                className="navlist  font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary text-black"
               >
                 Inventory
               </Link>
             </li>
             <li>
               <Link
-                to={"/order"}
-                className="navlist font-semibold focus:bg-white focus:text-primary"
+                to={"/buy/orders"}
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 Order
               </Link>
             </li>
             <li>
               <Link
-                to={"/support"}
-                className="navlist  font-semibold focus:bg-white focus:text-primary"
+                to={"/buy/support"}
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 Support
               </Link>
@@ -95,25 +106,32 @@ const ContainerHeader = () => {
               >
                 <div className=" text-[#670000] ">
                   <div className="w-6 h-6 rounded-full border  absolute left-full bottom-full -translate-x-4 translate-y-4 font-semibold bg-[#005e99] text-center text-white flex items-center justify-center">
-                    <span> {cartvalue}</span>
+                    <span className="text-xs">
+                      {" "}
+                      {cartvalue >= 4 ? "3+" : cartvalue}
+                    </span>
                   </div>
-                  <img src="/cart.svg" alt="" className="h-5 w-5" />
+                  <img src={cartIcon} alt="cart" className="h-5 w-5" />
                 </div>
               </Link>
               <Link
-                to={""}
+                to={"/buy/notification"}
                 className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3]    rounded-md"
               >
                 <div>
-                  <img src="/notification.svg" alt="" className="h-5 w-5" />
+                  <img
+                    src={notificationIcon}
+                    alt="notification"
+                    className="h-5 w-5"
+                  />
                 </div>
               </Link>
               <Link
-                to={""}
+                to={"/buy/profile"}
                 className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3]   rounded-md"
               >
                 <div>
-                  <img src="/profile.svg" alt="" className="h-5 w-5" />
+                  <img src={profileIcon} alt="profile" className="h-5 w-5" />
                 </div>
               </Link>
             </div>

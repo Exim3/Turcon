@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setselectedPort } from "../../store/slice/inventory";
-import Select from "react-select";
+import Select, { SingleValue, MultiValue, GroupBase } from "react-select";
 import axios from "axios";
 
 type Option = {
@@ -9,11 +9,11 @@ type Option = {
   value: string;
 };
 
-type SelectPortDropdown = {
+type SelectPortDropdownProps = {
   multi: boolean;
 };
 
-const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
+const SelectPortDropdown: React.FC<SelectPortDropdownProps> = ({ multi }) => {
   const dispatch = useAppDispatch();
   const selectedPort = useAppSelector(
     (state) => state.CountryFilter.selectedPort
@@ -25,8 +25,11 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
   const [data, setData] = useState<Option[]>([]);
 
   useEffect(() => {
-    fetchPort();
+    if (selectedCountry) {
+      fetchPort();
+    }
   }, [selectedCountry]);
+
   const fetchPort = async () => {
     try {
       const result = await axios.get(
@@ -37,19 +40,20 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
           },
         }
       );
-      console.log("containers", result);
       setData(result.data.ports);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching ports:", error);
+    }
   };
-  const ports = data;
-  const handleChange = (selected: ValueType<Option, true>) => {
+
+  const handleChange = (selected: SingleValue<Option> | MultiValue<Option>) => {
     dispatch(setselectedPort(selected as Option));
   };
+
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
       backgroundColor: "#fafbfc",
-
       border: "none",
       boxShadow: "none",
       height: "56px",
@@ -65,7 +69,7 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
         fontSize: "12px",
       },
     }),
-    option: (provided: any, state: { isSelected: any }) => ({
+    option: (provided: any, state: { isSelected: boolean }) => ({
       ...provided,
       "&:hover": {
         backgroundColor: state.isSelected ? "#ddd" : "#f2f2f2",
@@ -75,8 +79,8 @@ const SelectPortDropdown: React.FC<SelectPortDropdown> = ({ multi }) => {
 
   return (
     <div className="w-full">
-      <Select
-        options={ports}
+      <Select<Option, boolean, GroupBase<Option>>
+        options={data}
         value={selectedPort}
         onChange={handleChange}
         isMulti={multi}

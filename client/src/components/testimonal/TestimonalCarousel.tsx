@@ -11,7 +11,6 @@ type Testimonial = {
 };
 type TestimonialCarouselProps = {
   testimonials: Testimonial[];
-  imgSrc: string;
 };
 
 const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
@@ -64,7 +63,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
               <div className="flex">
                 <img
                   src={`${testimonial.img}`}
-                  alt=""
+                  alt="testimonal"
                   className="rounded-full"
                 />
               </div>

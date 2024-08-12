@@ -37,9 +37,11 @@ const ContainerList: React.FC<ContainerProps> = ({
           </div>
           <div className="flex">
             <p className="text-xs font-semibold">Type:</p>
-            <ul className="text-xs px-2">
+            <ul className="text-xs px-2 list-disc">
               {types.map((type, index) => (
-                <li key={index}>{type}</li>
+                <li key={index} className="ms-3">
+                  {type}
+                </li>
               ))}
             </ul>
           </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import ErrorImg from "/pagenotfound.svg";
 
 const PageNotFound: React.FC = () => {
   const navigate = useNavigate();
@@ -11,8 +12,8 @@ const PageNotFound: React.FC = () => {
       <div className="container mx-auto">
         <div className="flex justify-center  ">
           <img
-            src="/pagenotfound.svg"
-            alt=""
+            src={ErrorImg}
+            alt="404 error page"
             className="self-center object-contain h-dvh "
           />
           <div className="absolute top-[42%] lg:top-[42%]  text-center">

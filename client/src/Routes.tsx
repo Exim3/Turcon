@@ -18,6 +18,13 @@ import { Route, Routes } from "react-router";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import ReviewOrder from "./pages/cart/ReviewOrder";
+import Cookie from "./pages/cookie/Cookie";
+import Notification from "./pages/notification/Notification";
+import ReturnPolicy from "./pages/returnPolicy/ReturnPolicy";
+import Profile from "./pages/profile/Profile";
+import TermsAndCondition from "./pages/termsAndCondition/TermsAndCondition";
+import Orders from "./pages/orders/Orders";
+import Support from "./pages/support/Support";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -45,6 +52,16 @@ const AppRoutes: React.FC = () => {
           ></Route>
           <Route path="cart" element={<Cart />}></Route>
           <Route path="review" element={<ReviewOrder />}></Route>
+          <Route path="cookie" element={<Cookie />}></Route>
+          <Route path="support" element={<Support />}></Route>
+          <Route path="orders" element={<Orders />}></Route>
+          <Route
+            path="termsandCondition"
+            element={<TermsAndCondition />}
+          ></Route>
+          <Route path="profile" element={<Profile />}></Route>
+          <Route path="returnpolicy" element={<ReturnPolicy />}></Route>
+          <Route path="notification" element={<Notification />}></Route>
         </Route>
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes>

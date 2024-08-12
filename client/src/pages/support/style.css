@@ -1,0 +1,33 @@
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  padding-right: 24px;
+}
+
+summary::after {
+  content: "";
+  position: absolute;
+  right: 1.5%;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::after {
+  content: "\25B2";
+}
+
+details:not([open]) summary::after {
+  content: "\25Bc";
+}
+summary:active,
+.menu > li:active .navlist,
+.menu > li:active a,
+.menu li > *:not(ul, .menu-title, details, .btn):active {
+  background-color: transparent !important;
+}

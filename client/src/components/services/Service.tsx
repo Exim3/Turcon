@@ -1,6 +1,11 @@
 import React from "react";
 import CheckIcon from "../svg/Tick";
 import { Link } from "react-router-dom";
+import bulbIcon from "/bulb.svg";
+import safeIcon from "/safe.svg";
+import manIcon from "/man.svg";
+import serviceMailIcon from "/servicemail.svg";
+import servicePhoneIcon from "/servicephone.svg";
 
 type Services = {
   title: string;
@@ -24,7 +29,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
         </div>
         <div className="flex flex-col gap-6">
           <div className="">
-            <img src={image} alt="" />
+            <img src={image} alt="services" />
           </div>
           <div className="flex flex-col gap-6 p-3">
             <h2 className="text-2xl text-[#0B0A0A]">{title}</h2>
@@ -35,7 +40,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
           <div className="flex flex-col gap-6 p-3 bg-[#D4FFF8]">
             <div className="flex items-center gap-2">
               <div className="">
-                <img src="/bulb.svg" alt="" />
+                <img src={bulbIcon} alt="lightbulb" />
               </div>
               <h4 className="text-3xl text-[#0B0A0A]">Easy & Convenient</h4>
             </div>
@@ -54,7 +59,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
           <div className="flex flex-col gap-6 p-3 bg-[#D4FFF8]">
             <div className="flex items-center gap-2 ">
               <div className="">
-                <img src="/safe.svg" alt="" />
+                <img src={safeIcon} alt="safe" />
               </div>
               <h4 className="text-3xl text-[#0B0A0A]">Safe & Secure</h4>
             </div>
@@ -70,7 +75,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
         <div className="grid lg:grid-cols-2 text-[#0B0A0A] gap-4">
           <div className="p-4 flex flex-col lg:flex-row gap-8 items-center shadow-[0px_0px_5px_rgb(0,0,0,0.2)] rounded-sm  ">
             <div>
-              <img src="/man.svg" alt="" />
+              <img src={manIcon} alt="man" />
             </div>
             <div className="flex flex-col gap-4 text-center lg:text-start">
               <div className="flex flex-col gap-2">
@@ -80,7 +85,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
               <div className="grid xs:grid-cols-2 gap-6 justify-center ">
                 <div className="flex gap-1 items-center p-2 bg-[#E4E4E4] rounded-md">
                   <div>
-                    <img src="servicemail.svg" alt="" />
+                    <img src={serviceMailIcon} alt="mail" />
                   </div>
                   <a href="mailto:sales@turcon.in" className="text-[#008FE8]">
                     sales@turcon.in
@@ -88,7 +93,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
                 </div>
                 <div className="flex gap-1 items-center p-2 bg-[#E4E4E4] rounded-md">
                   <div>
-                    <img src="servicephone.svg" alt="" />
+                    <img src={servicePhoneIcon} alt="phone" />
                   </div>
                   <a href="tel:971564507734" className="text-[#008FE8]">
                     971564507734

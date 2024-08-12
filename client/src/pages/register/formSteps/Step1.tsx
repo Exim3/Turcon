@@ -19,7 +19,14 @@ export const Step1: React.FC<{
           <input
             type="text"
             placeholder="Enter Your Username"
-            className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+            className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+          />
+        </FormGroup>
+        <FormGroup label="Full Name">
+          <input
+            type="text"
+            placeholder="Enter Your Full Name"
+            className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
           />
         </FormGroup>
 
@@ -27,7 +34,7 @@ export const Step1: React.FC<{
           <input
             type="email"
             placeholder="Enter Your Email"
-            className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+            className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
           />
         </FormGroup>
         <FormGroup label="Password">
@@ -35,7 +42,7 @@ export const Step1: React.FC<{
             <input
               type={isEyeOpen ? "text" : "password"}
               placeholder="Enter Your Password"
-              className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+              className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
             />
             <div
               className="absolute right-3 top-3 cursor-pointer"
@@ -51,7 +58,7 @@ export const Step1: React.FC<{
             <input
               type={isEyeOpen ? "text" : "password"}
               placeholder="Confirm Your Password"
-              className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+              className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
             />
             <div
               className="absolute right-3 top-3 cursor-pointer"

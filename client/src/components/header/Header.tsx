@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import "./style.css";
 import SideBar from "../sideBar/SideBar";
+import Logo from "/logo.svg";
+
 const Header = () => {
   return (
     <>
@@ -8,7 +10,7 @@ const Header = () => {
         <div className="flex self-center w-full items-center justify-between lg:justify-start lg:w-1/2">
           <div className="logo w-28 md:w-40">
             <Link to={"/"}>
-              <img src="/public/logo.svg" alt="" />
+              <img src={Logo} alt="turconLogo" />
             </Link>
           </div>
           <div className="flex gap-4">
@@ -33,7 +35,7 @@ const Header = () => {
             <li>
               <Link
                 to={"/"}
-                className="navlist font-semibold focus:bg-white focus:text-primary"
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 Home
               </Link>
@@ -41,7 +43,7 @@ const Header = () => {
             <li className="service relative  ">
               <Link
                 to={"/services"}
-                className="navlist font-semibold focus:bg-white focus:text-primary"
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 {" "}
                 Our Service
@@ -77,7 +79,7 @@ const Header = () => {
             <li>
               <Link
                 to={"/about"}
-                className="navlist  font-semibold focus:bg-white focus:text-primary"
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 About
               </Link>
@@ -85,7 +87,7 @@ const Header = () => {
             <li className="">
               <Link
                 to={"/contact"}
-                className="navlist  font-semibold focus:bg-white focus:text-primary"
+                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
               >
                 Contact Us
               </Link>

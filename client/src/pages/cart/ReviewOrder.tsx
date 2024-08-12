@@ -4,6 +4,11 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { SetCartCount } from "../../store/slice/containerCount";
+import bankIcon from "/bank.svg";
+import creditIcon from "/credit.svg";
+import locationIcon from "/location.svg";
+import containerImg from "/cartContainer.png";
+import infoIcon from "/info.svg";
 
 interface CustomRadioButtonProps {
   value: string;
@@ -50,7 +55,7 @@ const CartItem: React.FC<{
         <div className="flex gap-2 items-center md:justify-between">
           <div className="flex flex-col gap-2 md:border-r-2 md:basis-2/5 ">
             <div className="flex ">
-              <img src="/location.svg" alt="Location" />
+              <img src={locationIcon} alt="Location" />
               <p>
                 {portLocation}
                 <span className="text-xs text-gray-400"> {country}</span>
@@ -59,7 +64,7 @@ const CartItem: React.FC<{
 
             <div className="flex gap-2 lg:items-center">
               <div className="w-20">
-                <img src="/cartContainer.png" alt={name} />
+                <img src={containerImg} alt={name} />
               </div>
 
               <div className="flex-col flex gap-2 w-1/2 md:w-auto text-center">
@@ -260,7 +265,7 @@ const ReviewOrder: React.FC = () => {
             <>
               <div className="lg:w-2/3 flex flex-col gap-2">
                 <div className="flex items-start gap-2 bg-[#f7fcff] p-4  rounded-md } ">
-                  <img src="/info.svg" alt="Info" className="w-3 pt-1" />
+                  <img src={infoIcon} alt="Info" className="w-3 pt-1" />
                   <p className="text-[#008FE8] text-[10px] md:text-sm ">
                     We offer 5 free storage days. Please confirm your awareness.
                     (Orders not picked up within this time frame may be
@@ -335,7 +340,7 @@ const ReviewOrder: React.FC = () => {
                     <CustomRadioButton
                       value="bank"
                       label="Bank Transfer"
-                      imgSrc="/bank.svg"
+                      imgSrc={bankIcon}
                       checked={selectedPaymentMethod === "bank"}
                       onChange={handleChange}
                       className={"p-2 rounded-md "}
@@ -343,7 +348,7 @@ const ReviewOrder: React.FC = () => {
                     <CustomRadioButton
                       value="credit"
                       label="Credit / Debit Card"
-                      imgSrc="/credit.svg"
+                      imgSrc={creditIcon}
                       checked={selectedPaymentMethod === "credit"}
                       onChange={handleChange}
                       className={"p-2 rounded-md"}

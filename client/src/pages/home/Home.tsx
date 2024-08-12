@@ -4,8 +4,22 @@ import Testimonal from "../../components/testimonal/Testimonal";
 import ContactForm from "../../components/contact/ContactForm";
 import ContainerList from "../../components/containerTypes/ContainerList";
 import React from "react";
+import aboutUs from "/about.png";
+import boxIcon1 from "/box1.svg";
+import boxIcon2 from "/box2.svg";
+import boxIcon3 from "/box3.svg";
+import serviceOne from "/container1.png";
+import serviceTwo from "/containerAndStorage.png";
+import serviceThree from "/container3.png";
+import serviceFour from "/container4.png";
+import serviceFive from "/container5.png";
+import serviceSix from "/container6.png";
+import downloadIcon from "/download.svg";
+import containerTypeOne from "/containerTypes1.png";
+import containerTypeTwo from "/containerTypes2.png";
+import containerTypeThree from "/containerTypes3.png";
+import containerTypeFour from "/containerTypes4.png";
 
-import "aos/dist/aos.css";
 import { Link, useNavigate } from "react-router-dom";
 
 interface Slide {
@@ -54,7 +68,7 @@ const Home: React.FC = () => {
           <div className="specialization grid md:flex md:flex-wrap items-center justify-center gap-14 font-semibold text-lg pb-6">
             <div className="box  flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)]">
               <div className="w-12 h-12 p-3 flex self-center rounded-md bg-[#D7F0FF]">
-                <img src="box1.svg" alt="" className="self-center" />
+                <img src={boxIcon1} alt="box" className="self-center" />
               </div>
 
               <h4 className="basis-3/4">
@@ -63,7 +77,7 @@ const Home: React.FC = () => {
             </div>
             <div className="box flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)]">
               <div className="w-12 h-12  p-3 flex self-center rounded-md bg-[#D7F0FF]">
-                <img src="box2.svg" alt="" className="self-center" />
+                <img src={boxIcon2} alt="box" className="self-center" />
               </div>
 
               <h4 className="basis-3/4">
@@ -73,7 +87,7 @@ const Home: React.FC = () => {
             </div>
             <div className="box flex gap-4 p-3 rounded-md shadow-[0_0_4px_rgba(0,0,0,0.25)] ">
               <div className="w-12 h-12 p-3 flex basis-1/5 self-center rounded-md bg-[#D7F0FF]">
-                <img src="box3.svg" alt="" className="self-center" />
+                <img src={boxIcon3} alt="box" className="self-center" />
               </div>
 
               <h4 className="self-center basis-3/4">
@@ -110,7 +124,7 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className=" img flex items-center text-center ">
-              <img src="about.png" alt="" className="rounded" />
+              <img src={aboutUs} alt="aboutUs" className="rounded" />
             </div>
           </div>
         </div>
@@ -127,7 +141,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="container1.png" alt="" />
+              <img src={serviceOne} alt="Container Inspections" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Container Inspections</h3>
@@ -143,7 +157,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="containerAndStorage.png" alt="" />
+              <img src={serviceTwo} alt="containerAndStorage" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Container Storage and Repairs</h3>
@@ -160,7 +174,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="container3.png" alt="" />
+              <img src={serviceThree} alt="Oneway Movement – Shipping Lines" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">
@@ -178,7 +192,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="container4.png" alt="" />
+              <img src={serviceFour} alt="Maritime containers selling" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Maritime containers selling</h3>
@@ -195,7 +209,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="container5.png" alt="" />
+              <img src={serviceFive} alt="Maritime rental of containers" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">Maritime rental of containers</h3>
@@ -211,7 +225,7 @@ const Home: React.FC = () => {
             className="card flex flex-col bg-[#fafafa] border border-[#cfcecec] gap-4 p-4 cursor-pointer"
           >
             <div className="img">
-              <img src="container6.png" alt="" />
+              <img src={serviceSix} alt="worldWideBuisness" />
             </div>
             <div>
               <h3 className="text-2xl pb-3">
@@ -242,7 +256,7 @@ const Home: React.FC = () => {
             </p>
             <div className=" text-center">
               <div className="btn btn-secondbtn ">
-                Download <img src="download.svg" alt="" />
+                Download <img src={downloadIcon} alt="download" />
               </div>
             </div>
           </div>
@@ -269,14 +283,14 @@ const Home: React.FC = () => {
             onClick={() => navigate("/buy/inventory")}
           >
             <ContainerList
-              imgSrc="containerTypes1.png"
+              imgSrc={containerTypeOne}
               altText="Container Types"
               sizes={["40'ft", "40'ft Hc", "20'ft", "45'ft HC", "53'ft HC"]}
               types={["Dry Container", "High Cube Container"]}
               containerName="Standard Container"
             />
             <ContainerList
-              imgSrc="containerTypes2.png"
+              imgSrc={containerTypeTwo}
               altText="Container Types"
               sizes={["20'ft", "40'ft ", "45'ft HC", "53'ft HC"]}
               types={[
@@ -287,14 +301,14 @@ const Home: React.FC = () => {
               containerName="Specialized Container"
             />
             <ContainerList
-              imgSrc="containerTypes3.png"
+              imgSrc={containerTypeThree}
               altText="Container Types"
               sizes={["T-11", "T 50"]}
               types={["Refridgerator Container"]}
               containerName="Reefers"
             />
             <ContainerList
-              imgSrc="containerTypes4.png"
+              imgSrc={containerTypeFour}
               altText="Container Types"
               sizes={["40'ft", "20'ft", "T 11", "T 50"]}
               types={["Gas Tanks", "Heated Tanks", "Swap body Tanks"]}

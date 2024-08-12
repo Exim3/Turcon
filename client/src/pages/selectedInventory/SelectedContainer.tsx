@@ -7,6 +7,9 @@ import {
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import BlueContainerImg from "/containerBlue.png";
+import noResultImg from "/noResult.svg";
+import "./style.css";
 
 type ContainerData = {
   country: string;
@@ -139,6 +142,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    console.log(event);
     setCurrentPage(value);
   };
   console.log(containerData, "data");
@@ -188,15 +192,15 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
               return (
                 <div
                   key={item.containerId}
-                  className="flex flex-col p-4 gap-2 bg-[#FAFAFA] rounded-lg"
+                  className="flex flex-col p-4 gap-2 bg-[#FAFAFA] rounded-lg "
                 >
                   <div className="w-full">
-                    <img src="/containerTypes1.png" alt="Container" />
+                    <img src={BlueContainerImg} alt="Container" />
                   </div>
                   <div className="flex flex-col justify-center gap-3">
                     <h3 className="text-2xl font-semibold text-[#0B0A0A]">
                       {item.size}{" "}
-                      <span className="capitalize">
+                      <span className="capitalize text-lg text-gray-700">
                         {" "}
                         {item.type.toLowerCase()} Containers
                       </span>
@@ -206,7 +210,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
                         {" "}
                         <span className="capitalize"> {item.condition}</span>
                       </div>
-                      <div className="qty text-sm">Qty: {item.stockCount}</div>
+                      <div className="qty text-lg">Qty: {item.stockCount}</div>
                     </div>
                     <div className="price flex justify-between items-center">
                       <div className="value text-[#15B097] text-2xl">
@@ -268,7 +272,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
               );
             })}
           </div>
-          <Stack spacing={2} className="mt-4">
+          <Stack spacing={2} className="mt-4 ">
             <Pagination
               count={totalPages}
               page={currentPage}
@@ -281,7 +285,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
         <div className="py-9 lg:py-32">
           <div className="flex flex-col text-sm items-center justify-center gap-6 px-5 text-center lg:w-1/2 mx-auto">
             <div className="w-24">
-              <img src="/noResult.svg" alt="No Results" />
+              <img src={noResultImg} alt="No Results" />
             </div>
             <div>
               <p>

@@ -1,6 +1,10 @@
 import React from "react";
 import AboutBox, { AboutBoxInvert } from "../../components/about/AboutBox";
 import { Link } from "react-router-dom";
+import flight from "/flight.png";
+import flight2 from "/flight2.png";
+import flight3 from "/flight3.png";
+import aboutHero from "/abouthero.png";
 
 const About: React.FC = () => {
   return (
@@ -34,12 +38,11 @@ const About: React.FC = () => {
               respective companies.
             </p>
           </div>
-          <div className="lg:bg-[url('/abouthero.png')] bg-center mx-auto lg:mx-0 ">
-            <img
-              src="/abouthero.png"
-              alt=""
-              className="lg:hidden object-fill "
-            />
+          <div
+            className="lg:bg-cover bg-center mx-auto lg:mx-0"
+            style={{ backgroundImage: `url(${aboutHero})` }}
+          >
+            <img src={aboutHero} alt="" className="lg:hidden object-fill " />
           </div>
         </div>
 
@@ -83,7 +86,7 @@ const About: React.FC = () => {
           content={
             "Our Competitive Edge Our intention is to achieve what multinational companies cannot; to meet the Critical Success Factors of customers."
           }
-          imageUrl={"/flight.png"}
+          imageUrl={flight}
         />
         <AboutBoxInvert
           title={"Customer-Centric Excellence"}
@@ -91,7 +94,7 @@ const About: React.FC = () => {
           content={
             "Our Commitment To provide superior service through clear, concise two-way communication. The goal is to build relationships through our flexibility to meet our customer's changing needs."
           }
-          imageUrl={"/flight2.png"}
+          imageUrl={flight2}
         />
         <AboutBox
           title={"Unparalleled Expertise"}
@@ -99,7 +102,7 @@ const About: React.FC = () => {
           content={
             "The Turcon Advantage Turcon is integrated by a team of Experienced People who believe in providing prompt and effective services to customers, which is beyond compare."
           }
-          imageUrl={"/flight3.png"}
+          imageUrl={flight3}
         />
         <div className="lg:mx-12 mb-8 flex flex-col gap-6">
           <div className="flex flex-col gap-6">

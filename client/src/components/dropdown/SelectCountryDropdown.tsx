@@ -1,27 +1,44 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
+import Select, { SingleValue, MultiValue, GroupBase } from "react-select";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedCountry } from "../../store/slice/inventory";
-import "./style.css";
 import axios from "axios";
+import "./style.css";
 
 interface CountryOption {
   value: string;
   label: string;
 }
 
-type SelectCountryDropdown = {
+type SelectCountryDropdownProps = {
   multi: boolean;
 };
 
-const SelectCountryDropdown: React.FC<SelectCountryDropdown> = ({ multi }) => {
+const SelectCountryDropdown: React.FC<SelectCountryDropdownProps> = ({
+  multi,
+}) => {
+  const dispatch = useAppDispatch();
   const selectedCountry = useAppSelector(
     (state) => state.CountryFilter.selectedCountry
   );
+
   const [data, setData] = useState<CountryOption[]>([]);
 
-  const dispatch = useAppDispatch();
-  console.log(selectedCountry, "hii");
+  useEffect(() => {
+    fetchCountry();
+  }, []);
+
+  const fetchCountry = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:5000/api/containers/getcountry"
+      );
+      setData(result.data.countries);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+    }
+  };
+
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -33,50 +50,41 @@ const SelectCountryDropdown: React.FC<SelectCountryDropdown> = ({ multi }) => {
         border: "none",
       },
     }),
-
-    option: (provided: any, state: { isSelected: any }) => ({
-      ...provided,
-      "&:hover": {
-        backgroundColor: state.isSelected ? "#ddd" : "#f2f2f2", // Example: Change background color on hover
-      },
-    }),
     placeholder: (provided: any) => ({
       ...provided,
-      fontSize: "14px", // Default font size
-      color: "#aaa", // Placeholder color
+      fontSize: "14px",
+      color: "#aaa",
       "@media (max-width: 768px)": {
-        fontSize: "12px", // Adjust font size for smaller screens
+        fontSize: "12px",
+      },
+    }),
+    option: (provided: any, state: { isSelected: boolean }) => ({
+      ...provided,
+      "&:hover": {
+        backgroundColor: state.isSelected ? "#ddd" : "#f2f2f2",
       },
     }),
   };
-  useEffect(() => {
-    fetchCountry();
-  }, []);
-  const fetchCountry = async () => {
-    try {
-      const result = await axios.get(
-        "http://localhost:5000/api/containers/getcountry"
-      );
-      console.log("containers", result);
-      setData(result.data.countries);
-    } catch (error) {}
-  };
-  const country = data;
 
-  const handleChange = (selectedOptions: ValueType<CountryOption, true>) => {
-    console.log(selectedOptions);
-    dispatch(setSelectedCountry(selectedOptions));
+  const handleChange = (
+    selectedOptions: SingleValue<CountryOption> | MultiValue<CountryOption>
+  ) => {
+    if (multi) {
+      dispatch(setSelectedCountry(selectedOptions as CountryOption));
+    } else {
+      dispatch(setSelectedCountry(selectedOptions as CountryOption));
+    }
   };
 
   return (
     <div className="w-full">
-      <Select
-        options={country}
+      <Select<CountryOption, boolean, GroupBase<CountryOption>>
+        options={data}
         value={selectedCountry}
         onChange={handleChange}
-        styles={customStyles}
         isMulti={multi}
         placeholder="Select Country"
+        styles={customStyles}
       />
     </div>
   );

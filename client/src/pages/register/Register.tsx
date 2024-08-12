@@ -6,6 +6,8 @@ import { Step2 } from "./formSteps/Step2";
 import { Step4 } from "./formSteps/Step4";
 import { Step5 } from "./formSteps/Step5";
 import { useBack } from "../../utils/useBack";
+import cancelIcon from "/x.svg";
+import Logo from "/logo.svg";
 
 const Register: React.FC = () => {
   const [isEyeOpen, setIsEyeOpen] = useState(false);
@@ -36,14 +38,14 @@ const Register: React.FC = () => {
     <div className="bg-white w-full">
       <div className="h-8 flex flex-row-reverse mt-2 justify-between container">
         <div onClick={goback} className="cursor-pointer">
-          <img src="/x.svg" alt="Logo" />
+          <img src={cancelIcon} alt="cancel" />
         </div>
       </div>
 
       <div className="px-5">
         <div className="py-6 border px-5 lg:px-8 gap-3 flex flex-col justify-center w-full sm:w-[556px] mx-auto">
           <div className="w-28 mx-auto">
-            <img src="/logo.svg" alt="Logo" />
+            <img src={Logo} alt="Logo" />
           </div>
           {currentStep >= 2 && (
             <div className="flex justify-center gap-1">

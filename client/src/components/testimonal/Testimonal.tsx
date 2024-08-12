@@ -1,4 +1,5 @@
 import TestimonalCarousel from "./TestimonalCarousel";
+import Testimonal1 from "/testimonal1.png";
 import "./style.css";
 
 type Testimonial = {
@@ -15,7 +16,7 @@ const testimonialsData: Testimonial[] = [
     location: "Sydney, Australia",
     quote:
       "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
+    img: Testimonal1,
     maxQuoteLength: 150,
   },
   {
@@ -23,42 +24,14 @@ const testimonialsData: Testimonial[] = [
     location: "Sydney, Australia",
     quote:
       "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
+    img: Testimonal1,
   },
   {
     name: "John Anderson",
     location: "Sydney, Australia",
     quote:
       "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
-  },
-  {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
-  },
-  {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
-  },
-  {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
-  },
-  {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
-    img: "testimonal1.png",
+    img: Testimonal1,
   },
 ];
 const Testimonal = () => {
@@ -71,8 +44,8 @@ const Testimonal = () => {
             What Our Customers Are Saying About Their Container Purchases
           </h4>
         </div>
-        <div className="w-11/12 mx-auto z-10">
-          <TestimonalCarousel testimonials={testimonialsData} imgSrc={""} />
+        <div className="w-11/12 mx-auto z-10 container">
+          <TestimonalCarousel testimonials={testimonialsData} />
         </div>
       </div>
     </>

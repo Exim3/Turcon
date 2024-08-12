@@ -1,3 +1,6 @@
+import emailIcon from "/cemail.svg";
+import phoneIcon from "/cphone.svg";
+
 const ContactForm = () => {
   return (
     <>
@@ -16,11 +19,11 @@ const ContactForm = () => {
                 CUSTOMS AJMAN UNITED ARAB EMIRATES.
               </p>
               <div className="bg-white py-2 px-3 flex gap-2 max-w-xs">
-                <img src="/cemail.svg" alt="" />
+                <img src={emailIcon} alt="email" />
                 <a href="mailto:sales@turcon.in">sales@turcon.in</a>
               </div>
               <div className="bg-white py-2 px-3 flex gap-2 max-w-xs">
-                <img src="/cphone.svg" alt="" />
+                <img src={phoneIcon} alt="phone" />
 
                 <a href="tel:+971564507734">+971564507734</a>
               </div>

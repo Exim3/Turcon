@@ -23,7 +23,7 @@ export const Step2: React.FC<{
               value={value}
               onChange={setValue}
               defaultCountry="US"
-              className="input input-bordered w-full placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded focus-within:outline-none"
+              className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded focus-within:outline-none"
             />
           </div>
         </FormGroup>

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import menuIcon from "/menu.svg";
+import cancelIcon from "/x.svg";
 
 const SideBar: React.FC = () => {
   const closeDrawer = () => {
@@ -20,7 +22,7 @@ const SideBar: React.FC = () => {
             htmlFor="my-drawer-4"
             className="drawer-button btn hover:bg-[#ffd3d3] focus:bg-primary"
           >
-            <img src="/menu.svg" alt="" />
+            <img src={menuIcon} alt="hamburger" />
           </label>
         </div>
         <div className="drawer-side">
@@ -35,7 +37,7 @@ const SideBar: React.FC = () => {
                 htmlFor="my-drawer-4"
                 className="drawer-button ml-auto w-10 h-10 bg-gray-300 shadow flex p-1 justify-center"
               >
-                <img src="/x.svg" alt="" className="w-6 h-6" />
+                <img src={cancelIcon} alt="cancel" className="w-6 h-6" />
               </label>
             </li>
             <li>

@@ -13,7 +13,6 @@ interface CarouselProps {
 
 const Carousel: React.FC<CarouselProps> = ({ slides }) => {
   const [index, setIndex] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
 
   const transitions = useTransition(index, {
     key: index,
@@ -25,16 +24,14 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
-    if (autoplay && slides.length > 1) {
-      intervalId = setInterval(() => {
-        setIndex((state) => (state + 1) % slides.length);
-      }, 2000); // Adjust the interval as per your requirement (in milliseconds)
-    }
+    intervalId = setInterval(() => {
+      setIndex((state) => (state + 1) % slides.length);
+    }, 2000);
 
     return () => {
-      clearInterval(intervalId); // Cleanup function to clear interval on component unmount or if autoplay is disabled
+      clearInterval(intervalId);
     };
-  }, [autoplay, slides.length]);
+  }, [slides.length]);
 
   return (
     <div className="carousel-container">
