@@ -55,7 +55,7 @@ const Inventory: React.FC = () => {
           </div>
         </>
       )}
-      <div className="heading mx-auto container text-[#0B0A0A] relative">
+      <div className="heading mx-auto container text-[#0B0A0A] relative pt-4">
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <div className="flex flex-col gap-2">

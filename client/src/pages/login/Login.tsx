@@ -16,15 +16,16 @@ const Login: React.FC = () => {
   return (
     <>
       <div className="bg-white w-full ">
-        <div className="h-8 flex justify-between container">
-          <div onClick={goback} className="cursor-pointer">
-            <BackIcon color="#232323" />
-          </div>
-        </div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full lg:w-1/2 lg:rounded-md px-5">
-          <div className="py-6 px-8 gap-3 flex flex-col border justify-center max-w-xl mx-auto">
+          <div className="py-6 px-8 gap-3 flex flex-col border justify-center max-w-xl mx-auto relative">
             <div className="w-28 mx-auto">
               <img src={Logo} alt="turconLogo" />
+            </div>
+            <div
+              onClick={goback}
+              className="cursor-pointer absolute top-3 left-3  bg-[#e4e4e4] w-8 h-8 flex items-center justify-center rounded-md"
+            >
+              <BackIcon color="#232323" />
             </div>
             <div className="body flex flex-col gap-4">
               <div className="text-center text-2xl">Welcome Back</div>

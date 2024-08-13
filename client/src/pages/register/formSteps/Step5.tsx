@@ -2,8 +2,8 @@ import DragFile from "../../../components/dragFiles/DragFile";
 
 export const Step5: React.FC<{
   handleBack: () => void;
-  handleSumbit: () => void;
-}> = ({ handleBack, handleSumbit }) => (
+  handleSubmit: () => void;
+}> = ({ handleBack, handleSubmit }) => (
   <div className="body flex flex-col gap-4">
     <div className="text-center text-2xl">File Attachments</div>
     <div className="flex-col flex gap-2">
@@ -16,7 +16,7 @@ export const Step5: React.FC<{
       <div className="btn btn-secondbtn w-1/2 " onClick={handleBack}>
         Back
       </div>
-      <div className="btn btn-prime w-1/2 " onClick={handleSumbit}>
+      <div className="btn btn-prime w-1/2 " onClick={handleSubmit}>
         Submit
       </div>
     </div>

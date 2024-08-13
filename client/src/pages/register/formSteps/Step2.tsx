@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { FormGroup } from "../Register";
@@ -6,9 +6,36 @@ import { FormGroup } from "../Register";
 export const Step2: React.FC<{
   handleBack: () => void;
   handleNext: () => void;
-}> = ({ handleBack, handleNext }) => {
-  const [value, setValue] = useState<string | undefined>(undefined);
-  console.log(value, "value");
+  handleChange: (name: string, value: string) => void;
+  setError: (error: string) => void;
+  error: string;
+  phone: string; // Ensure phone is a string
+}> = ({ handleBack, handleNext, handleChange, setError, error, phone }) => {
+  const [localPhone, setLocalPhone] = useState<string>(phone || ""); // Default to empty string
+
+  useEffect(() => {
+    setLocalPhone(phone);
+  }, [phone]);
+
+  const handlePhoneChange = (value: string | undefined) => {
+    setLocalPhone(value || ""); // Ensure value is a string
+    handleChange("phone", value || "");
+  };
+
+  const validatePhoneNumber = () => {
+    if (!localPhone) {
+      setError("Phone number input should not be empty.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  const handleNextClick = () => {
+    if (validatePhoneNumber()) {
+      handleNext();
+    }
+  };
 
   return (
     <div className="body flex flex-col gap-4">
@@ -20,21 +47,24 @@ export const Step2: React.FC<{
           <div className="flex items-center gap-2">
             <PhoneInput
               placeholder="Enter phone number"
-              value={value}
-              onChange={setValue}
+              name="phone"
+              value={localPhone}
+              onChange={handlePhoneChange}
               defaultCountry="US"
               className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded focus-within:outline-none"
             />
           </div>
         </FormGroup>
       </div>
-      <div className="flex justify-center gap-6 ">
-        <div className="btn btn-secondbtn w-1/2 " onClick={handleBack}>
+      {error && <p className="text-error text-xs">{error}</p>}
+
+      <div className="flex justify-center gap-6">
+        <button className="btn btn-secondbtn w-1/2" onClick={handleBack}>
           Back
-        </div>
-        <div className="btn btn-prime w-1/2 " onClick={handleNext}>
+        </button>
+        <button className="btn btn-prime w-1/2" onClick={handleNextClick}>
           Next
-        </div>
+        </button>
       </div>
       <div className="text-sm text-center max-w-sm mx-auto text-[#383434]">
         A 4-digit OTP will be sent via SMS to verify your phone number.

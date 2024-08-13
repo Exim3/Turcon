@@ -43,9 +43,6 @@ export const Step4: React.FC<{
       </FormGroup>
     </div>
     <div className="flex justify-center gap-6 ">
-      <div className="btn btn-secondbtn w-1/2 " onClick={handleBack}>
-        Back
-      </div>
       <div className="btn btn-prime w-1/2 " onClick={handleNext}>
         Next
       </div>

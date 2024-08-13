@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const TermsAndCondition: React.FC = () => {
   return (
     <>
-      <div className="bg-my-gradient">
+      <div className="bg-my-gradient pb-4">
         <div className="container mx-auto flex flex-col gap-8 ">
           <div className="flex justify-between items-center mt-4">
             <div className=" flex flex-col gap-2">

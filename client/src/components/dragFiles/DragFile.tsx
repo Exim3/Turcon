@@ -134,7 +134,7 @@ const DragFile: React.FC = () => {
           <Typography
             variant="body2"
             color="textSecondary"
-            sx={{ mb: 2, fontSize: "16px", fontWeight: 600, my: "auto" }}
+            sx={{ mb: 2, fontSize: "14px", fontWeight: 600, my: "auto" }}
           >
             {file.name}
           </Typography>
