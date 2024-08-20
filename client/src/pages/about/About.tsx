@@ -104,7 +104,9 @@ const About: React.FC = () => {
           }
           imageUrl={flight3}
         />
-        <div className="lg:mx-12 mb-8 flex flex-col gap-6">
+      </div>
+      <div className="bg-[#c5e8fd]">
+        <div className="lg:mx-12 py-3 flex flex-col gap-6 ">
           <div className="flex flex-col gap-6">
             <h3 className="text-2xl text-[#9A0000]">Careers</h3>
             <h2 className="text-[45px] font-semibold">

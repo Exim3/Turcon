@@ -6,7 +6,7 @@ const countries = useCountrycode();
 export const Step4: React.FC<{
   handleBack: () => void;
   handleNext: () => void;
-}> = ({ handleBack, handleNext }) => (
+}> = ({ handleNext }) => (
   <div className="body flex flex-col gap-4">
     <div className="text-center text-2xl">Company Details</div>
     <div className="flex-col flex gap-2">

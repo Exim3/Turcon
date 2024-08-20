@@ -25,13 +25,24 @@ import Profile from "./pages/profile/Profile";
 import TermsAndCondition from "./pages/termsAndCondition/TermsAndCondition";
 import Orders from "./pages/orders/Orders";
 import Support from "./pages/support/Support";
+import AdminDashboard from "./pages/adminDashboard";
+import Overview from "./pages/Admin/overview/Overview";
+import Containers from "./pages/Admin/containers/Containers";
+import AllOrders from "./pages/Admin/orders/AllOrders";
+import Users from "./pages/Admin/users/Users";
+import AdminChat from "./pages/Admin/Chats/AdminChat";
+import Sellers from "./pages/Admin/sellers/Sellers";
+import SalesPerson from "./pages/Admin/salesperson/SalesPerson";
+import PurchasePerson from "./pages/Admin/purchaseperson/PurchasePerson";
 
 const AppRoutes: React.FC = () => {
   return (
     <>
       <Routes>
+        {/* Auth */}
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        {/* home */}
         <Route path="/" element={<DashBoard />}>
           <Route index element={<Home />}></Route>
           <Route path="contact" element={<Contact />}></Route>
@@ -44,6 +55,7 @@ const AppRoutes: React.FC = () => {
           <Route path="service5" element={<Service5 />}></Route>
           <Route path="service6" element={<Service6 />}></Route>
         </Route>
+        {/* inventory */}
         <Route path="/buy" element={<InventoryDashboard />}>
           <Route path="inventory" element={<Inventory />}></Route>
           <Route
@@ -63,7 +75,19 @@ const AppRoutes: React.FC = () => {
           <Route path="returnpolicy" element={<ReturnPolicy />}></Route>
           <Route path="notification" element={<Notification />}></Route>
         </Route>
+        {/* other routes */}
         <Route path="*" element={<PageNotFound />}></Route>
+        {/* Admin DashBoard */}
+        <Route path="/support" element={<AdminDashboard />}>
+          <Route path="overview" element={<Overview />}></Route>
+          <Route path="containers" element={<Containers />}></Route>
+          <Route path="orders" element={<AllOrders />}></Route>
+          <Route path="users" element={<Users />}></Route>
+          <Route path="chats" element={<AdminChat />}></Route>
+          <Route path="sellers" element={<Sellers />}></Route>
+          <Route path="salesteam" element={<SalesPerson />}></Route>
+          <Route path="purchaseteam" element={<PurchasePerson />}></Route>
+        </Route>
       </Routes>
     </>
   );

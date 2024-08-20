@@ -10,13 +10,23 @@ import cancelIcon from "/x.svg";
 import Logo from "/logo.svg";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setRegisterUser } from "../../store/slice/registeruserSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { CustomSuccessToast } from "../../utils/CustomToast";
 
 const Register: React.FC = () => {
+  const step = localStorage.getItem("registerStep");
   const [isEyeOpen, setIsEyeOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(Number(step) || 1);
   const dispatch = useAppDispatch();
   const registerUser = useAppSelector((state) => state.RegisterUser);
   const [error, setError] = useState("");
+  const IntitalPostData = {
+    fullName: registerUser.fullName,
+    username: registerUser.username,
+    email: registerUser.email,
+    password: registerUser.password,
+  };
 
   const toggleEye = () => {
     setIsEyeOpen((prev) => !prev);
@@ -31,7 +41,7 @@ const Register: React.FC = () => {
     // Implement actual submission logic here
   };
 
-  const inititalDataSumbmit = (termCheck: boolean) => {
+  const inititalDataSumbmit = async (termCheck: boolean) => {
     console.log("Initial data:", registerUser);
     if (registerUser.password !== registerUser.confirmPassword) {
       setError("Password & Confirm Password doesn't match");
@@ -45,6 +55,28 @@ const Register: React.FC = () => {
       setError("Please accept the terms and conditions to proceed.");
       return;
     }
+
+    try {
+      const result = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        IntitalPostData
+      );
+      console.log(result, "result");
+      const registerSuccess = result.data.message;
+
+      if (registerSuccess) {
+        toast(<CustomSuccessToast message={registerSuccess} />);
+      }
+    } catch (error: any) {
+      console.log("error :", error);
+      console.log("message :", error.response.data.error);
+      const registerError = error.response.data.error;
+      if (registerError) {
+        setError(registerError);
+      }
+      return;
+    }
+
     setCurrentStep((prevStep) => prevStep + 1);
     setError("");
   };

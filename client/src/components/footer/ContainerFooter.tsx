@@ -33,20 +33,28 @@ const ContainerFooter: React.FC = () => {
               <h2 className="text-2xl">Quick Links</h2>
               <ul className="flex  gap-1 w-full items-center justify-center  text-xl flex-wrap">
                 <li className="basis-full md:basis-auto md:border-r px-2">
-                  <Link to={"/about"}>About</Link>
+                  <Link to={"/about"} target="/blank">
+                    About
+                  </Link>
                 </li>{" "}
                 <li className="basis-full md:basis-auto md:border-r px-2">
-                  <Link to={"/contact"}>Contact Us</Link>
+                  <Link to={"/contact"} target="/blank">
+                    Contact Us
+                  </Link>
                 </li>
                 <li className=" basis-full md:basis-auto md:border-r px-2">
-                  <Link to={"/buy/termsandcondition"}>Terms & Conditions</Link>
-                </li>
-                <li className=" basis-full md:basis-auto md:border-r px-2">
-                  <Link to={"/buy/cookie"}>Cookie Policy</Link>
+                  <Link to={"/buy/termsandcondition"} target="/blank">
+                    Terms & Conditions
+                  </Link>
                 </li>
                 <li className=" basis-full md:basis-auto px-2">
-                  <Link to={"/buy/returnpolicy"}> Return Policy</Link>
+                  <Link to={"/buy/cookie"} target="/blank">
+                    Cookie Policy
+                  </Link>
                 </li>
+                {/* <li className=" basis-full md:basis-auto px-2">
+                  <Link to={"/buy/returnpolicy"}> Return Policy</Link>
+                </li> */}
               </ul>
             </div>
             <div className="flex flex-col items-center justify-center gap-6 md:col-span-2 lg:col-span-1 md:mt-3 ">

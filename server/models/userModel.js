@@ -20,6 +20,18 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    verifyPhone: {
+      type: Boolean,
+      default: false,
+    },
+    verifyDocument: {
+      type: Boolean,
+      default: false,
+    },
+    registrationComplete: {
+      type: Boolean,
+      default: false,
+    },
     email: {
       type: String,
       require: true,

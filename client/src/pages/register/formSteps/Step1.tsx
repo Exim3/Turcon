@@ -39,6 +39,9 @@ export const Step1: React.FC<Step1Props> = ({
   const handleNext = () => {
     handleSubmit(istermschecked);
   };
+  {
+    console.log(error, "err");
+  }
 
   return (
     <div className="body flex flex-col gap-4">
@@ -135,7 +138,7 @@ export const Step1: React.FC<Step1Props> = ({
       </div>
       {error && <p className="text-error text-xs">{error}</p>}
       <button
-        className={`${!istermschecked && "disabled"} btn btn-prime di`}
+        className={`${!istermschecked && "disabled"} btn btn-prime `}
         onClick={() => handleNext()}
       >
         Next
