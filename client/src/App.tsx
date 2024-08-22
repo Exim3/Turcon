@@ -4,23 +4,28 @@ import AppRoutes from "./Routes";
 import ScrollToTop from "./utils/ScrollToTop";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthProvider } from "./utils/AuthContext";
 
 const App: React.FC = () => {
   return (
-    <Router basename="">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <ScrollToTop />
-      <AppRoutes />
+    <Router>
+      <AuthProvider>
+        {" "}
+        {/* Wrap your routes with AuthProvider */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <ScrollToTop />
+        <AppRoutes />
+      </AuthProvider>
     </Router>
   );
 };

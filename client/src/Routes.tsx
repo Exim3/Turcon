@@ -1,3 +1,8 @@
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./utils/AuthContext";
+import ProtectedRoute from "./utils/ProtectedRoute";
+
 import DashBoard from "./pages/dashBoard/DashBoard";
 import Home from "./pages/home/Home";
 import Contact from "./pages/contact/Contact";
@@ -14,7 +19,6 @@ import Service4 from "./pages/service/Service4";
 import Service5 from "./pages/service/Service5";
 import Service6 from "./pages/service/Service6";
 import Services from "./pages/services/Services";
-import { Route, Routes } from "react-router";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import ReviewOrder from "./pages/cart/ReviewOrder";
@@ -34,62 +38,80 @@ import AdminChat from "./pages/Admin/Chats/AdminChat";
 import Sellers from "./pages/Admin/sellers/Sellers";
 import SalesPerson from "./pages/Admin/salesperson/SalesPerson";
 import PurchasePerson from "./pages/Admin/purchaseperson/PurchasePerson";
+import { Step1 } from "./pages/register/formSteps/Step1";
+import { Step2 } from "./pages/register/formSteps/Step2";
+import { Step3 } from "./pages/register/formSteps/Step3";
+import { Step4 } from "./pages/register/formSteps/Step4";
+import { Step5 } from "./pages/register/formSteps/Step5";
 
 const AppRoutes: React.FC = () => {
   return (
-    <>
+    <AuthProvider>
       <Routes>
         {/* Auth */}
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        {/* home */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />}>
+          <Route index element={<Step1 />} />
+          <Route path="phone" element={<Step3 />} />
+          <Route path="otpverify" element={<Step4 />} />
+          <Route path="document" element={<Step5 />} />
+          <Route path="verifymail" element={<Step2 />} />
+        </Route>
+
+        {/* Home */}
         <Route path="/" element={<DashBoard />}>
-          <Route index element={<Home />}></Route>
-          <Route path="contact" element={<Contact />}></Route>
-          <Route path="about" element={<About />}></Route>
-          <Route path="services" element={<Services />}></Route>
-          <Route path="service1" element={<Service1 />}></Route>
-          <Route path="service2" element={<Service2 />}></Route>
-          <Route path="service3" element={<Service3 />}></Route>
-          <Route path="service4" element={<Service4 />}></Route>
-          <Route path="service5" element={<Service5 />}></Route>
-          <Route path="service6" element={<Service6 />}></Route>
+          <Route index element={<Home />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<About />} />
+          <Route path="services" element={<Services />} />
+          <Route path="service1" element={<Service1 />} />
+          <Route path="service2" element={<Service2 />} />
+          <Route path="service3" element={<Service3 />} />
+          <Route path="service4" element={<Service4 />} />
+          <Route path="service5" element={<Service5 />} />
+          <Route path="service6" element={<Service6 />} />
         </Route>
-        {/* inventory */}
+
+        {/* Inventory */}
         <Route path="/buy" element={<InventoryDashboard />}>
-          <Route path="inventory" element={<Inventory />}></Route>
+          <Route path="inventory" element={<Inventory />} />
+          <Route path="selectedInventory" element={<SelectedInventory />} />
+          <Route path="cart" element={<ProtectedRoute element={<Cart />} />} />
           <Route
-            path="selectedInventory"
-            element={<SelectedInventory />}
-          ></Route>
-          <Route path="cart" element={<Cart />}></Route>
-          <Route path="review" element={<ReviewOrder />}></Route>
-          <Route path="cookie" element={<Cookie />}></Route>
-          <Route path="support" element={<Support />}></Route>
-          <Route path="orders" element={<Orders />}></Route>
+            path="review"
+            element={<ProtectedRoute element={<ReviewOrder />} />}
+          />
+          <Route path="cookie" element={<Cookie />} />
+          <Route path="support" element={<Support />} />
           <Route
-            path="termsandCondition"
-            element={<TermsAndCondition />}
-          ></Route>
-          <Route path="profile" element={<Profile />}></Route>
-          <Route path="returnpolicy" element={<ReturnPolicy />}></Route>
-          <Route path="notification" element={<Notification />}></Route>
+            path="orders"
+            element={<ProtectedRoute element={<Orders />} />}
+          />
+          <Route path="termsandCondition" element={<TermsAndCondition />} />
+          <Route
+            path="profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route path="returnpolicy" element={<ReturnPolicy />} />
+          <Route path="notification" element={<Notification />} />
         </Route>
-        {/* other routes */}
-        <Route path="*" element={<PageNotFound />}></Route>
-        {/* Admin DashBoard */}
+
+        {/* Other Routes */}
+        <Route path="*" element={<PageNotFound />} />
+
+        {/* Admin Dashboard */}
         <Route path="/support" element={<AdminDashboard />}>
-          <Route path="overview" element={<Overview />}></Route>
-          <Route path="containers" element={<Containers />}></Route>
-          <Route path="orders" element={<AllOrders />}></Route>
-          <Route path="users" element={<Users />}></Route>
-          <Route path="chats" element={<AdminChat />}></Route>
-          <Route path="sellers" element={<Sellers />}></Route>
-          <Route path="salesteam" element={<SalesPerson />}></Route>
-          <Route path="purchaseteam" element={<PurchasePerson />}></Route>
+          <Route path="overview" element={<Overview />} />
+          <Route path="containers" element={<Containers />} />
+          <Route path="orders" element={<AllOrders />} />
+          <Route path="users" element={<Users />} />
+          <Route path="chats" element={<AdminChat />} />
+          <Route path="sellers" element={<Sellers />} />
+          <Route path="salesteam" element={<SalesPerson />} />
+          <Route path="purchaseteam" element={<PurchasePerson />} />
         </Route>
       </Routes>
-    </>
+    </AuthProvider>
   );
 };
 

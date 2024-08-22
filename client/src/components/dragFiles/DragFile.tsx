@@ -5,6 +5,8 @@ import {
   CloudUpload as CloudUploadIcon,
 } from "@mui/icons-material";
 import { WarningIcon } from "../svg/Tick";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setRegisterUser } from "../../store/slice/registeruserSlice";
 
 const allowedTypes = [
   "application/pdf",
@@ -21,6 +23,8 @@ const DragFile: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
+  const registerUser = useAppSelector((state) => state.RegisterUser);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Clean up the object URL when the component unmounts or file changes
@@ -38,6 +42,9 @@ const DragFile: React.FC = () => {
       if (allowedTypes.includes(selectedFile.type)) {
         if (selectedFile.size <= MAX_FILE_SIZE_BYTES) {
           setFile(selectedFile);
+          dispatch(
+            setRegisterUser({ ...registerUser, document: selectedFile })
+          );
           setError(null);
 
           // Generate a URL for the file and store it

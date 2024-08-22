@@ -31,7 +31,13 @@ app.use(express.json()); //to parse the incoming json(from req.body)
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    exposedHeaders: ["X-Auth-Token"],
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

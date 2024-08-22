@@ -5,9 +5,10 @@ import Logo from "/logo.svg";
 import cartIcon from "/cart.svg";
 import notificationIcon from "/notification.svg";
 import profileIcon from "/profile.svg";
+import { useAuth } from "../../utils/AuthContext";
 
 const ContainerHeader = () => {
-  const login = true;
+  const { user } = useAuth();
   const cartvalue = useAppSelector(
     (state) => state.ContainerCounts.TotalCartCount
   );
@@ -22,7 +23,7 @@ const ContainerHeader = () => {
             </Link>
           </div>
           <div className="flex gap-4 items-center">
-            {!login ? (
+            {!user ? (
               <>
                 <div className="lg:hidden">
                   <div className="btn btn-secondbtn ">
@@ -71,8 +72,8 @@ const ContainerHeader = () => {
             </div>
           </div>
         </div>
-        <div className="navbar-center hidden lg:flex self-center gap-10">
-          <ul className="menu menu-horizontal  px-1 text-sm">
+        <div className="navbar-center hidden lg:flex self-center ">
+          <ul className="menu menu-horizontal  px-1 text-sm ">
             <li>
               <Link
                 to={"/buy/inventory"}
@@ -98,7 +99,7 @@ const ContainerHeader = () => {
               </Link>
             </li>
           </ul>
-          {login ? (
+          {user ? (
             <div className="flex items-center gap-6">
               <Link
                 to={"/buy/cart"}
@@ -136,7 +137,7 @@ const ContainerHeader = () => {
               </Link>
             </div>
           ) : (
-            <div className="ms-10 self-center">
+            <div className="ms-10 self-center ">
               <a className="btn btn-second border-none">
                 <Link to={"/login"}>Login</Link>
               </a>

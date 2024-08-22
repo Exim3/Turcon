@@ -1,74 +1,169 @@
-import React, { useState, useEffect } from "react";
-import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
-import { FormGroup } from "../Register";
+import axios from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useAppSelector } from "../../../store/store";
 
-export const Step2: React.FC<{
-  handleBack: () => void;
-  handleNext: () => void;
-  handleChange: (name: string, value: string) => void;
-  setError: (error: string) => void;
-  error: string;
-  phone: string; // Ensure phone is a string
-}> = ({ handleBack, handleNext, handleChange, setError, error, phone }) => {
-  const [localPhone, setLocalPhone] = useState<string>(phone || ""); // Default to empty string
+export const Step2 = () => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [newEmail, setNewEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
+  const [resendTimer, setResendTimer] = useState<number>(0);
+  const [resendStartTime, setResendStartTime] = useState<number | null>(null);
+  const userId = localStorage.getItem("userId") || "";
+  const registerUser = useAppSelector((state) => state.RegisterUser);
+  const userString = localStorage.getItem("user");
+  let user: { email?: string } | null = null;
+
+  if (userString) {
+    try {
+      user = JSON.parse(userString);
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+    }
+  }
+
+  const handleResend = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup/resentmail",
+        { userId }
+      );
+      console.log(response.data, "resend");
+      setSuccess(
+        "Verification link has been sent to your provided email address. Please check your inbox to complete the process"
+      );
+
+      // Start the timer
+      setIsResendDisabled(true);
+      setResendStartTime(Date.now());
+    } catch (error) {
+      console.error("Error resending email:", error);
+      setError("Failed to resend verification email.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLocalPhone(phone);
-  }, [phone]);
+    let interval: NodeJS.Timeout;
 
-  const handlePhoneChange = (value: string | undefined) => {
-    setLocalPhone(value || ""); // Ensure value is a string
-    handleChange("phone", value || "");
+    if (isResendDisabled && resendStartTime) {
+      interval = setInterval(() => {
+        const elapsedTime = Date.now() - resendStartTime;
+        const remainingTime = Math.max(0, 30 * 1000 - elapsedTime);
+        setResendTimer(remainingTime);
+
+        if (remainingTime === 0) {
+          clearInterval(interval);
+          setIsResendDisabled(false);
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [isResendDisabled, resendStartTime]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setNewEmail(registerUser.email || user?.email || "");
   };
 
-  const validatePhoneNumber = () => {
-    if (!localPhone) {
-      setError("Phone number input should not be empty.");
-      return false;
-    }
-    setError("");
-    return true;
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewEmail(e.target.value);
   };
 
-  const handleNextClick = () => {
-    if (validatePhoneNumber()) {
-      handleNext();
+  const handleUpdateEmail = async () => {
+    if (!newEmail) {
+      setError("Email cannot be empty.");
+      return;
     }
+
+    try {
+      setIsEditing(true);
+
+      const response = await axios.put(
+        "http://localhost:5000/api/auth/signup/updatemail",
+        { userId, newEmail }
+      );
+      console.log(response.data, "update email");
+      setSuccess("Email updated successfully.");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, email: newEmail })
+      );
+    } catch (error) {
+      console.error("Error updating email:", error);
+      setError("Failed to update email.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Format remaining time in MM:SS
+  const formatTime = (timeMs: number) => {
+    const seconds = Math.floor(timeMs / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const displaySeconds = seconds % 60;
+    return `${minutes}:${displaySeconds.toString().padStart(2, "0")}`;
   };
 
   return (
-    <div className="body flex flex-col gap-4">
-      <div className="text-center text-2xl max-w-sm mx-auto">
-        Enter Your Phone Number to Continue
-      </div>
-      <div className="flex flex-col gap-2">
-        <FormGroup label="Phone Number">
-          <div className="flex items-center gap-2">
-            <PhoneInput
-              placeholder="Enter phone number"
-              name="phone"
-              value={localPhone}
-              onChange={handlePhoneChange}
-              defaultCountry="US"
-              className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded focus-within:outline-none"
-            />
-          </div>
-        </FormGroup>
-      </div>
-      {error && <p className="text-error text-xs">{error}</p>}
-
-      <div className="flex justify-center gap-6">
-        <button className="btn btn-secondbtn w-1/2" onClick={handleBack}>
-          Back
-        </button>
-        <button className="btn btn-prime w-1/2" onClick={handleNextClick}>
-          Next
-        </button>
-      </div>
+    <div className="body flex flex-col gap-4 text-center">
+      <div className="text-2xl font-semibold">Check Your Email</div>
       <div className="text-sm text-center max-w-sm mx-auto text-[#383434]">
-        A 4-digit OTP will be sent via SMS to verify your phone number.
+        To start using Turcon, please confirm your email address with the email
+        we sent to{" "}
       </div>
+      {isEditing ? (
+        <div className="flex flex-col gap-2">
+          <input
+            type="email"
+            value={newEmail}
+            onChange={handleInputChange}
+            className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded"
+            placeholder="Enter new email"
+          />
+          <button className="btn btn-prime" onClick={handleUpdateEmail}>
+            Update Email
+          </button>
+        </div>
+      ) : (
+        <p className="text-sm text-gray-600">
+          Registered Email: {registerUser.email || user?.email}
+          <span
+            className="text-[#9A0000] cursor-pointer"
+            onClick={handleEditClick}
+          >
+            {" "}
+            Edit
+          </span>
+        </p>
+      )}
+      {error && <p className="text-error text-xs">{error}</p>}
+      {success && <p className="text-success text-xs">{success}</p>}
+      <button
+        className={`font-semibold text-primary ${
+          isResendDisabled ? "cursor-not-allowed opacity-50" : ""
+        }`}
+        onClick={handleResend}
+        disabled={isResendDisabled || isLoading}
+      >
+        {isLoading ? (
+          <span className="loading loading-bars loading-sm  bg-primary"></span>
+        ) : (
+          "Resend"
+        )}
+        {isResendDisabled && (
+          <span className="text-red-600">
+            {""}
+            {formatTime(resendTimer)}{" "}
+          </span>
+        )}
+      </button>
     </div>
   );
 };

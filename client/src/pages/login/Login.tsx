@@ -5,6 +5,7 @@ import { BackIcon } from "../../components/svg/Tick";
 import { useBack } from "../../utils/useBack";
 import Logo from "/logo.svg";
 import axios from "axios";
+import { useAuth } from "../../utils/AuthContext";
 
 type LoginData = {
   username: string;
@@ -20,8 +21,8 @@ const Login: React.FC = () => {
   });
 
   const goback = useBack();
-
   const navigate = useNavigate();
+  const { login } = useAuth(); // Get login function from context
 
   const ToggleEye = () => {
     setIsEyeOpen((prev) => !prev);
@@ -34,23 +35,54 @@ const Login: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const result = await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/api/auth/login",
         loginData
       );
-      console.log(result);
+
+      // Access token from the response headers
+      const token = response.headers["x-auth-token"];
+
+      if (token) {
+        // Use context to handle token
+        login(token);
+        console.log("Token saved:", localStorage.getItem("jwt"));
+        // Navigate to the desired page
+        navigate("/buy/inventory");
+      } else {
+        console.error("Token not received");
+      }
     } catch (error: any) {
-      console.log("error :", error);
-      console.log("message :", error.response?.data?.error);
-      const registerError = error.response?.data?.error;
+      console.error("Login error:", error);
+      console.error("Error message:", error.response?.data?.error);
+
+      const registerError = error.response?.data?.error; // Error for username or other issues
       const goToRegister = error.response?.data?.verify;
+      const userId = error.response?.data?.userId;
+
       if (registerError) {
         setError(registerError);
       }
+      if (userId) {
+        localStorage.setItem("userId", userId);
+      }
       if (goToRegister) {
-        const currentStep = error.response?.data?.step;
-        navigate("/register");
-        localStorage.setItem("registerStep", currentStep);
+        const directTo = error.response?.data?.step;
+
+        switch (directTo) {
+          case "phone":
+            navigate("/register/phone");
+            break; // Ensure to break out of the switch case
+
+          case "document":
+            navigate("/register/document");
+            break; // Ensure to break out of the switch case
+
+          default:
+            console.log("Unknown step:", directTo);
+            break; // Handle unexpected values
+        }
+        return;
       }
     }
   };
@@ -121,7 +153,7 @@ const Login: React.FC = () => {
         {error && <p className="text-error text-xs">{error}</p>}
         <div className="mt-6">
           <button
-            className="btn btn-prime w-full py-2 px-4 text-white "
+            className="btn btn-prime w-full py-2 px-4 text-white"
             onClick={handleSubmit}
           >
             Login

@@ -11,7 +11,7 @@ type User = {
   companyAddress?: string;
   country?: string;
   website?: string;
-  document?: string;
+  document?: File | null;
 };
 
 const initialState: User = {
@@ -25,7 +25,7 @@ const initialState: User = {
   companyAddress: "",
   country: "",
   website: "",
-  document: "",
+  document: null,
 };
 
 export const registerUser = createSlice({
@@ -35,9 +35,12 @@ export const registerUser = createSlice({
     setRegisterUser(state, action: PayloadAction<User>) {
       return { ...state, ...action.payload };
     },
+    deleteRegisterUser(state) {
+      return state;
+    },
   },
 });
 
-export const { setRegisterUser } = registerUser.actions;
+export const { setRegisterUser, deleteRegisterUser } = registerUser.actions;
 
 export default registerUser.reducer;

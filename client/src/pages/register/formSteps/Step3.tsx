@@ -1,122 +1,65 @@
-import React, { useState, useRef } from "react";
-import "../style.css";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import { FormGroup } from "../Register";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { setRegisterUser } from "../../../store/slice/registeruserSlice";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
-export const Step3: React.FC<{
-  handleBack: () => void;
-  handleNext: () => void;
-}> = ({ handleBack, handleNext }) => {
-  // State to store values of OTP input fields
-  const [otpValues, setOtpValues] = useState<string[]>(Array(4).fill(""));
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  console.log(otpValues, "otp");
-  console.log(otpValues.join(""));
+export const Step3 = () => {
+  const [error, setError] = useState("");
+  const registerUser = useAppSelector((state) => state.RegisterUser);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const { value } = event.target;
+  const [localPhone, setLocalPhone] = useState<string>(
+    registerUser.phone || ""
+  );
 
-    // Allow only one digit
-    if (/^\d$/.test(value) || value === "") {
-      const newOtpValues = [...otpValues];
-      newOtpValues[index] = value;
-      setOtpValues(newOtpValues);
-
-      // Move to the next input if a digit is entered
-      if (value.length === 1 && index < inputRefs.current.length - 1) {
-        inputRefs.current[index + 1]?.focus();
-      }
-    } else {
-      // Clear the input if not a valid digit
-      event.target.value = "";
-    }
+  const handlePhoneChange = (value: string | undefined) => {
+    setLocalPhone(value || ""); // Ensure value is a string
+    handleInputChange("phone", value || "");
   };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    // Move to the previous input on backspace if the current input is empty
-    if (
-      event.key === "Backspace" &&
-      index > 0 &&
-      event.currentTarget.value === ""
-    ) {
-      inputRefs.current[index - 1]?.focus();
-    }
+  const handleInputChange = (name: string, value: string) => {
+    dispatch(setRegisterUser({ ...registerUser, [name]: value }));
   };
-  // Combine all OTP values into a single string
-  const getOtpString = () => otpValues.join("");
-
-  const verifyOtp = () => {
-    // Use the getOtpString function to get the concatenated OTP string
-    const otpString = getOtpString();
-    console.log("OTP String:", otpString); // Output OTP string or handle as needed
-    handleNext();
+  const handleNextClick = () => {
+    if (!registerUser.phone) {
+      setError("Phone number input should not be empty.");
+      return;
+    }
+    navigate("/register/otpverify");
   };
 
   return (
-    <div className="body flex flex-col gap-4 p-4">
-      <div className="text-center text-2xl font-semibold">OTP Verification</div>
-      <div className="flex-col flex gap-2 items-center">
-        <p className="text-sm text-gray-600">
-          Please enter the OTP sent to your
-        </p>
-        <p className="text-sm text-gray-600">
-          registered number (+91 9840334503)
-          <span className="text-[#9A0000] cursor-pointer" onClick={handleBack}>
-            Edit
-          </span>
-        </p>
-
-        <div className="flex gap-2">
-          {Array.from({ length: 4 }, (_, index) => (
-            <input
-              key={index}
-              type="text"
-              maxLength={1}
-              className="otp-input"
-              onChange={(e) => handleChange(e, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              ref={(el) => (inputRefs.current[index] = el)}
-              aria-label={`OTP digit ${index + 1}`}
-              inputMode="numeric"
-              pattern="[0-9]*"
+    <div className="body flex flex-col gap-4">
+      <div className="text-center text-2xl max-w-sm mx-auto">
+        Enter Your Phone Number to Continue
+      </div>
+      <div className="flex flex-col gap-2">
+        <FormGroup label="Phone Number">
+          <div className="flex items-center gap-2">
+            <PhoneInput
+              placeholder="Enter phone number"
+              name="phone"
+              value={localPhone}
+              onChange={handlePhoneChange}
+              defaultCountry="US"
+              className="input input-bordered w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none rounded focus-within:outline-none"
             />
-          ))}
-        </div>
+          </div>
+        </FormGroup>
       </div>
-      <div className="text-center">
-        <p className="text-sm text-gray-600">
-          Didn't receive the OTP?
-          <span
-            className="text-[#008FE8] font-semibold cursor-pointer"
-            onClick={() => alert("Resend OTP clicked")}
-          >
-            Resend OTP
-          </span>
-        </p>
+      {error && <p className="text-error text-xs">{error}</p>}
+
+      <div className="flex justify-center gap-6">
+        <button className="btn btn-prime w-full" onClick={handleNextClick}>
+          Next
+        </button>
       </div>
-      <div className="flex justify-center gap-6 ">
-        <button
-          className="btn btn-secondbtn w-1/2 "
-          onClick={() => {
-            handleBack();
-          }}
-          aria-label="Verify OTP"
-        >
-          Back
-        </button>
-        <button
-          className="btn btn-prime w-1/2 "
-          onClick={() => {
-            verifyOtp();
-          }}
-          aria-label="Verify OTP"
-        >
-          Verify
-        </button>
+      <div className="text-sm text-center max-w-sm mx-auto text-[#383434]">
+        A 4-digit OTP will be sent via SMS to verify your phone number.
       </div>
     </div>
   );

@@ -1,51 +1,164 @@
-import { useCountrycode } from "../../../utils/useCountryCode";
-import { FormGroup } from "../Register";
+import React, { useState, useRef } from "react";
+import "../style.css";
+import { useAppSelector } from "../../../store/store";
+import { useBack } from "../../../utils/useBack";
+import { CustomSuccessToast } from "../../../utils/CustomToast";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
-const countries = useCountrycode();
+export const Step4 = () => {
+  // State to store values of OTP input fields
+  const [otpValues, setOtpValues] = useState<string[]>(Array(4).fill(""));
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const registerUser = useAppSelector((state) => state.RegisterUser);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-export const Step4: React.FC<{
-  handleBack: () => void;
-  handleNext: () => void;
-}> = ({ handleNext }) => (
-  <div className="body flex flex-col gap-4">
-    <div className="text-center text-2xl">Company Details</div>
-    <div className="flex-col flex gap-2">
-      <FormGroup label="Company Name">
-        <input
-          type="text"
-          placeholder="Enter Your Company Name"
-          className="input input-bordered rounded w-full placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
-        />
-      </FormGroup>
-      <FormGroup label="Company Address">
-        <textarea
-          className="textarea textarea-info rounded placeholder:text-sm  w-full mx-auto max-w-md md:max-w-none  border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none "
-          placeholder="Enter Your Company Address"
-        ></textarea>
-      </FormGroup>
-      <FormGroup label="Country">
-        <select className="select select-primary w-full rounded mx-auto max-w-sm  md:max-w-none border-[#DFE1E6]  focus:outline-none active:border-[#11A3FF] hover:border-[#11A3FF] focus:border-[#11A3FF] text-[#7A869A]">
-          <option disabled selected>
-            Select Country
-          </option>
-          {countries.map((country) => (
-            <option value={country.country}>{country.country}</option>
+  const [error, setError] = useState("");
+
+  const goback = useBack();
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    goback();
+  };
+  const verifyOtp = () => {
+    // Use the getOtpString function to get the concatenated OTP string
+    const otpString = getOtpString();
+    //verify process
+    console.log("OTP String:", otpString);
+    UpdatePhone();
+  };
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { value } = event.target;
+
+    // Allow only one digit
+    if (/^\d$/.test(value) || value === "") {
+      const newOtpValues = [...otpValues];
+      newOtpValues[index] = value;
+      setOtpValues(newOtpValues);
+
+      // Move to the next input if a digit is entered
+      if (value.length === 1 && index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1]?.focus();
+      }
+    } else {
+      // Clear the input if not a valid digit
+      event.target.value = "";
+    }
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    // Move to the previous input on backspace if the current input is empty
+    if (
+      event.key === "Backspace" &&
+      index > 0 &&
+      event.currentTarget.value === ""
+    ) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+  // Combine all OTP values into a single string
+  const getOtpString = () => otpValues.join("");
+  const UpdatePhone = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      setError("user not found login again with your registered details");
+      return;
+    }
+    try {
+      setIsLoading(true);
+
+      const updatePhone = await axios.put(
+        "http://localhost:5000/api/auth/signup/updatephone",
+        { phone: registerUser.phone },
+        {
+          params: { userId: userId },
+        }
+      );
+      const msg = updatePhone.data?.message;
+      toast(<CustomSuccessToast message={msg} />);
+      navigate("/register/document");
+    } catch (err) {
+      console.log(err, "error");
+      const axiosError = err?.response?.data?.error;
+      setError(axiosError);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="body flex flex-col gap-4 p-4">
+      <div className="text-center text-2xl font-semibold">OTP Verification</div>
+      <div className="flex-col flex gap-2 items-center">
+        <p className="text-sm text-gray-600">
+          Please enter the OTP sent to your
+        </p>
+        <p className="text-sm text-gray-600">
+          Registered Number : {registerUser.phone}
+          <span className="text-[#9A0000] cursor-pointer" onClick={handleBack}>
+            {" "}
+            Edit
+          </span>
+        </p>
+
+        <div className="flex gap-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <input
+              key={index}
+              type="text"
+              maxLength={1}
+              className="otp-input"
+              onChange={(e) => handleChange(e, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              ref={(el) => (inputRefs.current[index] = el)}
+              aria-label={`OTP digit ${index + 1}`}
+              inputMode="numeric"
+              pattern="[0-9]*"
+            />
           ))}
-        </select>
-      </FormGroup>
+        </div>
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-600">
+          Didn't receive the OTP?
+          <span
+            className="text-[#008FE8] font-semibold cursor-pointer"
+            onClick={() =>
+              toast(<CustomSuccessToast message={"Otp has been sent"} />)
+            }
+          >
+            {""} Resend OTP
+          </span>
+        </p>
+      </div>
+      {error && <p className="text-error text-center text-xs">{error}</p>}
 
-      <FormGroup label="Website(Optional)">
-        <input
-          type="text"
-          placeholder="Enter Your website url"
-          className="input input-bordered w-full rounded placeholder:text-sm border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
-        />
-      </FormGroup>
-    </div>
-    <div className="flex justify-center gap-6 ">
-      <div className="btn btn-prime w-1/2 " onClick={handleNext}>
-        Next
+      <div className="flex justify-center gap-6 ">
+        <button
+          className="btn btn-prime w-full "
+          onClick={() => {
+            verifyOtp();
+          }}
+          aria-label="Verify OTP"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <span className="loading loading-bars loading-sm  bg-primary"></span>
+          ) : (
+            "Verify"
+          )}
+        </button>
       </div>
     </div>
-  </div>
-);
+  );
+};

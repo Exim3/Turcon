@@ -42,8 +42,12 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [login, setIsLogin] = useState<boolean>(false);
 
-  const login = true;
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    token && setIsLogin(true);
+  }, []);
 
   const { selectedCountries, selectedPorts } = useAppSelector(
     (state) => state.CountryFilter

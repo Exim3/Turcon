@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Dp from "/profileDp.png";
 import editIcon from "/edit.svg";
+import { useAuth } from "../../utils/AuthContext";
+import axios from "axios";
 
 // Define the type for form data
-interface FormData {
+interface UserData {
   fullName: string;
-  mobileNumber: string;
+  phone: string;
   email: string;
   companyName: string;
-  address: string;
+  companyAddress: string;
   country: string;
   telPhone: string;
 }
@@ -17,28 +19,47 @@ interface FormData {
 const Profile: React.FC = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "Ezhil Kumar",
-    mobileNumber: "+91 9585808045",
-    email: "ezhilkumar18@gmail.com",
-    companyName: "TURCON MARITIME FZE",
-    address:
-      "SM - OFFICE - B1 - CENTER F002 OPPOSITE TO AJMAN PORT AND CUSTOMS AJMAN.",
-    country: "UNITED ARAB EMIRATES",
-    telPhone: "+444 9556 5466",
+  const [userData, setUserData] = useState<UserData>({
+    fullName: "",
+    phone: "",
+    email: "",
+    companyName: "",
+    companyAddress: "",
+    country: "",
+    telPhone: "",
   });
-
   const [passwordData, setPasswordData] = useState({
     current: "",
     newPassword: "",
     confirmPassword: "",
   });
+  const { logout, user } = useAuth();
+  const userId = user?.id;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userId) {
+      getUser();
+    }
+  }, [userId]);
+
+  const getUser = async () => {
+    try {
+      const result = await axios.get("http://localhost:5000/api/users/", {
+        params: { userId },
+      });
+      console.log(result, "result");
+      setUserData(result.data);
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -53,7 +74,7 @@ const Profile: React.FC = () => {
   };
 
   const handleSaveProfile = () => {
-    if (!formData.email.includes("@")) {
+    if (!userData.email.includes("@")) {
       alert("Please enter a valid email address.");
       return;
     }
@@ -72,13 +93,18 @@ const Profile: React.FC = () => {
 
   const fields = [
     { label: "Full Name", name: "fullName", type: "text" },
-    { label: "Mobile Number", name: "mobileNumber", type: "text" },
+    { label: "Mobile Number", name: "phone", type: "text" },
     { label: "Email", name: "email", type: "email" },
     { label: "Company Name", name: "companyName", type: "text" },
-    { label: "Address", name: "address", type: "textarea" },
+    { label: "Address", name: "companyAddress", type: "textarea" },
     { label: "Country", name: "country", type: "text" },
     { label: "Tel Phone", name: "telPhone", type: "text" },
   ];
+
+  const LogOut = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="bg-white">
@@ -100,9 +126,15 @@ const Profile: React.FC = () => {
                 <img src={Dp} alt="Profile Picture" />
               </div>
               <div className="flex flex-col justify-between md:gap-2">
-                <h3 className="text-lg md:text-2xl">Ezhil Kumar G</h3>
-                <h4 className="text-sm md:text-xl">@ezhilkumar18</h4>
-                <p className="text-xs md:text-sm">TURCON MARITIME FZE</p>
+                <h3 className="text-lg md:text-2xl">
+                  {userData.fullName || "Name"}
+                </h3>
+                <h4 className="text-sm md:text-xl">
+                  @{userData.email.split("@")[0]}
+                </h4>
+                <p className="text-xs md:text-sm">
+                  {userData.companyName || "Company"}
+                </p>
               </div>
             </div>
             <div className="flex flex-col justify-evenly text-[#655F5F] items-end text-xs md:text-sm">
@@ -157,17 +189,19 @@ const Profile: React.FC = () => {
                   </label>
                   {!editProfile ? (
                     field.type === "textarea" ? (
-                      <p className="text-[#221F1F]">{formData.address}</p>
+                      <p className="text-[#221F1F]">
+                        {userData[field.name as keyof UserData]}
+                      </p>
                     ) : (
                       <p className="text-[#221F1F]">
-                        {formData[field.name as keyof FormData]}
+                        {userData[field.name as keyof UserData]}
                       </p>
                     )
                   ) : field.type === "textarea" ? (
                     <textarea
                       id={field.name}
                       name={field.name}
-                      value={formData.address}
+                      value={userData[field.name as keyof UserData]}
                       onChange={handleChange}
                       className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                       rows={4}
@@ -177,7 +211,7 @@ const Profile: React.FC = () => {
                       id={field.name}
                       name={field.name}
                       type={field.type}
-                      value={formData[field.name as keyof FormData]}
+                      value={userData[field.name as keyof UserData]}
                       onChange={handleChange}
                       className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                     />
@@ -231,7 +265,7 @@ const Profile: React.FC = () => {
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <label
-                      htmlFor="CurrentPassword"
+                      htmlFor="current"
                       className="md:min-w-[200px] text-[#655F5F]"
                     >
                       Current Password
@@ -249,13 +283,13 @@ const Profile: React.FC = () => {
 
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <label
-                      htmlFor="Password"
+                      htmlFor="newPassword"
                       className="md:min-w-[200px] text-[#655F5F]"
                     >
                       New Password
                     </label>
                     <input
-                      id="password"
+                      id="newPassword"
                       name="newPassword"
                       type="password"
                       placeholder="Enter New Password"
@@ -266,16 +300,16 @@ const Profile: React.FC = () => {
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <label
-                      htmlFor="ConfirmPassword"
+                      htmlFor="confirmPassword"
                       className="md:min-w-[200px] text-[#655F5F]"
                     >
                       Confirm Password
                     </label>
                     <input
-                      id="confirmpassword"
+                      id="confirmPassword"
                       name="confirmPassword"
                       type="password"
-                      placeholder="Enter Confirm Password "
+                      placeholder="Enter Confirm Password"
                       value={passwordData.confirmPassword}
                       onChange={handlePasswordChange}
                       className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
@@ -303,7 +337,9 @@ const Profile: React.FC = () => {
           <div className="text-end flex flex-col gap-3">
             <p>Do you wish to log out?</p>
             <div className="flex justify-end">
-              <button className="btn btn-second">Logout</button>
+              <button className="btn btn-second" onClick={LogOut}>
+                Logout
+              </button>
             </div>
           </div>
         </div>

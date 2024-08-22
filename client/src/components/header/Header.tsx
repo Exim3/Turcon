@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import SideBar from "../sideBar/SideBar";
 import Logo from "/logo.svg";
+import { useAuth } from "../../utils/AuthContext";
+import profileIcon from "/profile.svg";
 
 const Header = () => {
+  const { user } = useAuth();
   return (
     <>
       <div className="flex bg-base-100 justify-between mx-auto  container min-h-20  ">
@@ -13,22 +16,24 @@ const Header = () => {
               <img src={Logo} alt="turconLogo" />
             </Link>
           </div>
-          <div className="flex gap-4">
-            <div className="lg:hidden">
-              <div className="btn btn-secondbtn ">
-                <Link to={"/login"}>Login</Link>
+          {!user && (
+            <div className="flex gap-4">
+              <div className="lg:hidden">
+                <div className="btn btn-secondbtn ">
+                  <Link to={"/login"}>Login</Link>
+                </div>
               </div>
-            </div>
-            <div className="ms-2 hidden md:block lg:hidden">
-              <div className="btn btn-prime ">
-                <Link to={"/register"}>Register</Link>
+              <div className="ms-2 hidden md:block lg:hidden">
+                <div className="btn btn-prime ">
+                  <Link to={"/register"}>Register</Link>
+                </div>
               </div>
-            </div>
 
-            <div className="lg:hidden">
-              <SideBar />
+              <div className="lg:hidden">
+                <SideBar />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="navbar-center hidden lg:flex self-center  ">
           <ul className="menu menu-horizontal  px-1 text-sm">
@@ -93,14 +98,27 @@ const Header = () => {
               </Link>
             </li>
           </ul>
-          <div className="ms-10 self-center">
-            <Link to={"/login"} className="btn btn-second border-none">
-              Login
-            </Link>
-            <Link to={"/register"} className="btn ms-6 btn-prime">
-              Register
-            </Link>
-          </div>
+          {user ? (
+            <div className="flex items-center gap-6">
+              <Link
+                to={"/buy/profile"}
+                className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3]   rounded-md"
+              >
+                <div>
+                  <img src={profileIcon} alt="profile" className="h-5 w-5" />
+                </div>
+              </Link>
+            </div>
+          ) : (
+            <div className="ms-10 self-center">
+              <a className="btn btn-second border-none">
+                <Link to={"/login"}>Login</Link>
+              </a>
+              <a className="btn ms-6 btn-prime">
+                <Link to={"/register"}>Register</Link>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </>
