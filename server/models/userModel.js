@@ -61,6 +61,9 @@ const userSchema = new mongoose.Schema(
     profileImage: {
       type: String,
     },
+    telephone: {
+      type: String,
+    },
   },
   //createdAt ,updatedAt
   { timestamps: true }

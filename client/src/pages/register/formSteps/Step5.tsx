@@ -8,15 +8,17 @@ import {
   deleteRegisterUser,
   setRegisterUser,
 } from "../../../store/slice/registeruserSlice";
-import axios from "axios";
+
 import { CustomSuccessToast } from "../../../utils/CustomToast";
 import { toast } from "react-toastify";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export const Step5 = () => {
   const countries = useCountrycode();
   const [isnext, setIsNext] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
 
   const registerUser = useAppSelector((state) => state.RegisterUser);
 
@@ -35,14 +37,18 @@ export const Step5 = () => {
   const handleBack = () => {
     setIsNext(true);
   };
+  const handleFileChange = (newFile: File | null) => {
+    setFile(newFile);
+  };
   const handleSubmit = async () => {
-    if (!registerUser.document) {
+    if (!file) {
       setError("Please upload a document.");
       return;
     }
+    setError("");
 
     const formData = new FormData();
-    formData.append("document", registerUser.document);
+    formData.append("document", file);
     formData.append("companyName", registerUser.companyName || "");
     formData.append("companyAddress", registerUser.companyAddress || "");
     formData.append("website", registerUser.website || "");
@@ -53,11 +59,12 @@ export const Step5 = () => {
       setError("User ID not found.");
       return;
     }
+    setError("");
 
     setIsLoading(true);
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/auth/signup/updatedocument?userId=${userId}`,
+      const response = await axiosInstance.put(
+        `/api/auth/signup/updatedocument?userId=${userId}`,
         formData,
         {
           headers: {
@@ -67,13 +74,25 @@ export const Step5 = () => {
       );
       toast(<CustomSuccessToast message={response.data.message} />);
       dispatch(deleteRegisterUser());
+      localStorage.removeItem("userId");
+      const userString = localStorage.getItem("user");
+      let user;
+      if (userString) {
+        try {
+          user = JSON.parse(userString);
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+        }
+      }
+      localStorage.setItem("register", user?.fullName || "true");
       navigate("/");
-    } catch (err) {
-      console.log(err, "error");
+    } catch (err: any) {
+      console.error(err, "error");
       const axiosError = err?.response?.data?.error || "An error occurred.";
       setError(axiosError);
     } finally {
       setIsLoading(false);
+      setError("");
     }
   };
   const dispatch = useAppDispatch();
@@ -88,41 +107,6 @@ export const Step5 = () => {
     const { name, value } = e.target;
     dispatch(setRegisterUser({ ...registerUser, [name]: value }));
   };
-  console.log(registerUser.document, "docs");
-
-  // const UpdateDocument = async () => {
-  //   const userId = localStorage.getItem("userId");
-  //   if (!userId) {
-  //     setError("user not found login again with your registered details");
-  //     return;
-  //   }
-  //   try {
-  //     setIsLoading(true);
-
-  //     const updatedocument = await axios.put(
-  //       "http://localhost:5000/api/auth/signup/updatedocument",
-  //       {
-  //         companyName: registerUser.companyName,
-  //         companyAddress: registerUser.companyAddress,
-  //         website: registerUser.website,
-  //         country: registerUser.country,
-  //       },
-  //       {
-  //         params: { userId: userId },
-  //       }
-  //     );
-  //     const msg = updatedocument.data?.message;
-  //     toast(<CustomSuccessToast message={msg} />);
-  //     navigate("/register/document");
-  //   } catch (err) {
-  //     console.log(err, "error");
-  //     const axiosError = err?.response?.data?.error;
-  //     setError(axiosError);
-  //     return;
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -193,7 +177,7 @@ export const Step5 = () => {
             <div className="text-md font-semibold text-center">
               Upload Company Registration or Incorporation or Tax Certificate
             </div>
-            <DragFile />
+            <DragFile onFileChange={handleFileChange} />
           </div>
           {error && <p className="text-error text-xs">{error}</p>}
 

@@ -4,8 +4,9 @@ import EyeIcon, { EyeCloseIcon } from "../../components/svg/Eye";
 import { BackIcon } from "../../components/svg/Tick";
 import { useBack } from "../../utils/useBack";
 import Logo from "/logo.svg";
-import axios from "axios";
+
 import { useAuth } from "../../utils/AuthContext";
+import axiosInstance from "../../utils/axiosInstance";
 
 type LoginData = {
   username: string;
@@ -35,10 +36,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        loginData
-      );
+      const response = await axiosInstance.post("/api/auth/login", loginData);
 
       // Access token from the response headers
       const token = response.headers["x-auth-token"];
@@ -46,7 +44,7 @@ const Login: React.FC = () => {
       if (token) {
         // Use context to handle token
         login(token);
-        console.log("Token saved:", localStorage.getItem("jwt"));
+
         // Navigate to the desired page
         navigate("/buy/inventory");
       } else {
@@ -70,6 +68,10 @@ const Login: React.FC = () => {
         const directTo = error.response?.data?.step;
 
         switch (directTo) {
+          case "email":
+            navigate("/register/verifymail");
+            break; // Ensure to break out of the switch case
+
           case "phone":
             navigate("/register/phone");
             break; // Ensure to break out of the switch case
@@ -79,7 +81,6 @@ const Login: React.FC = () => {
             break; // Ensure to break out of the switch case
 
           default:
-            console.log("Unknown step:", directTo);
             break; // Handle unexpected values
         }
         return;

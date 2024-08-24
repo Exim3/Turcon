@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
@@ -9,6 +8,7 @@ import locationIcon from "/location.svg";
 import containerImg from "/cartContainer.png";
 import deleteIcon from "/delete.svg";
 import infoIcon from "/info.svg";
+import axiosInstance from "../../utils/axiosInstance";
 
 export const UsFormat = (amount: number) => {
   const formattedAmount = new Intl.NumberFormat("en-US", {
@@ -182,17 +182,13 @@ const Cart: React.FC = () => {
 
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/cart/getcart`,
-        {
-          params: { userId },
-        }
-      );
+      const response = await axiosInstance.get(`/api/cart/getcart`, {
+        params: { userId },
+      });
       setItems(response.data);
-      console.log(response.data.length, "datalength");
+
       dispatch(SetCartCount(response.data.length));
 
-      console.log(response.data, "fetchedcart");
       const initialCounts = response.data.reduce(
         (acc: { [key: string]: number }, item: any) => {
           acc[item._id] = item.itemcount;
@@ -206,9 +202,8 @@ const Cart: React.FC = () => {
     }
   };
   const updateCart = async (_id: string, newQuantity: number) => {
-    console.log(_id, "updatecartId");
     try {
-      await axios.put(`http://localhost:5000/api/cart/updatecart`, null, {
+      await axiosInstance.put(`/api/cart/updatecart`, null, {
         params: {
           quantity: newQuantity,
           itemId: _id,
@@ -243,7 +238,7 @@ const Cart: React.FC = () => {
 
   const deleteItem = async (_id: string, userId: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/deletecart`, {
+      await axiosInstance.delete(`/api/cart/deletecart`, {
         params: {
           userId,
           itemId: _id,

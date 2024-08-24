@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setselectedPort } from "../../store/slice/inventory";
 import Select, { SingleValue, MultiValue, GroupBase } from "react-select";
-import axios from "axios";
+
+import axiosInstance from "../../utils/axiosInstance";
 
 type Option = {
   label: string;
@@ -32,14 +33,11 @@ const SelectPortDropdown: React.FC<SelectPortDropdownProps> = ({ multi }) => {
 
   const fetchPort = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost:5000/api/containers/getcountry",
-        {
-          params: {
-            country: selectedCountry.label,
-          },
-        }
-      );
+      const result = await axiosInstance.get("/api/containers/getcountry", {
+        params: {
+          country: selectedCountry.label,
+        },
+      });
       setData(result.data.ports);
     } catch (error) {
       console.error("Error fetching ports:", error);

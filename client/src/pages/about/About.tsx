@@ -159,10 +159,8 @@ const About: React.FC = () => {
                 </label>
 
                 <select className="select w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:border-[#11A3FF] ring-0 focus:outline-none">
-                  <option disabled selected>
-                    Select Department
-                  </option>
-                  <option className="">Sales</option>
+                  <option defaultValue={""}>Select Department</option>
+                  <option>Sales</option>
                   <option>Support</option>
                   <option>Enquiry</option>
                 </select>

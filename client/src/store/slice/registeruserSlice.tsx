@@ -11,7 +11,6 @@ type User = {
   companyAddress?: string;
   country?: string;
   website?: string;
-  document?: File | null;
 };
 
 const initialState: User = {
@@ -25,7 +24,6 @@ const initialState: User = {
   companyAddress: "",
   country: "",
   website: "",
-  document: null,
 };
 
 export const registerUser = createSlice({

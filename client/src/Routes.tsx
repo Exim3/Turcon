@@ -43,6 +43,7 @@ import { Step2 } from "./pages/register/formSteps/Step2";
 import { Step3 } from "./pages/register/formSteps/Step3";
 import { Step4 } from "./pages/register/formSteps/Step4";
 import { Step5 } from "./pages/register/formSteps/Step5";
+import UnAuthorization from "./pages/unauthorization/UnAuthorization";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -52,12 +53,14 @@ const AppRoutes: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />}>
           <Route index element={<Step1 />} />
+          <Route path="verifymail" element={<Step2 />} />
           <Route path="phone" element={<Step3 />} />
           <Route path="otpverify" element={<Step4 />} />
           <Route path="document" element={<Step5 />} />
-          <Route path="verifymail" element={<Step2 />} />
         </Route>
+        {/* UnAuthorizaion page */}
 
+        <Route path="/unauthorized" element={<UnAuthorization />} />
         {/* Home */}
         <Route path="/" element={<DashBoard />}>
           <Route index element={<Home />} />

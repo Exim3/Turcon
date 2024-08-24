@@ -22,7 +22,6 @@ const Inventory: React.FC = () => {
   const ContainerCount = useAppSelector(
     (state) => state.ContainerCounts.TotalInventoryContainer
   );
-  console.log(ContainerCount);
 
   const ToggleFilter = () => {
     setToggleFilter((prev) => !prev);

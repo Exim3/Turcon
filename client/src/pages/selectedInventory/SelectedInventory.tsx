@@ -18,7 +18,6 @@ const SelectedInventory: React.FC = () => {
   const ContainerCounts = useAppSelector(
     (state) => state.ContainerCounts.TotalSelectedContainer
   );
-  console.log(ContainerCounts, "counts");
 
   const handleBack = useBack();
 

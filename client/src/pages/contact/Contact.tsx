@@ -25,24 +25,24 @@ const Contact = () => {
             help you get the best price. Contact us today!
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
+            <div className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
                 <img src={phoneIcon} alt="phone" />
               </div>
               <a href="tel:+971564507734">+971564507734</a>
-            </p>
-            <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
+            </div>
+            <div className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
                 <img src={phoneIcon} alt="phone" />
               </div>
               <a href="tel:+971564507734">+971564507734</a>
-            </p>
-            <p className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
+            </div>
+            <div className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
                 <img src={emailIcon} alt="email" />
               </div>
               <a href="mailto:sales@turcon.in">sales@turcon.in</a>
-            </p>
+            </div>
           </div>
         </div>
       </div>

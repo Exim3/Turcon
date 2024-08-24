@@ -1,2 +1,15 @@
 .txt
 .env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore environment variable files
+**/*.env
+
+# Ignore log files
+*.log

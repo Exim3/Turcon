@@ -1,6 +1,6 @@
-import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppSelector } from "../../../store/store";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export const Step2 = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -28,15 +28,11 @@ export const Step2 = () => {
     try {
       setIsLoading(true);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup/resentmail",
-        { userId }
-      );
-      console.log(response.data, "resend");
-      setSuccess(
-        "Verification link has been sent to your provided email address. Please check your inbox to complete the process"
-      );
-
+      const response = await axiosInstance.post("/api/auth/signup/resentmail", {
+        userId,
+      });
+      const msg = response.data?.message;
+      if (msg) setSuccess(msg);
       // Start the timer
       setIsResendDisabled(true);
       setResendStartTime(Date.now());
@@ -85,12 +81,13 @@ export const Step2 = () => {
     try {
       setIsEditing(true);
 
-      const response = await axios.put(
-        "http://localhost:5000/api/auth/signup/updatemail",
-        { userId, newEmail }
-      );
-      console.log(response.data, "update email");
-      setSuccess("Email updated successfully.");
+      const response = await axiosInstance.put("/api/auth/signup/updatemail", {
+        userId,
+        newEmail,
+      });
+
+      const msg = response.data?.message;
+      if (msg) setSuccess(msg);
       localStorage.setItem(
         "user",
         JSON.stringify({ ...user, email: newEmail })

@@ -9,7 +9,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CustomSuccessToast } from "../../../utils/CustomToast";
-import axios from "axios";
+
+import axiosInstance from "../../../utils/axiosInstance";
 
 export const Step1 = () => {
   const [isEyeOpen, setIsEyeOpen] = useState(false);
@@ -47,10 +48,10 @@ export const Step1 = () => {
       setError("Please accept the terms and conditions to proceed.");
       return;
     }
-
+    setError("");
     try {
       setIsLoading(true);
-      const result = await axios.post("http://localhost:5000/api/auth/signup", {
+      const result = await axiosInstance.post("/api/auth/signup", {
         fullName,
         username,
         email,

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { isTokenExpired } from "./authUtils";
 
 interface DecodedToken {
   id: string;
@@ -22,29 +23,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.getItem("jwt") || null
   );
   const [user, setUser] = useState<DecodedToken | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (authToken) {
-      try {
-        const decoded: DecodedToken = jwtDecode(authToken);
-        setUser(decoded);
-      } catch (e) {
-        setAuthToken(null);
-        localStorage.removeItem("jwt");
+    const verifyToken = async () => {
+      if (authToken) {
+        try {
+          if (isTokenExpired(authToken)) {
+            throw new Error("Token expired");
+          }
+          const decoded: DecodedToken = jwtDecode(authToken);
+          setUser(decoded);
+        } catch (e) {
+          logout();
+        }
       }
-    }
+      setLoading(false);
+    };
+
+    verifyToken();
   }, [authToken]);
 
   const login = (token: string) => {
-    setAuthToken(token);
-    localStorage.setItem("jwt", token);
+    try {
+      setAuthToken(token);
+      localStorage.setItem("jwt", token);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
-
   const logout = () => {
-    setAuthToken(null);
-    localStorage.removeItem("jwt");
-    setUser(null);
+    try {
+      setAuthToken(null);
+      localStorage.removeItem("jwt");
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
+  if (loading) {
+    return <div className="loading-spinner">Loading...</div>; // Or a spinner/loading component
+  }
 
   return (
     <AuthContext.Provider value={{ authToken, user, login, logout }}>

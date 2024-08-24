@@ -12,6 +12,7 @@ import axios from "axios";
 import noResultIcon from "/noResult.svg";
 import locationIcon from "/location.svg";
 import "./style.css";
+import axiosInstance from "../../utils/axiosInstance";
 
 type ContainerData = {
   country: string;
@@ -84,8 +85,8 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
 
   const fetchContainers = async (page: number) => {
     try {
-      const response = await axios.get<ApiResponse>(
-        `http://localhost:5000/api/containers/getpagewise`,
+      const response = await axiosInstance.get<ApiResponse>(
+        `/api/containers/getpagewise`,
         { params: { ...filters, page, itemsPerPage: 10 } }
       );
       const { containers, totalCount, totalPages } = response.data;

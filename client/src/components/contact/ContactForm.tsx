@@ -81,9 +81,7 @@ const ContactForm = () => {
                   Department
                 </label>
                 <select className="select select-primary w-full mx-auto max-w-sm  md:max-w-none border-[#DFE1E6]  focus:outline-none active:border-[#11A3FF] hover:border-[#11A3FF] focus:border-[#11A3FF] text-[#7A869A]">
-                  <option value={""} disabled selected>
-                    Select Department
-                  </option>
+                  <option defaultValue={""}>Select Department</option>
                   <option value="sales">Sales</option>
                   <option value="support">Support</option>
                   <option value="enquiry">Enquiry</option>

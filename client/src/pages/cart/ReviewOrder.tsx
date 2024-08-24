@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
@@ -9,6 +8,7 @@ import creditIcon from "/credit.svg";
 import locationIcon from "/location.svg";
 import containerImg from "/cartContainer.png";
 import infoIcon from "/info.svg";
+import axiosInstance from "../../utils/axiosInstance";
 
 interface CustomRadioButtonProps {
   value: string;
@@ -184,7 +184,6 @@ const ReviewOrder: React.FC = () => {
     } else if (!isAgreementChecked) {
       setError("You must agree to the Sales Agreement.");
     } else {
-      console.log("Submitting:", selectedPaymentMethod);
       setError("");
       // Add your submission logic here
     }
@@ -197,17 +196,12 @@ const ReviewOrder: React.FC = () => {
 
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/cart/getcart`,
-        {
-          params: { userId },
-        }
-      );
+      const response = await axiosInstance.get(`/api/cart/getcart`, {
+        params: { userId },
+      });
       setItems(response.data);
-      console.log(response.data.length, "datalength");
-      dispatch(SetCartCount(response.data.length));
 
-      console.log(response.data, "fetchedcart");
+      dispatch(SetCartCount(response.data.length));
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }

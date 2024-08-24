@@ -172,9 +172,9 @@ export const updateUserEmail = async (req, res) => {
       }
     );
     if (!user) {
-      return res.status(400).json({ error: "email not updated" });
+      return res.status(400).json({ error: "User not found" });
     }
-    res.status(201).send({ message: "email verified and updated" });
+    res.status(201).send({ message: "Email  updated" });
   } catch (error) {
     console.log(error.message, "Error in updateUserEmail controller");
     res.status(400).json({ error: error.message || "internal server error" });
@@ -355,6 +355,7 @@ export const updateUserPhone = async (req, res) => {
         new: true,
       }
     );
+
     if (!user) {
       return res.status(400).json({ error: "phone not updated" });
     }
@@ -366,58 +367,62 @@ export const updateUserPhone = async (req, res) => {
 };
 
 //updateDocument
+
 export const updateUserDocument = async (req, res) => {
-  // Handle file upload
   upload.single("document")(req, res, async (err) => {
     if (err) {
-      return res.status(400).json({ error: "Error uploading file" });
+      return res
+        .status(400)
+        .json({ error: err.message || "Error uploading file" });
     }
 
-    // Proceed to update user details
     try {
       const { companyName, companyAddress, website, country } = req.body;
       const { userId } = req.query;
 
       if (!companyName || !companyAddress || !country) {
         return res.status(400).json({
-          error: "Company Name, company Address, or Country fields missing",
+          error: "Company Name, Company Address, or Country fields missing",
         });
       }
       if (!userId) {
-        return res.status(400).json({ error: "userId not Found" });
+        return res.status(400).json({ error: "User ID not found" });
       }
 
-      let upperCasedCountry;
-      if (country) {
-        upperCasedCountry = country.toUpperCase();
-      }
+      // Convert country to uppercase
+      const upperCasedCountry = country.toUpperCase();
 
-      // Prepare update object
+      // Create updateFields object
       const updateFields = {
         companyAddress,
         companyName,
         country: upperCasedCountry,
         website: website || "",
+        verifyDocument: true,
       };
 
       // Include file path if file is uploaded
       if (req.file) {
         updateFields.document = req.file.path;
+      } else {
+        return res.status(400).json({ error: "Please upload a document" });
       }
 
+      // Update user details
       const user = await UserModel.findByIdAndUpdate(
         userId,
-        { $set: { updateFields, verifyDocument: true } },
+        { $set: updateFields },
         { new: true }
       );
 
       if (!user) {
-        return res.status(400).json({ error: "User not updated" });
+        return res.status(404).json({ error: "User not found" });
       }
-      res.status(201).send({ message: "Company details updated successfully" });
+
+      res.status(200).json({ message: "Company details updated successfully" });
     } catch (error) {
-      console.log(error.message, "Error in updateUserDocument controller");
-      res.status(400).json({ error: error.message || "Internal server error" });
+      console.error("Error in updateUserDocument controller:", error.message);
+      res.status(500).json({ error: error.message || "Internal server error" });
     }
   });
 };
@@ -449,7 +454,15 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: "Invalid Username Or Password" });
     }
 
-    // Check if phone and document are verified
+    // Check if email phone and document are verified
+    if (!user.verifyEmail) {
+      return res.status(400).json({
+        verify: "email Not verified",
+        step: "email",
+        userId: user._id,
+      });
+    }
+
     if (!user.verifyPhone) {
       return res.status(400).json({
         verify: "phone Not verified",

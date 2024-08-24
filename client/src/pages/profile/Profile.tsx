@@ -3,22 +3,42 @@ import { Link, useNavigate } from "react-router-dom";
 import Dp from "/profileDp.png";
 import editIcon from "/edit.svg";
 import { useAuth } from "../../utils/AuthContext";
-import axios from "axios";
+
+import TimeStampDisplay from "../../components/date/TimeStampDisplay";
+import { useCountrycode } from "../../utils/useCountryCode";
+import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
+import Model from "../../components/model/Model";
 
 // Define the type for form data
 interface UserData {
+  _id: string;
   fullName: string;
   phone: string;
   email: string;
   companyName: string;
   companyAddress: string;
   country: string;
-  telPhone: string;
+  telephone: string;
+  createdAt: string; // Add createdAt
+  updatedAt: string; // Add updatedAt
 }
+
+// const formatDate = (dateString: string): string => {
+//   const date = new Date(dateString);
+//   const options: Intl.DateTimeFormatOptions = {
+//     day: "2-digit",
+//     month: "long",
+//     year: "numeric",
+//   };
+//   return date.toLocaleDateString("en-US", options);
+// };
 
 const Profile: React.FC = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isModel, setIsModel] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     fullName: "",
     phone: "",
@@ -26,10 +46,13 @@ const Profile: React.FC = () => {
     companyName: "",
     companyAddress: "",
     country: "",
-    telPhone: "",
+    telephone: "",
+    createdAt: "",
+    updatedAt: "",
+    _id: "",
   });
   const [passwordData, setPasswordData] = useState({
-    current: "",
+    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -37,26 +60,30 @@ const Profile: React.FC = () => {
   const userId = user?.id;
   const navigate = useNavigate();
 
+  const country = useCountrycode();
+
   useEffect(() => {
     if (userId) {
       getUser();
     }
-  }, [userId]);
+  }, []);
 
   const getUser = async () => {
     try {
-      const result = await axios.get("http://localhost:5000/api/users/", {
+      const result = await axiosInstance.get("/api/users/", {
         params: { userId },
       });
-      console.log(result, "result");
+
       setUserData(result.data);
     } catch (error) {
-      console.log(error, "error");
+      console.error(error, "error");
     }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setUserData((prev) => ({
@@ -74,40 +101,102 @@ const Profile: React.FC = () => {
   };
 
   const handleSaveProfile = () => {
-    if (!userData.email.includes("@")) {
-      alert("Please enter a valid email address.");
-      return;
-    }
+    const updateUser = async () => {
+      try {
+        await axiosInstance.put(
+          "/api/users/",
+          {
+            fullName: userData.fullName,
+            companyName: userData.companyName,
+            companyAddress: userData.companyAddress,
+            country: userData.country,
+            telephone: userData.telephone,
+          },
+          {
+            params: { userId },
+          }
+        );
+        getUser();
+      } catch (error: any) {
+        console.error("Error updating user:", error.message);
+      }
+    };
+
+    // Call the update function
+    updateUser();
+
     // Handle save logic here
     setEditProfile(false);
   };
 
-  const handleUpdatePassword = () => {
+  const handleUpdatePassword = async () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
-    // Handle password update logic here
+    console.log(passwordData, "hii");
+    try {
+      const updatePassword = await axiosInstance.put(
+        "/api/users/resetpassword",
+        {
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }
+      );
+
+      const msg = updatePassword.data?.message;
+      toast.success(msg);
+    } catch (error: any) {
+      console.error(error);
+      const err = error.response.data?.error;
+      if (err) {
+        setError(err);
+      }
+      return;
+    }
+    setError("");
+
     setEditPassword(false);
   };
 
   const fields = [
     { label: "Full Name", name: "fullName", type: "text" },
-    { label: "Mobile Number", name: "phone", type: "text" },
-    { label: "Email", name: "email", type: "email" },
+    { label: "Mobile Number", name: "phone", type: "text", readOnly: true },
+    { label: "Email", name: "email", type: "email", readOnly: true },
     { label: "Company Name", name: "companyName", type: "text" },
     { label: "Address", name: "companyAddress", type: "textarea" },
-    { label: "Country", name: "country", type: "text" },
-    { label: "Tel Phone", name: "telPhone", type: "text" },
+    { label: "Country", name: "country", type: "select" },
+    { label: "Tel Phone", name: "telephone", type: "number" },
   ];
 
   const LogOut = () => {
     logout();
     navigate("/");
   };
+  const HandleNo = () => {
+    setIsModel(false);
+  };
+  const HandleYes = () => {
+    LogOut();
+    setIsModel(false);
+  };
+  const HandleModel = () => {
+    setIsModel(true);
+  };
 
   return (
     <div className="bg-white">
+      {isModel && (
+        <Model
+          yesText={"Logout"}
+          noText={"Cancel"}
+          onNo={HandleNo}
+          onYes={HandleYes}
+          primaryText={"Are you sure want to logout ?"}
+          subText="You will need to login again to access your account."
+        />
+      )}
+
       <div className="container mx-auto flex flex-col gap-8">
         <div className="flex justify-between items-center mt-4">
           <div className="flex flex-col gap-2">
@@ -137,34 +226,36 @@ const Profile: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col justify-evenly text-[#655F5F] items-end text-xs md:text-sm">
+            <div className="flex flex-col justify-evenly text-[#655F5F] items-end text-xs md:text-sm gap-2">
               <div className="flex md:gap-6 w-full justify-between items-center">
                 <p className="text-end">Member Since</p>
                 <span className="text-[#221F1F] bg-[#FFFFFF] p-1 text-[11px] md:text-sm rounded-xl">
-                  11 January 2023
+                  {/* {formatDate(userData.createdAt)}  using js date format */}
+                  <TimeStampDisplay timestamp={userData.createdAt} />
                 </span>
               </div>
               <div className="flex md:gap-6 w-full justify-between items-center">
                 <p>Last Login</p>
-                <span className="text-[#221F1F] bg-[#FFFFFF] p-1 text-[11px] md:text-sm rounded-xl">
-                  08 August 2024
+                <span className="text-[#221F1F] bg-[#FFFFFF] p-1 text-[11px] md:text-sm rounded-xl ">
+                  <TimeStampDisplay timestamp={userData.updatedAt} />
                 </span>
               </div>
-              <div className="flex md:gap-6 w-full justify-between items-center">
+              <div className="flex-col flex md:flex-row md:gap-6 w-full justify-between md:items-center">
                 <p>Customer ID:</p>
                 <span className="text-[#005E99] text-[11px] md:text-sm">
-                  CUS23245450001
+                  TUR{userData._id.toUpperCase()}
                 </span>
               </div>
             </div>
           </div>
 
+          {/* Profile Information Section */}
           <div className="p-4 gap-8 flex flex-col bg-[#fafafa] rounded-xl shadow-md">
             <div className="flex items-center justify-between">
               <h2 className="text-xl md:text-2xl">Profile Information</h2>
               {!editProfile && (
                 <button
-                  className="flex items-center gap-2 text-[#005E99] bg-white p-3 rounded-md hover:bg-[#D7F0FF] hover:text-[#005E99] shadow-md"
+                  className="flex items-center gap-2 text-[#005E99] bg-white p-3 rounded-md hover:bg-[#D7F0FF] hover:text-[#005E99] shadow-[0px_0px_4px_rgba(0,0,0,0.2)]"
                   onClick={() => setEditProfile((prev) => !prev)}
                 >
                   Edit
@@ -187,14 +278,30 @@ const Profile: React.FC = () => {
                   >
                     {field.label}
                   </label>
-                  {!editProfile ? (
+                  {!editProfile || field.readOnly ? (
                     field.type === "textarea" ? (
                       <p className="text-[#221F1F]">
-                        {userData[field.name as keyof UserData]}
+                        {userData[field.name as keyof UserData] ? (
+                          userData[field.name as keyof UserData]
+                        ) : (
+                          <span className="text-gray-500">none</span>
+                        )}
+                      </p>
+                    ) : field.type === "select" ? (
+                      <p className="text-[#221F1F]">
+                        {userData[field.name as keyof UserData] ? (
+                          userData[field.name as keyof UserData]
+                        ) : (
+                          <span className="text-gray-500">none</span>
+                        )}
                       </p>
                     ) : (
                       <p className="text-[#221F1F]">
-                        {userData[field.name as keyof UserData]}
+                        {userData[field.name as keyof UserData] ? (
+                          userData[field.name as keyof UserData]
+                        ) : (
+                          <span className="text-gray-500">none</span>
+                        )}
                       </p>
                     )
                   ) : field.type === "textarea" ? (
@@ -206,6 +313,23 @@ const Profile: React.FC = () => {
                       className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                       rows={4}
                     />
+                  ) : field.type === "select" ? (
+                    <select
+                      id={field.name}
+                      name={field.name}
+                      value={userData[field.name as keyof UserData]}
+                      onChange={handleChange}
+                      className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
+                    >
+                      <option value={userData.country} disabled>
+                        {userData.country ? userData.country : "Select Country"}
+                      </option>
+                      {country.map((country) => (
+                        <option key={country.iso} value={country.country}>
+                          {country.country}
+                        </option>
+                      ))}
+                    </select>
                   ) : (
                     <input
                       id={field.name}
@@ -238,11 +362,13 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
+          {/* Manage Password Section */}
           <div className="p-4 flex flex-col bg-[#fafafa] rounded-xl shadow-md">
             <div className="flex items-center justify-between">
               <h2 className="text-xl md:text-2xl">Manage Password</h2>
             </div>
             <div className="divider"></div>
+            {error && <p>{error}</p>}
             {!editPassword ? (
               <>
                 <div className="flex items-center justify-between">
@@ -251,10 +377,10 @@ const Profile: React.FC = () => {
                     <p className="text-[#221F1F]">***********</p>
                   </div>
                   <button
-                    className="flex items-center gap-2 text-[#005E99] bg-white p-1 md:p-3 rounded-md hover:bg-[#D7F0FF] hover:text-[#005E99] shadow-md"
+                    className="flex items-center gap-2 text-[#005E99] bg-white p-1 md:p-3 rounded-md hover:bg-[#D7F0FF] hover:text-[#005E99] shadow-[0px_0px_4px_rgba(0,0,0,0.2)]"
                     onClick={() => setEditPassword(true)}
                   >
-                    <span className="w-6 h-6">
+                    <span className="w-6 h-6 ">
                       <img src={editIcon} alt="Edit Password Icon" />
                     </span>
                   </button>
@@ -272,10 +398,10 @@ const Profile: React.FC = () => {
                     </label>
                     <input
                       id="current"
-                      name="current"
+                      name="currentPassword"
                       type="password"
                       placeholder="Enter Current Password"
-                      value={passwordData.current}
+                      value={passwordData.currentPassword}
                       onChange={handlePasswordChange}
                       className="input input-bordered w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                     />
@@ -337,7 +463,7 @@ const Profile: React.FC = () => {
           <div className="text-end flex flex-col gap-3">
             <p>Do you wish to log out?</p>
             <div className="flex justify-end">
-              <button className="btn btn-second" onClick={LogOut}>
+              <button className="btn btn-second" onClick={HandleModel}>
                 Logout
               </button>
             </div>

@@ -3,7 +3,7 @@ import Carousel from "../../components/carousel/BannerCarousel";
 import Testimonal from "../../components/testimonal/Testimonal";
 import ContactForm from "../../components/contact/ContactForm";
 import ContainerList from "../../components/containerTypes/ContainerList";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import aboutUs from "/about.png";
 import boxIcon1 from "/box1.svg";
 import boxIcon2 from "/box2.svg";
@@ -19,8 +19,8 @@ import containerTypeOne from "/containerTypes1.png";
 import containerTypeTwo from "/containerTypes2.png";
 import containerTypeThree from "/containerTypes3.png";
 import containerTypeFour from "/containerTypes4.png";
-
 import { Link, useNavigate } from "react-router-dom";
+import RegisterSuccess from "../register/RegisterSuccess";
 
 interface Slide {
   id: number;
@@ -36,9 +36,35 @@ const slides: Slide[] = [
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [IsregisterSuccess, setIsRegisterSuccess] = useState<boolean>(false);
+
+  useEffect(() => {
+    const registered = localStorage.getItem("register");
+    if (registered) {
+      setIsRegisterSuccess(true);
+      setTimeout(() => {
+        setIsRegisterSuccess(false);
+        localStorage.removeItem("register");
+        localStorage.removeItem("user");
+      }, 5000);
+    }
+  }, []);
 
   return (
     <>
+      {IsregisterSuccess && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-10"
+            aria-label="Close register"
+            role="button"
+            tabIndex={0}
+          ></div>
+          <div className="fixed inset-0 z-20 flex top-20 ">
+            <RegisterSuccess />
+          </div>
+        </>
+      )}
       {/* hero */}
       <div className="container mx-auto ">
         <div className="flex flex-col  ">

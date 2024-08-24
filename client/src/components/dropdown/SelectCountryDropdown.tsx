@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Select, { SingleValue, MultiValue, GroupBase } from "react-select";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedCountry } from "../../store/slice/inventory";
-import axios from "axios";
+
 import "./style.css";
+import axiosInstance from "../../utils/axiosInstance";
 
 interface CountryOption {
   value: string;
@@ -30,10 +31,9 @@ const SelectCountryDropdown: React.FC<SelectCountryDropdownProps> = ({
 
   const fetchCountry = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost:5000/api/containers/getcountry"
-      );
+      const result = await axiosInstance.get("/api/containers/getcountry");
       setData(result.data.countries);
+      console.log(result, "hii");
     } catch (error) {
       console.error("Error fetching countries:", error);
     }

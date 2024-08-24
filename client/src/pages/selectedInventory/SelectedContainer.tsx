@@ -6,10 +6,13 @@ import {
 } from "../../store/slice/containerCount";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
+
 import BlueContainerImg from "/containerBlue.png";
 import noResultImg from "/noResult.svg";
 import "./style.css";
+import { toast } from "react-toastify";
+import axiosInstance from "../../utils/axiosInstance";
+import axios from "axios";
 
 type ContainerData = {
   country: string;
@@ -88,8 +91,8 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
   const fetchContainers = useCallback(
     async (page: number) => {
       try {
-        const response = await axios.get<ApiResponse>(
-          `http://localhost:5000/api/containers/getselected`,
+        const response = await axiosInstance.get<ApiResponse>(
+          `/api/containers/getselected`,
           {
             params: {
               page,
@@ -104,7 +107,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
         );
 
         const { containers, totalPages, totalCount } = response.data;
-        console.log(response, "find");
+
         setContainerData(containers);
         setTotalPages(totalPages);
         setCurrentPage(page);
@@ -145,15 +148,14 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
     console.log(event);
     setCurrentPage(value);
   };
-  console.log(containerData, "data");
+
   const userId = "669dfb8fe54022e071ed16fe";
   const addCartItem = async (data: CartDetail) => {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/cart/addcart`,
-        data
-      );
+      const response = await axiosInstance.post(`/api/cart/addcart`, data);
       console.log(response);
+      const msg = response.data?.message;
+      toast.success(msg);
 
       setAddedToCart((prevState) => ({
         ...prevState,
@@ -184,7 +186,6 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
         <div>
           <div className="items grid sm:grid-cols-2 w-full gap-10">
             {containerData.map((item) => {
-              console.log(item, "item");
               const cartCount = cartCounts[item.containerId] || 0;
               const showContactSales = cartCount > 10; // Condition to show "Contact Sales"
               const isAdded = addedToCart[item.containerId];

@@ -4,8 +4,9 @@ import { useAppSelector } from "../../../store/store";
 import { useBack } from "../../../utils/useBack";
 import { CustomSuccessToast } from "../../../utils/CustomToast";
 import { toast } from "react-toastify";
-import axios from "axios";
+
 import { useNavigate } from "react-router";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export const Step4 = () => {
   // State to store values of OTP input fields
@@ -26,7 +27,7 @@ export const Step4 = () => {
     // Use the getOtpString function to get the concatenated OTP string
     const otpString = getOtpString();
     //verify process
-    console.log("OTP String:", otpString);
+
     UpdatePhone();
   };
 
@@ -76,8 +77,8 @@ export const Step4 = () => {
     try {
       setIsLoading(true);
 
-      const updatePhone = await axios.put(
-        "http://localhost:5000/api/auth/signup/updatephone",
+      const updatePhone = await axiosInstance.put(
+        "/api/auth/signup/updatephone",
         { phone: registerUser.phone },
         {
           params: { userId: userId },
@@ -86,8 +87,8 @@ export const Step4 = () => {
       const msg = updatePhone.data?.message;
       toast(<CustomSuccessToast message={msg} />);
       navigate("/register/document");
-    } catch (err) {
-      console.log(err, "error");
+    } catch (err: any) {
+      console.error(err, "error");
       const axiosError = err?.response?.data?.error;
       setError(axiosError);
       return;
