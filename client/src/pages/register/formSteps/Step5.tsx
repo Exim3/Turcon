@@ -12,6 +12,7 @@ import {
 import { CustomSuccessToast } from "../../../utils/CustomToast";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../utils/axiosInstance";
+import { useAuth } from "../../../utils/AuthContext";
 
 export const Step5 = () => {
   const countries = useCountrycode();
@@ -19,6 +20,7 @@ export const Step5 = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+  const { login } = useAuth();
 
   const registerUser = useAppSelector((state) => state.RegisterUser);
 
@@ -39,13 +41,13 @@ export const Step5 = () => {
   };
   const handleFileChange = (newFile: File | null) => {
     setFile(newFile);
+    newFile && setError("");
   };
   const handleSubmit = async () => {
     if (!file) {
       setError("Please upload a document.");
       return;
     }
-    setError("");
 
     const formData = new FormData();
     formData.append("document", file);
@@ -85,7 +87,18 @@ export const Step5 = () => {
         }
       }
       localStorage.setItem("register", user?.fullName || "true");
-      navigate("/");
+      const token = response.headers["x-auth-token"];
+
+      if (token) {
+        // Use context to handle token
+        login(token);
+
+        // Navigate to the desired page
+        navigate("/buy/inventory");
+      } else {
+        console.error("Token not received");
+        navigate("/");
+      }
     } catch (err: any) {
       console.error(err, "error");
       const axiosError = err?.response?.data?.error || "An error occurred.";

@@ -11,9 +11,17 @@ type Services = {
   title: string;
   image: string;
   content: string;
+  safeContentText: string;
+  easyContentText: string;
 };
 
-const Service: React.FC<Services> = ({ title, image, content }) => {
+const Service: React.FC<Services> = ({
+  title,
+  image,
+  content,
+  easyContentText,
+  safeContentText,
+}) => {
   return (
     <>
       <div className="container mx-auto flex flex-col gap-8">
@@ -45,15 +53,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
               <h4 className="text-3xl text-[#0B0A0A]">Easy & Convenient</h4>
             </div>
             <ul className="list-disc px-8 text-[#383434]">
-              <li>
-                No need to buy a container and be left with the head-ache to
-                find a reliable buyer at your destination Port.
-              </li>
-              <li>
-                You can deliver the container to the shipping line as Shipper
-                Owned control as opposed to using a container provided by the
-                shipping line. In many cases you will get a SOC reduction on the
-              </li>
+              <li>{easyContentText}</li>
             </ul>
           </div>
           <div className="flex flex-col gap-6 p-3 bg-[#D4FFF8]">
@@ -64,11 +64,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
               <h4 className="text-3xl text-[#0B0A0A]">Safe & Secure</h4>
             </div>
             <ul className="list-disc px-8 text-[#383434]">
-              <li>No detention charges exposure.</li>
-              <li>
-                You only need to return the container at the destination port to
-                our designated site.
-              </li>
+              <li>{safeContentText}</li>
             </ul>
           </div>
         </div>
@@ -96,7 +92,7 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
                     <img src={servicePhoneIcon} alt="phone" />
                   </div>
                   <a href="tel:971564507734" className="text-[#008FE8]">
-                    971564507734
+                    +971564507734
                   </a>
                 </div>
               </div>
@@ -112,7 +108,9 @@ const Service: React.FC<Services> = ({ title, image, content }) => {
               <div className="btn btn-prime">
                 <Link to={"/buy/inventory"}>Buy Container</Link>
               </div>
-              <div className="btn btn-secondbtn">Lease Container</div>
+              <Link className="btn btn-secondbtn" to={"/service5"}>
+                Lease Container
+              </Link>
             </div>
           </div>
         </div>

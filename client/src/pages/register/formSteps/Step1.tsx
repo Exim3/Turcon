@@ -162,9 +162,12 @@ export const Step1 = () => {
             />
             <label htmlFor="terms">
               Accept the{" "}
-              <span className="text-[#005E99] font-semibold">
+              <Link
+                className="text-[#005E99] font-semibold"
+                to={"/buy/termsandCondition"}
+              >
                 Terms and Conditions
-              </span>
+              </Link>
             </label>
           </div>
         </div>

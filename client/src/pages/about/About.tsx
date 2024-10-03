@@ -1,12 +1,68 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import AboutBox, { AboutBoxInvert } from "../../components/about/AboutBox";
 import { Link } from "react-router-dom";
 import flight from "/flight.png";
 import flight2 from "/flight2.png";
 import flight3 from "/flight3.png";
 import aboutHero from "/abouthero.png";
+import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
+
+interface Data {
+  fullName: string;
+  phone: string;
+  email: string;
+  message: string;
+  department: string;
+}
 
 const About: React.FC = () => {
+  const [data, setData] = useState<Data>({
+    fullName: "",
+    phone: "",
+    email: "",
+    message: "",
+    department: "",
+  });
+
+  const [error, setError] = useState("");
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setData((prev: Data) => ({ ...prev, [name]: value }));
+  };
+  const HandleSubmit = () => {
+    const { fullName, phone, email, department } = data;
+    if (!fullName || !phone || !email || !department)
+      return setError("Please Fill All the fields");
+    setError("");
+    postForm();
+  };
+  const postForm = async () => {
+    try {
+      const response = await axiosInstance.post("/api/carrerform/post", data);
+      if (response.data?.message) {
+        toast.success(response.data.message);
+        setData({
+          fullName: "",
+          phone: "",
+          email: "",
+          message: "",
+          department: "",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+        toast.error(error.response.data.error);
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
+    }
+  };
   return (
     <>
       <div className="container mx-auto flex flex-col gap-8">
@@ -100,7 +156,7 @@ const About: React.FC = () => {
           title={"Unparalleled Expertise"}
           topTitle={"Why Choose Us?"}
           content={
-            "The Turcon Advantage Turcon is integrated by a team of Experienced People who believe in providing prompt and effective services to customers, which is beyond compare."
+            "The Turcon Advantage is integrated by a team of Experienced People who believe in providing prompt and effective services to customers, which is beyond compare."
           }
           imageUrl={flight3}
         />
@@ -112,14 +168,14 @@ const About: React.FC = () => {
             <h2 className="text-[45px] font-semibold">
               Interested In Join Our Team?
             </h2>
-            <div>
+            {/* <div>
               <p className="text-2xl">
                 Drop us a mail to
                 <span className="text-[#005E99]">
                   <a href="mailto:career@turcon.in"> career@turcon.in</a>
                 </span>
               </p>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col">
             <div className="grid md:grid-cols-2 items-center gap-4">
@@ -129,6 +185,9 @@ const About: React.FC = () => {
                 </label>
                 <input
                   type="text"
+                  name="fullName"
+                  onChange={handleInputChange}
+                  value={data.fullName}
                   placeholder="Enter the First Name"
                   className="input input-bordered w-full  mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                 />
@@ -139,6 +198,9 @@ const About: React.FC = () => {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  onChange={handleInputChange}
+                  value={data.email}
                   placeholder="Enter the Email"
                   className="input input-bordered w-full  mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                 />
@@ -149,6 +211,9 @@ const About: React.FC = () => {
                 </label>
                 <input
                   type="phone"
+                  name="phone"
+                  onChange={handleInputChange}
+                  value={data.phone}
                   placeholder="Enter the PhoneNumber"
                   className="input input-bordered w-full  mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:border-[#11A3FF] ring-0 focus:outline-none"
                 />
@@ -158,11 +223,16 @@ const About: React.FC = () => {
                   Department
                 </label>
 
-                <select className="select w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:border-[#11A3FF] ring-0 focus:outline-none">
+                <select
+                  name="department"
+                  onChange={handleInputChange}
+                  value={data.department}
+                  className="select w-full mx-auto placeholder:text-xs border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:border-[#11A3FF] ring-0 focus:outline-none"
+                >
                   <option defaultValue={""}>Select Department</option>
-                  <option>Sales</option>
-                  <option>Support</option>
-                  <option>Enquiry</option>
+                  <option value="sales">Sales</option>
+                  <option value="support">Support</option>
+                  <option value="enquiry">Enquiry</option>
                 </select>
               </div>
             </div>
@@ -171,12 +241,21 @@ const About: React.FC = () => {
                 Message
               </label>
               <textarea
+                name="message"
+                onChange={handleInputChange}
+                value={data.message}
                 className="textarea textarea-info rounded-sm  w-full mx-auto max-w-md md:max-w-none  border-[#DFE1E6] hover:bg-[#EBECF0] hover:border-[#DFE1E6] active:border-[#11A3FF] focus:outline-none"
                 placeholder="Message"
               ></textarea>
             </div>
             <div className="text-center mt-4">
-              <div className="btn text-white rounded bg-[#005e99] hover:bg-[#008fe8] focus:bg-[#004a79] active:bg-[#004a79]">
+              {error && (
+                <p className="text-xs text-red-600 text-center mb-3">{error}</p>
+              )}
+              <div
+                onClick={HandleSubmit}
+                className="btn text-white rounded bg-[#005e99] hover:bg-[#008fe8] focus:bg-[#004a79] active:bg-[#004a79]"
+              >
                 Send Message
               </div>
             </div>

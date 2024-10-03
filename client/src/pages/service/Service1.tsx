@@ -9,7 +9,13 @@ const Service1: React.FC = () => {
         title={"One way Movement – Shipping Lines"}
         image={serviceOne}
         content={
-          "Another valuable service in TURCON’s portfolio is our Container Inspection and Survey services. We provide comprehensive inspection services for both our own fleet and third-party containers. Our expert team ensures that every container meets the highest standards of quality and safety, offering peace of mind whether you're managing your own containers or those from other sources. Choose TURCON for reliable and thorough container inspections."
+          "TURCON also offers the one-way rental option, which basically allows you to pick-up a container in location “A” and return it in location “B” against a fixed cost amount."
+        }
+        safeContentText={
+          "No detention charges exposure. You only need to return the container at the destination port to our designated site."
+        }
+        easyContentText={
+          "You can deliver the container to the shipping line as Shipper-Owned (SOC) instead of using a container provided by the shipping line. In many cases, you will get an SOC reduction on the shipping costs."
         }
       />
     </>

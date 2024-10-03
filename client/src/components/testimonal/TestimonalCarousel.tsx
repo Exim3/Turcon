@@ -59,7 +59,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
             key={index}
             className="p-4 bg-white text-black max-w-72 rounded-lg m-4"
           >
-            <div className="head flex gap-4 h-16">
+            <div className="head flex gap-4 h-16 ">
               <div className="flex">
                 <img
                   src={`${testimonial.img}`}

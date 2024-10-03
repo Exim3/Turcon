@@ -6,13 +6,13 @@ import {
 } from "../../store/slice/containerCount";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-
 import BlueContainerImg from "/containerBlue.png";
 import noResultImg from "/noResult.svg";
 import "./style.css";
-import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
 import axios from "axios";
+import { useAuth } from "../../utils/AuthContext";
+import Loading from "../../components/loading/Loading";
 
 type ContainerData = {
   country: string;
@@ -22,6 +22,7 @@ type ContainerData = {
   condition: string;
   stockCount: string;
   price: string;
+  adjustedPrice: string;
   sellerId: string;
   containerId: string;
 };
@@ -50,10 +51,12 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const [cartCounts, setCartCounts] = useState<{ [key: string]: number }>({});
   const [addedToCart, setAddedToCart] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const { user } = useAuth();
 
   const selectedPort = useAppSelector(
     (state) => state.CountryFilter.selectedPort
@@ -90,6 +93,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
 
   const fetchContainers = useCallback(
     async (page: number) => {
+      setLoading(true);
       try {
         const response = await axiosInstance.get<ApiResponse>(
           `/api/containers/getselected`,
@@ -116,6 +120,8 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
         setError(
           axios.isAxiosError(err) ? err.message : "An unexpected error occurred"
         );
+      } finally {
+        setLoading(false);
       }
     },
     [searched, conditions, sizes, types]
@@ -149,14 +155,9 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
     setCurrentPage(value);
   };
 
-  const userId = "669dfb8fe54022e071ed16fe";
   const addCartItem = async (data: CartDetail) => {
     try {
-      const response = await axiosInstance.post(`/api/cart/addcart`, data);
-      console.log(response);
-      const msg = response.data?.message;
-      toast.success(msg);
-
+      await axiosInstance.post(`/api/cart/addcart`, data);
       setAddedToCart((prevState) => ({
         ...prevState,
         [data.containerId]: true,
@@ -168,15 +169,23 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
   const handleAddToCart = (item: ContainerData) => {
     const cartDetails: CartDetail = {
       containerId: item.containerId,
-      price: item.price,
+      price: item.adjustedPrice,
       sellerId: item.sellerId,
       stockCount: item.stockCount,
       itemcount: cartCounts[item.containerId] || 0,
-      userId,
+      userId: user?.id || "",
     };
     addCartItem(cartDetails);
     dispatch(AddCartCount(1));
   };
+  if (loading)
+    return (
+      <>
+        <div className="w-24 flex justify-center items-center mx-auto h-1/2">
+          <Loading />
+        </div>
+      </>
+    );
 
   return (
     <>
@@ -187,7 +196,7 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
           <div className="items grid sm:grid-cols-2 w-full gap-10">
             {containerData.map((item) => {
               const cartCount = cartCounts[item.containerId] || 0;
-              const showContactSales = cartCount > 10; // Condition to show "Contact Sales"
+              // const showContactSales = cartCount > 10; // Condition to show "Contact Sales"
               const isAdded = addedToCart[item.containerId];
 
               return (
@@ -211,60 +220,81 @@ const SelectedContainer: React.FC<SelectedContainerProps> = ({ searched }) => {
                         {" "}
                         <span className="capitalize"> {item.condition}</span>
                       </div>
-                      <div className="qty text-lg">Qty: {item.stockCount}</div>
-                    </div>
-                    <div className="price flex justify-between items-center">
-                      <div className="value text-[#15B097] text-2xl">
-                        {UsFormat(Number(item.price))}
+                      <div className="qty text-lg">
+                        Qty: {item.stockCount >= "25" ? "25+" : item.stockCount}
                       </div>
-                      <div className="flex justify-center text-center font-semibold items-center">
-                        <button
-                          className="w-8 h-8 rounded border-[#005E99] border-2 cursor-pointer"
-                          onClick={() =>
-                            updateCartCount(
-                              item.containerId,
-                              false,
-                              item.stockCount
-                            )
-                          }
-                          aria-label={`Decrease quantity for ${item.size} ${item.type}`}
-                        >
-                          -
-                        </button>
-                        <div className="w-8 h-8 p-1 cursor-pointer">
-                          {cartCount}
+                    </div>
+
+                    {Number(item.adjustedPrice) > 500 ? (
+                      <>
+                        <div className="price flex justify-between items-center">
+                          <div className="value text-[#15B097] text-2xl">
+                            {UsFormat(Number(item.adjustedPrice))}
+                          </div>
+                          <div className="flex justify-center text-center font-semibold items-center">
+                            <button
+                              className="w-8 h-8 rounded border-[#005E99] border-2 cursor-pointer"
+                              onClick={() =>
+                                updateCartCount(
+                                  item.containerId,
+                                  false,
+                                  item.stockCount
+                                )
+                              }
+                              aria-label={`Decrease quantity for ${item.size} ${item.type}`}
+                            >
+                              -
+                            </button>
+                            <div className="w-8 h-8 p-1 cursor-pointer">
+                              {cartCount}
+                            </div>
+                            <button
+                              className="w-8 h-8 rounded border-[#005E99] border-2 cursor-pointer"
+                              onClick={() =>
+                                updateCartCount(
+                                  item.containerId,
+                                  true,
+                                  item.stockCount
+                                )
+                              }
+                              aria-label={`Increase quantity for ${item.size} ${item.type}`}
+                            >
+                              +
+                            </button>
+                          </div>
                         </div>
-                        <button
-                          className="w-8 h-8 rounded border-[#005E99] border-2 cursor-pointer"
-                          onClick={() =>
-                            updateCartCount(
-                              item.containerId,
-                              true,
-                              item.stockCount
-                            )
-                          }
-                          aria-label={`Increase quantity for ${item.size} ${item.type}`}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <button
-                        className="btn w-1/2 btn-prime"
-                        onClick={() => {
-                          cartCount && !isAdded && handleAddToCart(item);
-                        }}
+                      </>
+                    ) : (
+                      <span
+                        className="text-sm text-secondary font-semibold text-center"
+                        style={{ lineHeight: "20px" }}
                       >
-                        {isAdded ? "Added" : "Add To Cart"}
-                      </button>
-                      {showContactSales ? (
-                        <button className="btn w-1/2 btn-secondbtn">
-                          Contact Sales
-                        </button>
+                        Special Price Available Connect Sales Team !!
+                      </span>
+                    )}
+
+                    <div className="flex gap-2 items-center justify-between ">
+                      {Number(item.adjustedPrice) > 500 ? (
+                        <>
+                          <button
+                            className="btn w-1/2 btn-prime"
+                            onClick={() => {
+                              cartCount && !isAdded && handleAddToCart(item);
+                            }}
+                          >
+                            {isAdded ? "Added" : "Add To Cart"}
+                          </button>
+                          <button className="btn w-1/2 btn-secondbtn">
+                            <a href="mailto:trade@turcon.in">
+                              Connect Sales Team
+                            </a>
+                          </button>
+                        </>
                       ) : (
-                        <button className="btn w-1/2 btn-secondbtn">
-                          Connect Email
+                        <button className="btn w-full btn-secondbtn">
+                          <a href="mailto:trade@turcon.in">
+                            Connect Sales Team
+                          </a>
                         </button>
                       )}
                     </div>

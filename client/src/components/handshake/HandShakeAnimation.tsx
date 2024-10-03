@@ -1,8 +1,6 @@
-// src/components/Animation.tsx
-
 import React from "react";
 import Lottie from "lottie-react";
-import animationData from "../../../public/animations/handshake.json"; // Adjust the path as needed
+import animationData from "../../animations/handshake.json";
 
 const handshakeAnimation: React.FC = () => {
   return (

@@ -12,26 +12,33 @@ type Testimonial = {
 
 const testimonialsData: Testimonial[] = [
   {
-    name: "John Anderson",
-    location: "Sydney, Australia",
+    name: "Stacy Haddon",
+    location: "Quality",
     quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
+      "“ I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.”",
     img: Testimonal1,
-    maxQuoteLength: 150,
+    maxQuoteLength: 80,
   },
   {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
+    name: "Aneta Puga",
+    location: "Satisfied work",
+    quote: "I highly Recommended, Turcon quality services.",
     img: Testimonal1,
+    maxQuoteLength: 80,
   },
   {
-    name: "John Anderson",
-    location: "Sydney, Australia",
-    quote:
-      "I was hesitant about buying a container without seeing it in person, but the detailed descriptions and photos on the website reassured me.",
+    name: "David Brown",
+    location: "The Best Service Ever",
+    quote: "Quality service with good customer support",
     img: Testimonal1,
+    maxQuoteLength: 80,
+  },
+  {
+    name: "Alan Smith",
+    location: "very fast Delivery",
+    quote: "On time and, I highly on recommend them",
+    img: Testimonal1,
+    maxQuoteLength: 80,
   },
 ];
 const Testimonal = () => {

@@ -29,21 +29,21 @@ import Profile from "./pages/profile/Profile";
 import TermsAndCondition from "./pages/termsAndCondition/TermsAndCondition";
 import Orders from "./pages/orders/Orders";
 import Support from "./pages/support/Support";
-import AdminDashboard from "./pages/adminDashboard";
-import Overview from "./pages/Admin/overview/Overview";
-import Containers from "./pages/Admin/containers/Containers";
-import AllOrders from "./pages/Admin/orders/AllOrders";
-import Users from "./pages/Admin/users/Users";
-import AdminChat from "./pages/Admin/Chats/AdminChat";
-import Sellers from "./pages/Admin/sellers/Sellers";
-import SalesPerson from "./pages/Admin/salesperson/SalesPerson";
-import PurchasePerson from "./pages/Admin/purchaseperson/PurchasePerson";
 import { Step1 } from "./pages/register/formSteps/Step1";
 import { Step2 } from "./pages/register/formSteps/Step2";
 import { Step3 } from "./pages/register/formSteps/Step3";
 import { Step4 } from "./pages/register/formSteps/Step4";
 import { Step5 } from "./pages/register/formSteps/Step5";
 import UnAuthorization from "./pages/unauthorization/UnAuthorization";
+import InvoiceOrder from "./pages/orders/InvoiceOrder";
+import ProcessingOrder from "./pages/orders/ProcessingOrder";
+import CollectedOrder from "./pages/orders/CollectedOrder";
+import CancelledOrder from "./pages/orders/CancelledOrder";
+import AllOrder from "./pages/orders/AllOrder";
+import ForgetPassword from "./pages/forgetPassword/ForgetPassword";
+import ChangePassword from "./pages/forgetPassword/ChangePassword";
+import PrivacyPolicy from "./pages/privacypolicy/PrivacyPolicy";
+import OrderView from "./pages/orders/OrderView";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -51,6 +51,8 @@ const AppRoutes: React.FC = () => {
       <Routes>
         {/* Auth */}
         <Route path="/login" element={<Login />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/changepassword/:id" element={<ChangePassword />} />
         <Route path="/register" element={<Register />}>
           <Route index element={<Step1 />} />
           <Route path="verifymail" element={<Step2 />} />
@@ -73,6 +75,7 @@ const AppRoutes: React.FC = () => {
           <Route path="service4" element={<Service4 />} />
           <Route path="service5" element={<Service5 />} />
           <Route path="service6" element={<Service6 />} />
+          <Route path="privacypolicy" element={<PrivacyPolicy />} />
         </Route>
 
         {/* Inventory */}
@@ -89,7 +92,14 @@ const AppRoutes: React.FC = () => {
           <Route
             path="orders"
             element={<ProtectedRoute element={<Orders />} />}
-          />
+          >
+            <Route path="all" element={<AllOrder />} />
+            <Route path="processing" element={<ProcessingOrder />} />
+            <Route path="invoice" element={<InvoiceOrder />} />
+            <Route path="collected" element={<CollectedOrder />} />
+            <Route path="cancelled" element={<CancelledOrder />} />
+          </Route>
+          <Route path="orderview/:id" element={<OrderView />} />
           <Route path="termsandCondition" element={<TermsAndCondition />} />
           <Route
             path="profile"
@@ -101,18 +111,6 @@ const AppRoutes: React.FC = () => {
 
         {/* Other Routes */}
         <Route path="*" element={<PageNotFound />} />
-
-        {/* Admin Dashboard */}
-        <Route path="/support" element={<AdminDashboard />}>
-          <Route path="overview" element={<Overview />} />
-          <Route path="containers" element={<Containers />} />
-          <Route path="orders" element={<AllOrders />} />
-          <Route path="users" element={<Users />} />
-          <Route path="chats" element={<AdminChat />} />
-          <Route path="sellers" element={<Sellers />} />
-          <Route path="salesteam" element={<SalesPerson />} />
-          <Route path="purchaseteam" element={<PurchasePerson />} />
-        </Route>
       </Routes>
     </AuthProvider>
   );

@@ -5,14 +5,46 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { setRegisterUser } from "../../../store/slice/registeruserSlice";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { CustomSuccessToast } from "../../../utils/CustomToast";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export const Step3 = () => {
   const [error, setError] = useState("");
   const registerUser = useAppSelector((state) => state.RegisterUser);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [localPhone, setLocalPhone] = useState<string>(
     registerUser.phone || ""
   );
+  const UpdatePhone = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      setError("user not found login again with your registered details");
+      return;
+    }
+    try {
+      setIsLoading(true);
+
+      const updatePhone = await axiosInstance.put(
+        "/api/auth/signup/updatephone",
+        { phone: registerUser.phone },
+        {
+          params: { userId: userId },
+        }
+      );
+      const msg = updatePhone.data?.message;
+      toast(<CustomSuccessToast message={msg} />);
+      navigate("/register/document");
+    } catch (err: any) {
+      console.error(err, "error");
+      const axiosError = err?.response?.data?.error;
+      setError(axiosError);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handlePhoneChange = (value: string | undefined) => {
     setLocalPhone(value || ""); // Ensure value is a string
@@ -29,7 +61,9 @@ export const Step3 = () => {
       setError("Phone number input should not be empty.");
       return;
     }
-    navigate("/register/otpverify");
+    UpdatePhone();
+    //navigate("/register/otpverify");
+    navigate("/register/document");
   };
 
   return (
@@ -54,13 +88,21 @@ export const Step3 = () => {
       {error && <p className="text-error text-xs">{error}</p>}
 
       <div className="flex justify-center gap-6">
-        <button className="btn btn-prime w-full" onClick={handleNextClick}>
-          Next
+        <button
+          className="btn btn-prime w-full"
+          onClick={handleNextClick}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <span className="loading loading-bars loading-sm  bg-primary"></span>
+          ) : (
+            "Next"
+          )}
         </button>
       </div>
-      <div className="text-sm text-center max-w-sm mx-auto text-[#383434]">
+      {/* <div className="text-sm text-center max-w-sm mx-auto text-[#383434]">
         A 4-digit OTP will be sent via SMS to verify your phone number.
-      </div>
+      </div> */}
     </div>
   );
 };

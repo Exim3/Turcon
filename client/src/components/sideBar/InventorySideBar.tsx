@@ -46,12 +46,12 @@ const InventorySideBar: React.FC = () => {
               </Link>
             </li>
             <li className="mt-1">
-              <Link to="/order" onClick={closeDrawer}>
+              <Link to="/buy/orders/all" onClick={closeDrawer}>
                 Order
               </Link>
             </li>
             <li className="mt-1">
-              <Link to="/support" onClick={closeDrawer}>
+              <Link to="/buy/support" onClick={closeDrawer}>
                 Support
               </Link>
             </li>
@@ -61,7 +61,7 @@ const InventorySideBar: React.FC = () => {
               </Link>
             </li>
             <li className="mt-1">
-              <Link to="/profile" onClick={closeDrawer}>
+              <Link to="/buy/profile" onClick={closeDrawer}>
                 Profile
               </Link>
             </li>

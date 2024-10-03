@@ -27,7 +27,6 @@ const DragFile: React.FC<DragFileProps> = ({ onFileChange }) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
 
   useEffect(() => {
-    // Clean up the object URL when the component unmounts or file changes
     return () => {
       if (filePreview) {
         URL.revokeObjectURL(filePreview);
@@ -59,14 +58,15 @@ const DragFile: React.FC<DragFileProps> = ({ onFileChange }) => {
         );
       }
     }
-    setFile(selectedFile || null);
   };
 
   const handleRemoveFile = () => {
     setFile(null);
     setFilePreview(null);
     setError(null);
+    onFileChange(null);
   };
+  console.log(file, "checking file");
 
   const handleOpenPreview = () => {
     if (filePreview) {

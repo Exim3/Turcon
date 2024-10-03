@@ -31,12 +31,7 @@ const Contact = () => {
               </div>
               <a href="tel:+971564507734">+971564507734</a>
             </div>
-            <div className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
-              <div className="flex items-center">
-                <img src={phoneIcon} alt="phone" />
-              </div>
-              <a href="tel:+971564507734">+971564507734</a>
-            </div>
+
             <div className="py-1 px-2 flex gap-2 bg-[#FFD3D3] rounded">
               <div className="flex items-center">
                 <img src={emailIcon} alt="email" />

@@ -25,7 +25,7 @@ export const Step4 = () => {
   };
   const verifyOtp = () => {
     // Use the getOtpString function to get the concatenated OTP string
-    const otpString = getOtpString();
+
     //verify process
 
     UpdatePhone();
@@ -67,7 +67,7 @@ export const Step4 = () => {
     }
   };
   // Combine all OTP values into a single string
-  const getOtpString = () => otpValues.join("");
+
   const UpdatePhone = async () => {
     const userId = localStorage.getItem("userId");
     if (!userId) {

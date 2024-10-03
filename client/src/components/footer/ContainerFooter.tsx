@@ -108,7 +108,7 @@ const ContainerFooter: React.FC = () => {
           <div className="fixed bottom-8 right-8">
             <a
               className="whats-app"
-              href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
+              href="https://web.whatsapp.com/send?phone=+971564507734&text=Need your support ?"
               target="_blank"
             >
               <img

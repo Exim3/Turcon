@@ -3,7 +3,7 @@ import Carousel from "../../components/carousel/BannerCarousel";
 import Testimonal from "../../components/testimonal/Testimonal";
 import ContactForm from "../../components/contact/ContactForm";
 import ContainerList from "../../components/containerTypes/ContainerList";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import aboutUs from "/about.png";
 import boxIcon1 from "/box1.svg";
 import boxIcon2 from "/box2.svg";
@@ -20,7 +20,6 @@ import containerTypeTwo from "/containerTypes2.png";
 import containerTypeThree from "/containerTypes3.png";
 import containerTypeFour from "/containerTypes4.png";
 import { Link, useNavigate } from "react-router-dom";
-import RegisterSuccess from "../register/RegisterSuccess";
 
 interface Slide {
   id: number;
@@ -36,35 +35,9 @@ const slides: Slide[] = [
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const [IsregisterSuccess, setIsRegisterSuccess] = useState<boolean>(false);
-
-  useEffect(() => {
-    const registered = localStorage.getItem("register");
-    if (registered) {
-      setIsRegisterSuccess(true);
-      setTimeout(() => {
-        setIsRegisterSuccess(false);
-        localStorage.removeItem("register");
-        localStorage.removeItem("user");
-      }, 5000);
-    }
-  }, []);
 
   return (
     <>
-      {IsregisterSuccess && (
-        <>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-10"
-            aria-label="Close register"
-            role="button"
-            tabIndex={0}
-          ></div>
-          <div className="fixed inset-0 z-20 flex top-20 ">
-            <RegisterSuccess />
-          </div>
-        </>
-      )}
       {/* hero */}
       <div className="container mx-auto ">
         <div className="flex flex-col  ">
@@ -84,7 +57,9 @@ const Home: React.FC = () => {
                 <Link className="btn btn-prime" to={"/buy/inventory"}>
                   Buy Containers
                 </Link>
-                <div className="btn btn-secondbtn">Lease Containers</div>
+                <Link className="btn btn-secondbtn" to={"/service5"}>
+                  Lease Containers
+                </Link>
               </div>
             </div>
             <div className="w-full lg:w-1/2 col-6">
@@ -281,9 +256,13 @@ const Home: React.FC = () => {
               agreement below.
             </p>
             <div className=" text-center">
-              <div className="btn btn-secondbtn ">
+              <a
+                href="/docs/SalesAgreement.pdf"
+                download
+                className="btn btn-second"
+              >
                 Download <img src={downloadIcon} alt="download" />
-              </div>
+              </a>
             </div>
           </div>
         </div>

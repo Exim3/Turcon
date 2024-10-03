@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./style.css";
 import SideBar from "../sideBar/SideBar";
 import Logo from "/logo.svg";
@@ -38,21 +38,29 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex self-center  ">
           <ul className="menu menu-horizontal  px-1 text-sm">
             <li>
-              <Link
+              <NavLink
                 to={"/"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary " : "text-black"
+                  }`
+                }
               >
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li className="service relative  ">
-              <Link
+              <NavLink
                 to={"/services"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary " : "text-black"
+                  }`
+                }
               >
                 {" "}
                 Our Service
-              </Link>
+              </NavLink>
 
               <ul className="servicelist p-2 text-xs min-w-72 rounded-sm absolute top-full bg-white shadow-inner">
                 <li>
@@ -65,12 +73,12 @@ const Header = () => {
                   <Link to={"/service3"}>Container Inspections</Link>
                 </li>
                 <li>
-                  <Link to={"/service4"}>Maritime containers selling</Link>
+                  <Link to={"/service4"}>Marine containers selling</Link>
                 </li>
                 <li>
                   <Link to={"/service5"}>
                     {" "}
-                    Maritime rental of containers to shiping lines
+                    Marine rental of containers to shiping lines
                   </Link>
                 </li>
                 <li>
@@ -82,20 +90,28 @@ const Header = () => {
               </ul>
             </li>
             <li>
-              <Link
+              <NavLink
                 to={"/about"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary " : "text-black"
+                  }`
+                }
               >
                 About
-              </Link>
+              </NavLink>
             </li>
             <li className="">
-              <Link
+              <NavLink
                 to={"/contact"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary " : "text-black"
+                  }`
+                }
               >
                 Contact Us
-              </Link>
+              </NavLink>
             </li>
           </ul>
           {user ? (

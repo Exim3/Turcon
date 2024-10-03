@@ -9,6 +9,7 @@ import { useCountrycode } from "../../utils/useCountryCode";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import Model from "../../components/model/Model";
+import Loading from "../../components/loading/Loading";
 
 // Define the type for form data
 interface UserData {
@@ -20,25 +21,16 @@ interface UserData {
   companyAddress: string;
   country: string;
   telephone: string;
-  createdAt: string; // Add createdAt
-  updatedAt: string; // Add updatedAt
+  createdAt: string;
+  updatedAt: string;
 }
-
-// const formatDate = (dateString: string): string => {
-//   const date = new Date(dateString);
-//   const options: Intl.DateTimeFormatOptions = {
-//     day: "2-digit",
-//     month: "long",
-//     year: "numeric",
-//   };
-//   return date.toLocaleDateString("en-US", options);
-// };
 
 const Profile: React.FC = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [error, setError] = useState("");
   const [isModel, setIsModel] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     fullName: "",
     phone: "",
@@ -70,6 +62,7 @@ const Profile: React.FC = () => {
 
   const getUser = async () => {
     try {
+      setLoading(true);
       const result = await axiosInstance.get("/api/users/", {
         params: { userId },
       });
@@ -77,6 +70,8 @@ const Profile: React.FC = () => {
       setUserData(result.data);
     } catch (error) {
       console.error(error, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -183,7 +178,14 @@ const Profile: React.FC = () => {
   const HandleModel = () => {
     setIsModel(true);
   };
-
+  if (loading)
+    return (
+      <>
+        <div className="w-24 flex justify-center items-center mx-auto h-screen">
+          <Loading />
+        </div>
+      </>
+    );
   return (
     <div className="bg-white">
       {isModel && (
@@ -240,12 +242,12 @@ const Profile: React.FC = () => {
                   <TimeStampDisplay timestamp={userData.updatedAt} />
                 </span>
               </div>
-              <div className="flex-col flex md:flex-row md:gap-6 w-full justify-between md:items-center">
+              {/* <div className="flex-col flex md:flex-row md:gap-6 w-full justify-between md:items-center">
                 <p>Customer ID:</p>
                 <span className="text-[#005E99] text-[11px] md:text-sm">
                   TUR{userData._id.toUpperCase()}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 

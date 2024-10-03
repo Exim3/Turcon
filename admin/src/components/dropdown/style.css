@@ -1,0 +1,17 @@
+.dropdown-container:hover,
+.dropdown-container:focus-within {
+  box-shadow: none !important;
+}
+.dropdown-container {
+  border: none !important;
+}
+.dropdown-heading-value {
+  font-size: 12px;
+}
+.css-b62m3t-container:focus-visible {
+  outline: none;
+}
+
+.css-13cymwt-control:hover {
+  border-color: none !important;
+}

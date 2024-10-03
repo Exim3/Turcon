@@ -9,6 +9,7 @@ import containerImg from "/cartContainer.png";
 import deleteIcon from "/delete.svg";
 import infoIcon from "/info.svg";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../utils/AuthContext";
 
 export const UsFormat = (amount: number) => {
   const formattedAmount = new Intl.NumberFormat("en-US", {
@@ -108,7 +109,7 @@ const CartItem: React.FC<{
           </div>
           <p className="text-xs text-center mt-1  border rounded-full px-2 py-1 bg-white">
             {availableStock >= 1 ? "Available Stocks" : "Out Of Stock"}:{" "}
-            {availableStock}
+            {availableStock >= 25 ? "25+" : availableStock}
           </p>
         </div>
 
@@ -172,7 +173,8 @@ const Cart: React.FC = () => {
   const [cartCounts, setCartCounts] = useState<{ [key: string]: number }>({});
   const [items, setItems] = useState<any[]>([]);
   const navigate = useNavigate();
-  const userId = "669dfb8fe54022e071ed16fe";
+  const { user } = useAuth();
+  console.log(user, "user");
 
   const dispatch = useAppDispatch();
 
@@ -183,7 +185,7 @@ const Cart: React.FC = () => {
   const fetchCartItems = async () => {
     try {
       const response = await axiosInstance.get(`/api/cart/getcart`, {
-        params: { userId },
+        params: { userId: user?.id },
       });
       setItems(response.data);
 
@@ -203,12 +205,11 @@ const Cart: React.FC = () => {
   };
   const updateCart = async (_id: string, newQuantity: number) => {
     try {
-      await axiosInstance.put(`/api/cart/updatecart`, null, {
-        params: {
-          quantity: newQuantity,
-          itemId: _id,
-        },
+      await axiosInstance.put(`/api/cart/updatecart`, {
+        quantity: newQuantity,
+        itemId: _id,
       });
+
       fetchCartItems();
     } catch (error) {
       console.error("Error updating cart item:", error);
@@ -236,11 +237,11 @@ const Cart: React.FC = () => {
     await updateCart(_id, newQuantity);
   };
 
-  const deleteItem = async (_id: string, userId: string) => {
+  const deleteItem = async (_id: string) => {
     try {
       await axiosInstance.delete(`/api/cart/deletecart`, {
         params: {
-          userId,
+          userId: user?.id,
           itemId: _id,
         },
       });
@@ -296,7 +297,7 @@ const Cart: React.FC = () => {
                     size={item.size}
                     condition={item.condition}
                     availableStock={item.stockCount}
-                    userId={userId}
+                    userId={user?.id || ""}
                   />
                 ))}
               </div>

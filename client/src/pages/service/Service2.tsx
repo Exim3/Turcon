@@ -12,6 +12,12 @@ const Service2: React.FC = () => {
           content={
             "At this facility, we provide comprehensive container storage and repair services for external customers. Our offerings cater to a diverse range of clients, including shipping lines and container leasing companies. With state-of-the-art equipment and a dedicated team of professionals, we ensure that your containers are stored securely and maintained to the highest standards. Our repair services cover everything from minor fixes to major refurbishments, guaranteeing that your containers are always in optimal condition. Partner with us for reliable, efficient, and cost-effective container solutions."
           }
+          safeContentText={
+            "Do not hesitate to contact us when you are looking for a professional and reliable depot partner."
+          }
+          easyContentText={
+            "We have an experienced and reliable workforce, advanced IT systems, and very quick turn-around times at the gate."
+          }
         />
       </div>
     </>

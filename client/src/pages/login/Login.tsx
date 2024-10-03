@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import EyeIcon, { EyeCloseIcon } from "../../components/svg/Eye";
-import { BackIcon } from "../../components/svg/Tick";
-import { useBack } from "../../utils/useBack";
+import cancelIcon from "/x.svg";
 import Logo from "/logo.svg";
 
 import { useAuth } from "../../utils/AuthContext";
@@ -16,12 +15,12 @@ type LoginData = {
 const Login: React.FC = () => {
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     username: "",
     password: "",
   });
 
-  const goback = useBack();
   const navigate = useNavigate();
   const { login } = useAuth(); // Get login function from context
 
@@ -36,6 +35,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await axiosInstance.post("/api/auth/login", loginData);
 
       // Access token from the response headers
@@ -85,6 +85,8 @@ const Login: React.FC = () => {
         }
         return;
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -92,10 +94,10 @@ const Login: React.FC = () => {
     <div className="bg-white w-full h-screen flex items-center justify-center">
       <div className="relative w-full max-w-md p-8 bg-white border rounded-lg shadow-lg">
         <div
-          className="absolute top-3 left-3 cursor-pointer bg-[#e4e4e4] w-8 h-8 flex items-center justify-center rounded-md"
-          onClick={goback}
+          onClick={() => navigate("/")}
+          className="cursor-pointer absolute top-3 right-3 bg-[#e4e4e4] w-8 h-8 flex items-center justify-center rounded-md"
         >
-          <BackIcon color="#232323" />
+          <img src={cancelIcon} alt="Cancel" />
         </div>
         <div className="w-28 mx-auto mb-6">
           <img src={Logo} alt="Turcon Logo" />
@@ -143,21 +145,23 @@ const Login: React.FC = () => {
             </div>
           </div>
           <div className="text-end text-xs text-primary">
-            <Link
-              to="/forgot-password"
-              className="text-[#005E99] font-semibold"
-            >
-              Forget Password?
+            <Link to="/forgetpassword" className="text-[#005E99] font-semibold">
+              Forgot Password?
             </Link>
           </div>
         </div>
         {error && <p className="text-error text-xs">{error}</p>}
         <div className="mt-6">
           <button
-            className="btn btn-prime w-full py-2 px-4 text-white"
+            className="btn btn-prime w-full py-2 px-4 text-white disabled:bg-[#aaaaaa]"
             onClick={handleSubmit}
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? (
+              <span className="loading loading-bars loading-sm  bg-primary"></span>
+            ) : (
+              "Login"
+            )}
           </button>
         </div>
         <div className="mt-4 text-center text-xs">

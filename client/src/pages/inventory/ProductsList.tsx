@@ -13,6 +13,7 @@ import noResultIcon from "/noResult.svg";
 import locationIcon from "/location.svg";
 import "./style.css";
 import axiosInstance from "../../utils/axiosInstance";
+import Loading from "../../components/loading/Loading";
 
 type ContainerData = {
   country: string;
@@ -44,6 +45,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [login, setIsLogin] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -85,6 +87,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
 
   const fetchContainers = async (page: number) => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get<ApiResponse>(
         `/api/containers/getpagewise`,
         { params: { ...filters, page, itemsPerPage: 10 } }
@@ -101,6 +104,8 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
       setError(message);
       // toast.error(message);
       console.error("Fetch containers error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,11 +122,19 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
     dispatch(setselectedPort({ label: Port, value: Port }));
     navigate(`${login ? "/buy/selectedInventory" : "/login"}`);
   };
+  if (loading)
+    return (
+      <>
+        <div className="w-24 flex justify-center items-center mx-auto h-1/2">
+          <Loading />
+        </div>
+      </>
+    );
 
   return (
     <>
       {error && <p>Error: {error}</p>}
-      {containerData.length > 0 ? (
+      {containerData?.length > 0 ? (
         <div>
           <div className="items grid sm:grid-cols-2 w-full gap-10 cursor-pointer">
             {containerData.map((item, index) => (
@@ -199,7 +212,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ searched }) => {
                     <div className="px-6 py-4 text-center text-xl text-[#003759] self-center bg-gray-50 w-full">
                       Available Stocks:{" "}
                       <span className="text-2xl text-[#11a3ff] font-semibold">
-                        {item.stockCount}
+                        {item.stockCount >= "25" ? "25+" : item.stockCount}
                       </span>
                     </div>
                   </div>

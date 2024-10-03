@@ -12,7 +12,10 @@ const initialState: FilterState = {
     "20'FT": false,
     "20'FT HC": false,
     "40'FT": false,
+    "45'FT": false,
     "40'FT HC": false,
+    "45'FT HC": false,
+    "45'FT HC PW": false,
   },
   condition: {
     SCRAP: false,
@@ -52,8 +55,11 @@ const filterSlice = createSlice({
       state.size = {
         "20'FT": false,
         "40'FT": false,
+        "45'FT": false,
         "20'FT HC": false,
         "40'FT HC": false,
+        "45'FT HC": false,
+        "45'FT HC PW": false,
       };
       state.condition = {
         SCRAP: false,

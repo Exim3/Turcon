@@ -2,7 +2,7 @@ import express from "express";
 import {
   addContainer,
   deleteContainer,
-  getContainer,
+  getAllContainer,
   getContainerPageWise,
   getCountryPort,
   getSelectedContainerPageWise,
@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get("/get", getContainer);
+router.get("/getallcontainer", getAllContainer);
 router.get("/getcountry", getCountryPort);
 router.get("/getpagewise", getContainerPageWise);
 router.get("/getselected", getSelectedContainerPageWise);

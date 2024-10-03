@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CartSchema = mongoose.Schema(
+export const CartSchema = mongoose.Schema(
   {
     country: {
       type: String,
@@ -43,11 +43,11 @@ const CartSchema = mongoose.Schema(
     },
     itemcount: {
       type: Number,
-      default: 1, // Provide a default value if needed
+      default: 1,
     },
   },
   {
-    timestamps: true, // Automatically adds createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 

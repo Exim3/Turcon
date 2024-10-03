@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import InventorySideBar from "../sideBar/InventorySideBar";
 import { useAppSelector } from "../../store/store";
 import Logo from "/logo.svg";
 import cartIcon from "/cart.svg";
-import notificationIcon from "/notification.svg";
+// import notificationIcon from "/notification.svg";
 import profileIcon from "/profile.svg";
 import { useAuth } from "../../utils/AuthContext";
 
@@ -52,8 +52,8 @@ const ContainerHeader = () => {
                     <img src={cartIcon} alt="cart.png" className="h-5 w-5" />
                   </div>
                 </Link>
-
-                <Link
+                {/* later will add  */}
+                {/* <Link
                   to={"/buy/notification"}
                   className=" bg-[#FAFAFA] hover:bg-[#dddddd] focus:bg-[#ffd3d3]  p-3 rounded-md"
                 >
@@ -64,7 +64,7 @@ const ContainerHeader = () => {
                       className="h-5 w-5"
                     />
                   </div>
-                </Link>
+                </Link> */}
               </div>
             )}
             <div className="lg:hidden">
@@ -73,30 +73,42 @@ const ContainerHeader = () => {
           </div>
         </div>
         <div className="navbar-center hidden lg:flex self-center ">
-          <ul className="menu menu-horizontal  px-1 text-sm ">
+          <ul className="menu menu-horizontal px-1 text-sm">
             <li>
-              <Link
-                to={"/buy/inventory"}
-                className="navlist  font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary text-black"
+              <NavLink
+                to="/buy/inventory"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary" : "text-black"
+                  }`
+                }
               >
                 Inventory
-              </Link>
+              </NavLink>
             </li>
-            <li>
-              <Link
-                to={"/buy/orders"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+            <li className="">
+              <NavLink
+                to="/buy/orders/all"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary " : "text-black"
+                  }`
+                }
               >
                 Order
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to={"/buy/support"}
-                className="navlist font-semibold focus:bg-[#ffd3d3] rounded-md focus:text-primary  text-black"
+              <NavLink
+                to="/buy/support"
+                className={({ isActive }) =>
+                  `navlist font-semibold rounded-md ${
+                    isActive ? "bg-[#ffd3d3] text-primary" : "text-black"
+                  }`
+                }
               >
                 Support
-              </Link>
+              </NavLink>
             </li>
           </ul>
           {user ? (
@@ -115,7 +127,10 @@ const ContainerHeader = () => {
                   <img src={cartIcon} alt="cart" className="h-5 w-5" />
                 </div>
               </Link>
-              <Link
+
+              {/* later will add  */}
+
+              {/* <Link
                 to={"/buy/notification"}
                 className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3]    rounded-md"
               >
@@ -126,7 +141,7 @@ const ContainerHeader = () => {
                     className="h-5 w-5"
                   />
                 </div>
-              </Link>
+              </Link> */}
               <Link
                 to={"/buy/profile"}
                 className=" bg-[#FAFAFA] p-3 hover:bg-[#dddddd] focus:bg-[#ffd3d3]   rounded-md"

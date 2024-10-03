@@ -48,7 +48,7 @@ export const addCart = async (req, res) => {
         return res.status(400).send({ message: "Cart not updated" });
       }
 
-      return res.status(200).send({ message: "cart Uploaded successfully" });
+      return res.status(200).send({ message: "Cart uploaded" });
     } else {
       // Create a new cart item
       const newCart = new CartModel({
@@ -118,7 +118,7 @@ export const deleteCart = async (req, res) => {
 export const updateCart = async (req, res) => {
   try {
     // Extract query parameters
-    const { itemId, quantity } = req.query;
+    const { itemId, quantity } = req.body;
 
     // Sanitize and validate input
     if (!itemId || isNaN(quantity)) {

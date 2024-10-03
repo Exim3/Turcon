@@ -2,13 +2,76 @@ import containerModel from "../models/containerModel.js";
 import sellerModel from "../models/sellerModel.js";
 
 //get
-export const getContainer = async (req, res) => {
+export const getAllContainer = async (req, res) => {
   try {
-    const getcontainer = await containerModel.find();
-    console.log(getcontainer);
-    res.status(201).send(getcontainer);
+    const {
+      type,
+      condition,
+      size,
+      country,
+      port,
+      page = 0,
+      rowsPerPage = 10,
+    } = req.query;
+
+    // Validate query parameters
+    const pageNumber = Number(isNaN(page) ? 0 : page);
+    const limit = Number(isNaN(rowsPerPage) ? 10 : rowsPerPage);
+
+    // Construct the filter
+    let filter = {};
+    if (type) {
+      filter.type = { $regex: type, $options: "i" }; // Case-insensitive search
+    }
+    if (condition) {
+      filter.condition = { $regex: condition, $options: "i" }; // Case-insensitive search
+    }
+    if (size) {
+      filter.size = { $regex: size, $options: "i" }; // Case-insensitive search
+    }
+    if (country) {
+      filter.country = { $regex: country, $options: "i" }; // Case-insensitive search
+    }
+    if (port) {
+      filter.portLocation = { $regex: port, $options: "i" }; // Case-insensitive search
+    }
+
+    // Get total count
+    const totalContainers = await containerModel.countDocuments(filter);
+
+    // Construct the aggregation pipeline
+    let pipeline = [
+      { $match: filter },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          size: 1,
+          portLocation: 1,
+          condition: 1,
+          country: 1,
+          stockCount: 1,
+          price: 1,
+          // Add other fields if needed
+        },
+      },
+      {
+        $sort: { createdAt: -1 }, // Ensure you have 'createdAt' field in UserModel
+      },
+      {
+        $skip: pageNumber * limit,
+      },
+      {
+        $limit: limit,
+      },
+    ];
+
+    // Execute the aggregation pipeline
+    const containers = await containerModel.aggregate(pipeline);
+
+    return res.status(200).json({ containers, totalContainers });
   } catch (error) {
-    console.log("Error in getContainer : ", error.message);
+    console.error("Error in getAllContainer : ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -103,7 +166,7 @@ export const getCountryPort = async (req, res) => {
     const uniqueport = await getUniquePort(countries, country);
     res.status(200).json({ countries: uniqueCountries, ports: uniqueport });
   } catch (error) {
-    console.log("Error in getContainer : ", error.message);
+    console.error("Error in getContainer : ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -229,6 +292,7 @@ const getselectedContainer = async (
 ) => {
   try {
     const skip = (page - 1) * itemsPerPage;
+
     // Aggregation Pipeline with $facet
     const [results] = await containerModel.aggregate([
       {
@@ -256,11 +320,15 @@ const getselectedContainer = async (
         },
       },
       {
+        $addFields: {
+          adjustedPrice: { $multiply: ["$price", 1.1] }, // Calculate adjusted price (price * 1.1)
+        },
+      },
+      {
         $facet: {
           metadata: [{ $count: "totalCount" }],
           data: [
             { $sort: { stockCount: -1 } },
-
             { $skip: skip },
             { $limit: itemsPerPage },
             {
@@ -270,6 +338,7 @@ const getselectedContainer = async (
                 portLocation: "$_id.port",
                 stockCount: 1,
                 price: 1,
+                adjustedPrice: 1, // Include adjusted price in the output
                 condition: "$_id.condition",
                 type: "$_id.type",
                 size: "$_id.size",
@@ -376,7 +445,6 @@ export const addContainer = async (req, res) => {
       stockCount: stockCount,
       sellerId: sellerId,
     });
-    // console.log(newcontainer);
     const containerId = newcontainer._id;
     const updateSeller = await sellerModel.findByIdAndUpdate(
       sellerId,
@@ -391,7 +459,7 @@ export const addContainer = async (req, res) => {
       .status(201)
       .json({ newcontainer, message: "container created successfully" });
   } catch (error) {
-    console.log("Error in addContainer : ", error.message);
+    console.error("Error in addContainer : ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -464,7 +532,7 @@ export const updateContainer = async (req, res) => {
       updatedContainer: updateContainer,
     });
   } catch (error) {
-    console.log("Error in updateContainer : ", error.message);
+    console.error("Error in updateContainer : ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -515,7 +583,7 @@ export const deleteContainer = async (req, res) => {
       deletedContainer: deleteContainer,
     });
   } catch (error) {
-    console.log("Error in deleteContainer : ", error.message);
+    console.error("Error in deleteContainer : ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };

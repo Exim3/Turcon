@@ -4,6 +4,7 @@ import {
   addSellerContainer,
   deleteSeller,
   getSellerById,
+  getSellerContainer,
   getTotalSellers,
   updateContainerOfSeller,
   updateSeller,
@@ -11,11 +12,12 @@ import {
 const router = express.Router();
 
 router.get("/get", getTotalSellers);
-router.get("/getseller/:sellerId", getSellerById);
+router.get("/getseller", getSellerById);
+router.get("/getsellercontainer", getSellerContainer);
 router.post("/add", addSeller);
 router.post("/addcontainers/:sellerId", addSellerContainer);
 router.put("/updateseller/:sellerId", updateSeller);
-router.put("/updatecontainer/:sellerId", updateContainerOfSeller);
-router.delete("/deleteseller/:sellerId", deleteSeller);
+router.put("/updatecontainer", updateContainerOfSeller);
+router.delete("/deleteseller", deleteSeller);
 
 export default router;

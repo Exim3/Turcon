@@ -9,6 +9,8 @@ import locationIcon from "/location.svg";
 import containerImg from "/cartContainer.png";
 import infoIcon from "/info.svg";
 import axiosInstance from "../../utils/axiosInstance";
+import { useAuth } from "../../utils/AuthContext";
+import SuccessfullyAnimation from "../../components/animation/SuccessfullyAnimation";
 
 interface CustomRadioButtonProps {
   value: string;
@@ -29,7 +31,6 @@ const CartItem: React.FC<{
   price: number;
   condition: string;
   itemCount: number;
-
   userId: string;
 }> = ({
   name,
@@ -164,28 +165,69 @@ const CustomRadioButton: React.FC<CustomRadioButtonProps> = ({
 
 const ReviewOrder: React.FC = () => {
   const [items, setItems] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const userId = "669dfb8fe54022e071ed16fe";
+  const { user } = useAuth();
+  const userId = user?.id || "";
   const [error, setError] = useState<string>("");
+  const [isBooked, setIsBooked] = useState<boolean>(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [isAgreementChecked, setIsAgreementChecked] = useState<boolean>(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedPaymentMethod(event.target.value);
     setError("");
   };
+  const itemTotal = items?.map((item) => item.price * item.itemcount);
 
+  const UsFormat = (amount: number) => {
+    const formattedAmount = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+    return formattedAmount;
+  };
+  const rawTotalPrice = itemTotal.reduce((acc, item) => acc + item, 0);
+
+  const totalPrice = UsFormat(rawTotalPrice);
+
+  const rawTotalAmount = rawTotalPrice;
+
+  const totalAmount = UsFormat(rawTotalAmount);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsAgreementChecked(event.target.checked);
     setError("");
   };
+  const createOrder = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axiosInstance.post("/api/order/create", {
+        userId,
+        paymentMethod: selectedPaymentMethod,
+        totalAmount: rawTotalAmount,
+        totalPrice: rawTotalPrice,
+      });
+      console.log(response);
+      console.log(response.data.message);
+      const msg = response.data?.message;
+      if (msg) {
+        setIsBooked(true);
+      }
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = () => {
+    //order data:{items:[id1,id2,userId,paymentmethod]}
     if (!selectedPaymentMethod) {
       setError("Please select a payment method.");
     } else if (!isAgreementChecked) {
       setError("You must agree to the Sales Agreement.");
     } else {
       setError("");
-      // Add your submission logic here
+      createOrder();
     }
   };
   const dispatch = useAppDispatch();
@@ -210,30 +252,38 @@ const ReviewOrder: React.FC = () => {
   const handleBack = () => {
     navigate(-1);
   };
-
-  const itemTotal = items?.map((item) => item.price * item.itemcount);
-
-  const UsFormat = (amount: number) => {
-    const formattedAmount = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-    return formattedAmount;
+  const handleGoToOrders = () => {
+    navigate("/buy/orders/all");
+    setIsBooked(false);
   };
-  const rawTotalPrice = itemTotal.reduce((acc, item) => acc + item, 0);
-
-  const totalPrice = UsFormat(rawTotalPrice);
-
-  const rawTax = rawTotalPrice * 0.1;
-
-  const tax = UsFormat(rawTax);
-
-  const rawTotalAmount = rawTotalPrice + rawTax;
-
-  const totalAmount = UsFormat(rawTotalAmount);
 
   return (
     <div className="container mx-auto">
+      {isBooked && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-10"></div>
+          <div className="z-20 fixed w-full flex items-center justify-center  inset-0 text-center top-20 ">
+            <div className="flex flex-col items-center  max-w-[270px] lg:max-w-[460px]  w-full rounded-xl bg-white py-8 px-8 gap-2">
+              <h3 className="text-2xl font-semibold">Congratulations!!!</h3>
+              <div className="w-40">
+                <SuccessfullyAnimation />
+              </div>
+              <h4 className="font-semibold text-lg">
+                Your Booking Request Submitted Successfully!
+              </h4>
+              <p className="text-[#4E4949] text-xs">
+                Thank you for your request. Our team will contact you shortly to
+                finalize the details. Please click the 'Go to Orders' button
+                below to check your orders.
+              </p>
+              <div onClick={handleGoToOrders}>
+                <div className="btn btn-prime">Go To Orders</div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="flex-col flex gap-4 my-8">
         <div className="flex justify-between items-center w-full">
           <div className="flex flex-col gap-2">
@@ -263,7 +313,7 @@ const ReviewOrder: React.FC = () => {
                   <p className="text-[#008FE8] text-[10px] md:text-sm ">
                     We offer 5 free storage days. Please confirm your awareness.
                     (Orders not picked up within this time frame may be
-                    canceled, and storage fees may apply.)
+                    cancelled, and storage fees may apply.)
                   </p>
                 </div>
                 {items.map((item) => (
@@ -295,10 +345,11 @@ const ReviewOrder: React.FC = () => {
                       <p className="text-xl">Price</p>
                       <p className="font-semibold text-lg">{totalPrice}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <p className="text-xl">Tax (10%)</p>
-                      <p className=" font-semibold  text-lg">{tax}</p>
-                    </div>
+                    <p className="text-[#008FE8] text-[10px] md:text-[14px] lg:text-[10px] ">
+                      Taxes may apply based on the container's location. The
+                      final price, including any applicable taxes, will be
+                      reflected in the invoice.
+                    </p>
                   </div>
                   <div>
                     <div className="divider p-0 m-0"></div>{" "}
@@ -322,7 +373,9 @@ const ReviewOrder: React.FC = () => {
                     <label htmlFor="agree" className="text-xs ">
                       I Agree with the{" "}
                       <span className="text-[#005E99] font-semibold">
-                        Sales Agreement
+                        <a href="/docs/SalesAgreement.pdf" download>
+                          Sales Agreement
+                        </a>
                       </span>
                     </label>
                   </div>
@@ -340,10 +393,10 @@ const ReviewOrder: React.FC = () => {
                       className={"p-2 rounded-md "}
                     />
                     <CustomRadioButton
-                      value="credit"
+                      value="card"
                       label="Credit / Debit Card"
                       imgSrc={creditIcon}
-                      checked={selectedPaymentMethod === "credit"}
+                      checked={selectedPaymentMethod === "card"}
                       onChange={handleChange}
                       className={"p-2 rounded-md"}
                     />
@@ -355,9 +408,17 @@ const ReviewOrder: React.FC = () => {
                   </p>
                 )}
 
-                <div className="btn btn-prime w-full" onClick={handleSubmit}>
-                  Send Booking Request
-                </div>
+                <button
+                  className="btn btn-prime disabled:bg-[#aaaaaa] w-full"
+                  disabled={isLoading}
+                  onClick={handleSubmit}
+                >
+                  {isLoading ? (
+                    <span className="loading loading-bars loading-sm  bg-primary"></span>
+                  ) : (
+                    "Send Booking Request"
+                  )}
+                </button>
               </div>
             </>
           ) : (

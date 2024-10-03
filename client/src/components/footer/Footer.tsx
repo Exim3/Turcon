@@ -82,6 +82,9 @@ const Footer = () => {
                 <li>
                   <Link to={"/contact"}>Contact Us</Link>{" "}
                 </li>
+                <li>
+                  <Link to={"/privacypolicy"}>Privacy Policy</Link>{" "}
+                </li>
               </ul>
             </div>
             <div className="flex flex-col items-center justify-center gap-6 md:col-span-2 lg:col-span-1 md:mt-3 ">
@@ -148,7 +151,7 @@ const Footer = () => {
           <div className="fixed bottom-8 right-8 ">
             <a
               className="whats-app"
-              href="https://web.whatsapp.com/send?phone=+9585804095&text=Need your support ?"
+              href="https://web.whatsapp.com/send?phone=+971564507734&text=Need your support ?"
               target="_blank"
             >
               <img
